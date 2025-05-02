@@ -108,11 +108,11 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-     <a href="../index.html">
-        <span>Nairoreel Productions</span>
-        <span>Nairoreel Productions</span>
-    </a>
-</div>
+                <a href="../index.html">
+                    <span>Nairoreel Productions</span>
+                    <span>Nairoreel Productions</span>
+                </a>
+            </div>
             <div class="nav-links">
                 <a href="../work.html">
                     <span>Work</span>
@@ -147,49 +147,30 @@
             <h1>We capture moments that tell stories.</h1>
             <h2><em>"You don't take a photograph, you make it." - Ansel Adams</em></h2>
         </div>
-			
-<body>
+    </header>
 
-  <!-- GALLERY SECTION -->
-  <div class="gallery-container">
-    <div class="image-grid">
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/reload.jpg" alt="Reload">
-        <div class="image-label">RELOAD</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nrfw.jpeg" alt="Nairobi fashion week">
-        <div class="image-label">NAIROBI FASHION WEEK</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nike.jpeg" alt="Nike">
-        <div class="image-label">NIKE</div>
-      </div>
+    <!-- GALLERY SECTION -->
+    <div class="gallery-container">
+        <div class="image-grid">
+            <div class="image-box" onclick="openModal(this)">
+                <img src="/assets/images/gallery/photography/reload.jpg" alt="Reload">
+                <div class="image-label">RELOAD</div>
+            </div>
+            <div class="image-box" onclick="openModal(this)">
+                <img src="/assets/images/gallery/photography/nrfw.jpeg" alt="Nairobi fashion week">
+                <div class="image-label">NAIROBI FASHION WEEK</div>
+            </div>
+            <div class="image-box" onclick="openModal(this)">
+                <img src="/assets/images/gallery/photography/nike.jpeg" alt="Nike">
+                <div class="image-label">NIKE</div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modal-img" src="" alt="Enlarged Image">
-  </div>
-
-  <script>
-    function openModal(element) {
-      const modal = document.getElementById("modal");
-      const modalImg = document.getElementById("modal-img");
-      const img = element.querySelector("img");
-      modalImg.src = img.src;
-      modal.classList.add("show");
-    }
-
-    function closeModal() {
-      const modal = document.getElementById("modal");
-      modal.classList.remove("show");
-    }
-  </script>
-	
-</body>
-</html>
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <img id="modal-img" src="" alt="Enlarged Image">
+    </div>
 
     <div class="service-intro">
         <p>Our stylized product and lifestyle photography captures the essence of your brand with meticulous attention to composition, lighting, and storytelling. We create images that resonate with your audience and elevate your brand's visual presence.</p>
@@ -216,10 +197,10 @@
                 <h3>Pages</h3>
                 <ul>
                     <li><a href="index.html">Home</a></li>
-									<li><a href="work.html">Work</a></li>
-									<li><a href="services.html">Services</a></li>
-                      <li><a href="us.html">Us</a></li>
-									    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="us.html">Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -235,8 +216,22 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script>
+        function openModal(element) {
+            const modal = document.getElementById("modal");
+            const modalImg = document.getElementById("modal-img");
+            const img = element.querySelector("img");
+            modalImg.src = img.src;
+            modal.classList.add("show");
+        }
 
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            modal.classList.remove("show");
+        }
+    </script>
+
+    <script src="js/main.js"></script>
 </body>
 
 </html>
