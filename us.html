@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Us — Nairoreel Productions</title>
+    <meta name="description" content="Learn about the founders of Nairoreel Productions, their passions, and their vision for visual storytelling.">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .us-header {
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--card-bg);
+        }
+
+        .us-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .us-header h1 {
+            margin-bottom: 1rem;
+            animation: fadeUp 1s ease-out forwards;
+        }
+
+        .us-header p {
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.2s forwards;
+        }
+
+        .founders-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .founders-intro {
+            margin-bottom: 2rem;
+            max-width: 900px;
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .founder-item {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .founder-item img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .founder-item h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .founder-item p {
+            margin: 0;
+        }
+
+        .gallery-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Overlay for darkening effect -->
+    <div class="page-overlay"></div>
+
+    <nav>
+        <div class="nav-container">
+           <div class="nav-logo">
+    <a href="index.html">
+        <span>Nairoreel Productions</span>
+        <span>Nairoreel Productions</span>
+    </a>
+</div>
+            <div class="nav-links">
+                <a href="work.html">
+                    <span>Work</span>
+                    <span>Work</span>
+                </a>
+                <a href="index.html#services">
+                    <span>Services</span>
+                    <span>Services</span>
+                </a>
+                <a href="us.html" class="active">
+                    <span>Us</span>
+                    <span>Us</span>
+                </a>
+                <a href="process.html">
+                    <span>Process</span>
+                    <span>Process</span>
+                </a>
+                 <a href="contact.html">
+                    <span>Contact</span>
+                    <span>Contact</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="us-header">
+        <div class="us-header-content">
+            <h1>About Us</h1>
+            <p>The story behind Nairoreel Productions</p>
+        </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <section class="founders-section">
+        <h2>Meet the Founders</h2>
+        <p class="founders-intro">Nairoreel Productions was born from the shared passion and creative vision of two individuals dedicated to transforming brand storytelling through captivating visuals.</p>
+        <div class="founders-grid">
+            <div class="founder-item">
+                <img src="assets/images/team/brandon-rono.jpg" alt="Brandon Rono">
+                <h3>Brandon Rono</h3>
+                <p>Creative Director & Filmmaker</p>
+                <p>Brandon brings a wealth of experience in film direction and creative strategy, ensuring every project captures the essence of the brand's narrative.</p>
+            </div>
+            <div class="founder-item">
+                <img src="assets/images/team/bill-hwaga.jpg" alt="Bill Hwaga">
+                <h3>Bill Hwaga</h3>
+                <p>3D Artist & Motion Designer</p>
+                <p>Bill's expertise in 3D and motion design elevates visual storytelling, creating immersive experiences that leave a lasting impact.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="gallery-section">
+        <h2>Our Journey</h2>
+        <p>Placeholder content for the "Our Journey" section. This is where we'll showcase a gallery of images that highlight our work, our team, and our creative process.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image1.jpg" alt="Gallery Image 1">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image2.jpg" alt="Gallery Image 2">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image3.jpg" alt="Gallery Image 3">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image4.jpg" alt="Gallery Image 4">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image5.jpg" alt="Gallery Image 5">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/images/gallery/image6.jpg" alt="Gallery Image 6">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Nairoreel Productions</h3>
+                <p>Visual storytelling studio crafting captivating narratives for innovative brands.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="video-production.html">Film Making</a></li>
+                    <li><a href="3d-motion-design.html">3D Animation</a></li>
+                    <li><a href="index.html#services">Photography</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+									<li><a href="work.html">Work</a></li>
+                      <li><a href="services.html">Services</a></li>
+									    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="mailto:hello@nairoreel.com">hello@nairoreel.com</a></li>
+                    <li><a href="https://instagram.com/nairoreel.productions" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Nairoreel Productions. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
