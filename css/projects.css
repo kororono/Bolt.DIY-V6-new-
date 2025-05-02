@@ -1,0 +1,283 @@
+/* Additional CSS for project pages */
+
+/* Project header */
+.project-header {
+    position: relative;
+    height: 80vh;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.project-hero-img {
+    width: 100%;
+    height: 100%;
+}
+
+.project-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+}
+
+.project-info {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    color: #fff;
+    z-index: 10;
+}
+
+.project-info h1 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.project-tagline {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+/* Project content */
+.project-content {
+    padding: 5rem 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Project details */
+.project-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 2rem;
+}
+
+.detail-column h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+}
+
+.project-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+.project-description p {
+    margin-bottom: 1.5rem;
+}
+
+/* Gallery */
+.project-gallery {
+    margin: 5rem 0;
+}
+
+.gallery-item {
+    margin-bottom: 2rem;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.caption {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.full-width {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
+    padding: 0 2rem;
+}
+
+/* Video container */
+.video-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.video-container:hover .video-overlay {
+    background: rgba(0,0,0,0.5);
+}
+
+.play-button {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 2rem;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.video-container:hover .play-button {
+    transform: scale(1.1);
+    background: rgba(255,255,255,0.3);
+}
+
+/* Quote section */
+.project-quote {
+    padding: 5rem 0;
+    background: rgba(255,255,255,0.03);
+}
+
+blockquote {
+    font-size: 2rem;
+    line-height: 1.4;
+    font-weight: 300;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-style: italic;
+}
+
+cite {
+    display: block;
+    text-align: center;
+    margin-top: 2rem;
+    font-style: normal;
+    opacity: 0.7;
+}
+
+/* Results section */
+.project-results {
+    padding: 5rem 0;
+}
+
+.project-results h2 {
+    margin-bottom: 3rem;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    text-align: center;
+}
+
+.result-item h3 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+/* Next project section */
+.next-project {
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.next-project h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.next-project-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 3rem;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.next-project-link:hover {
+    opacity: 0.7;
+}
+
+.project-name {
+    margin-right: 1rem;
+}
+
+.arrow {
+    font-size: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-info h1 {
+        font-size: 3rem;
+    }
+    
+    .project-tagline {
+        font-size: 1.2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    blockquote {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-info h1 {
+        font-size: 2.5rem;
+    }
+    
+    .project-header {
+        height: 60vh;
+        min-height: 400px;
+    }
+    
+    .result-item h3 {
+        font-size: 2.5rem;
+    }
+    
+    .next-project-link {
+        font-size: 2.5rem;
+    }
+}
