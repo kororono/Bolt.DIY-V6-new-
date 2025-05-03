@@ -1,19 +1,14 @@
 /* Base & Typography */
 /* ArsenicaTrial */
-@font-face {
-    font-family: 'ArsenicaTrial';
-    src: url('../fonts/ArsenicaTrial-Bold.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
 }
-
 @font-face {
-    font-family: 'ArsenicaTrial';
-    src: url('../fonts/ArsenicaTrial-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Boska-Black';
+  src: url('../fonts/Boska-Black.woff2') format('woff2'),
+       url('../fonts/Boska-Black.woff') format('woff'),
+       url('../fonts/Boska-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
 }
 
 /* Recia */
@@ -71,7 +66,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "ArsenicaTrial", serif;
+    font-family: "Boska-Black", serif;
     font-style: normal;
 }
 
@@ -260,7 +255,7 @@ nav {
 body {
   margin: 0;
   padding: 0;
-  font-family: "ArsenicaTrial", serif;
+  font-family: "Boska-Black", serif;
   font-style: normal;
 }
 
