@@ -11,13 +11,13 @@
 
 /* Recia */
 @font-face {
-    font-family: 'Recia';
-    src: url('../fonts/Recia-Regular.woff2') format('woff2'),
-         url('../fonts/Recia-Regular.woff') format('woff'),
-         url('../fonts/Recia-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Recia-Italic';
+  src: url('../fonts/Recia-Italic.woff2') format('woff2'),
+       url('../fonts/Recia-Italic.woff') format('woff'),
+       url('../fonts/Recia-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
 }
 
 @font-face {
@@ -44,7 +44,7 @@
 }
 
 body {
-    font-family: "Recia", sans-serif;
+    font-family: "Recia", serif;
     margin: 0;
     padding: 0;
     line-height: 1.4;
@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "ArsenicaTrial", serif;
+    font-family: "Boska-Black", serif;
     font-style: normal;
 }
 
@@ -253,7 +253,7 @@ nav {
 body {
   margin: 0;
   padding: 0;
-  font-family: "ArsenicaTrial", serif;
+  font-family: "Boska-Black", serif;
   font-style: normal;
 }
 
