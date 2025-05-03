@@ -268,7 +268,7 @@ nav {
 body {
   margin: 0;
   padding: 0;
-  font-family: "Boska-Black", serif;
+  font-family: var(--body-font);
   font-style: normal;
 }
 
@@ -321,7 +321,7 @@ body {
     font-weight: bold;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
     pointer-events: none;
-    font-family: "ArsenicaTrial", serif;
+    font-family: var=(--heading-font);
 }
 
 /* Modal Styling */
