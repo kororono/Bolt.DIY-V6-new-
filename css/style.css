@@ -418,6 +418,10 @@ body {
 }
 
 /* Hero Section - Home */
+.first-section {
+    padding-top: 100px; /* Adjust this value as needed */
+}
+
 .hero {
     height: 100vh;
     width: 100%;
