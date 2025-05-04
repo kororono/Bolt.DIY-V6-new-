@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Production — Nairoreel Productions</title>
+    <meta name="description" content="We craft compelling brand films, commercials, and ad campaigns that tell your story with cinematic quality and emotional impact.">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .service-hero {
+            height: 50vh;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .service-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(18, 18, 18, 0.7) 0%, rgba(18, 18, 18, 0.9) 100%);
+            z-index: -1;
+        }
+
+        .service-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-hero h1 {
+            font-size: 3rem;
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+        .service-hero h2 {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+
+        .service-intro {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .service-intro p {
+            font-size: 1.12rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            background-image: url('assets/images/video-bg.jpg');
+            background-size: cover;
+            color: var(--foreground);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .cta-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Overlay for darkening effect -->
+    <div class="page-overlay"></div>
+
+    <nav>
+        <div class="nav-container">
+           <div class="nav-logo">
+     <a href="../index.html">
+        <span>Nairoreel Productions</span>
+        <span>Nairoreel Productions</span>
+    </a>
+</div>
+            <div class="nav-links">
+                <a href="../work.html">
+                    <span>Work</span>
+                    <span>Work</span>
+                </a>
+                <a href="../services.html">
+                    <span>Services</span>
+                    <span>Services</span>
+                </a>
+                <a href="../us.html">
+                    <span>Us</span>
+                    <span>Us</span>
+                </a>
+                <a href="../process.html">
+                    <span>Process</span>
+                    <span>Process</span>
+                </a>
+                <a href="../contact.html">
+                    <span>Contact</span>
+                    <span>Contact</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="service-hero">
+        <div class="service-hero-bg">
+            <img src="assets/images/video-hero.jpg" alt="Video Production" class="service-hero-bg">
+        </div>
+        <div class="service-hero-overlay"></div>
+        <div class="service-hero-content">
+            <h1>We turn ideas into moving stories.</h1>
+            <h2><em>"The best film is like a train journey; you start in one place and end up somewhere else." - Orson Welles</em></h2>
+        </div>
+    </header>
+	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Gallery</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- GALLERY SECTION -->
+  <div class="gallery-container">
+    <div class="image-grid">
+      <div class="image-box" onclick="openModal(this)">
+        <img src="reload.jpg" alt="Reload">
+        <div class="image-label">RELOAD</div>
+      </div>
+      <div class="image-box" onclick="openModal(this)">
+        <img src="nrfw.jpg" alt="Nairobi fashion week">
+        <div class="image-label">NAIROBI FASHION WEEK</div>
+      </div>
+      <div class="image-box" onclick="openModal(this)">
+        <img src="nike.jpg" alt="Nike">
+        <div class="image-label">NIKE</div>
+				</div>
+      <div class="image-box" onclick="openModal(this)">
+        <img src="nrfw.jpg" alt="Nairobi fashion week">
+        <div class="image-label">NAIROBI FASHION WEEK</div>
+      </div>
+      <div class="image-box" onclick="openModal(this)">
+        <img src="nike.jpg" alt="Nike">
+        <div class="image-label">NIKE</div>
+    </div>
+ 
+	</div>
+
+  <!-- MODAL POPUP -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <img id="modal-img" src="" alt="">
+  </div>
+
+  <script>
+    function openModal(imageBox) {
+      const img = imageBox.querySelector('img');
+      const modalImg = document.getElementById('modal-img');
+      modalImg.src = img.src;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
+	
+    <div class="service-intro">
+        <p>We craft compelling brand films, commercials, and ad campaigns that tell your story with cinematic quality and emotional impact. Our video production service brings your brand narrative to life through expert cinematography, direction, and post-production.</p>
+        <div class="cta-container">
+            <a href="index.html#contact" class="cta-button">Start Your Project</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Nairoreel Productions</h3>
+                <p>Visual storytelling studio crafting captivating narratives for innovative brands.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="video-production.html">Film Making</a></li>
+                    <li><a href="3d-motion-design.html">3D Animation</a></li>
+                    <li><a href="photography.html">Photography</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+									<li><a href="work.html">Work</a></li>
+                      <li><a href="us.html">Us</a></li>
+									    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="mailto:hello@nairoreel.com">hello@nairoreel.com</a></li>
+                    <li><a href="https://instagram.com/nairoreel.productions" target="_blank">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Nairoreel Productions. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
