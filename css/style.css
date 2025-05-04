@@ -317,11 +317,11 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     color: var(--foreground);
-    font-size: 1.0rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
     pointer-events: none;
-    font-family: var(--heading-font);
+    font-family: var(--body-font);
 }
 
 /* Modal Styling */
