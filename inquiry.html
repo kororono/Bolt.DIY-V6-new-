@@ -1,14 +1,246 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Inquiry Form</title>
+    <title>Inquiry Form | Your Agency Name</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tally Script -->
     <script async src="https://tally.so/widgets/embed.js"></script>
+    
+    <!-- Font imports - add the correct paths to your fonts -->
     <style type="text/css">
-      html { margin: 0; height: 100%; overflow: hidden; }
-      iframe { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; }
+        /* Font imports - update paths to match your server structure */
+        @font-face {
+            font-family: 'Recia';
+            src: url('../fonts/Recia-Italic.woff2') format('woff2'),
+                url('../fonts/Recia-Italic.woff') format('woff'),
+                url('../fonts/Recia-Italic.ttf') format('truetype');
+            font-weight: 400;
+            font-display: swap;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'Recia';
+            src: url('../fonts/Recia-Medium.woff2') format('woff2'),
+                url('../fonts/Recia-Medium.woff') format('woff'),
+                url('../fonts/Recia-Medium.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Boska';
+            src: url('../fonts/Boska-Black.woff2') format('woff2'),
+                url('../fonts/Boska-Black.woff') format('woff'),
+                url('../fonts/Boska-Black.ttf') format('truetype');
+            font-weight: 900;
+            font-display: swap;
+            font-style: normal;
+        }
+        
+        /* Page specific styling */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #e0e0e0;
+            font-family: 'Recia', serif;
+            line-height: 1.4;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .page-header {
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+            background-color: #1d1d1d;
+        }
+        
+        .form-container {
+            max-width: 95%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .tally-iframe-container {
+            width: 100%;
+            height: 800px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background-color: #000000;
+        }
+        
+        .tally-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #000000;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .tally-iframe-container {
+                height: 1000px;
+            }
+            
+            .page-header {
+                height: 30vh;
+                min-height: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tally-iframe-container {
+                height: 1200px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <iframe data-tally-src="https://tally.so/r/3EgdAL?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Inquiry Form"></iframe>
-  </body>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span>YOUR LOGO</span>
+                    <span>YOUR LOGO</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">
+                    <span>Home</span>
+                    <span>Home</span>
+                </a>
+                <a href="work.html">
+                    <span>Work</span>
+                    <span>Work</span>
+                </a>
+                <a href="services.html">
+                    <span>Services</span>
+                    <span>Services</span>
+                </a>
+                <a href="about.html">
+                    <span>About</span>
+                    <span>About</span>
+                </a>
+                <a href="contact.html" class="active">
+                    <span>Contact</span>
+                    <span>Contact</span>
+                </a>
+            </div>
+            <div class="hamburger-menu">
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>Let's Create Something Amazing</h1>
+            <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Form Section -->
+    <section class="form-container">
+        <div class="tally-iframe-container">
+            <iframe data-tally-src="https://tally.so/r/3EgdAL?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Inquiry Form"></iframe>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Your Agency Name</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="work.html">Our Work</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="services.html#3d-animation">3D Animation</a></li>
+                    <li><a href="services.html#video">Video Production</a></li>
+                    <li><a href="services.html#photography">Photography</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul>
+                    <li>info@youragency.com</li>
+                    <li>+1 (555) 123-4567</li>
+                    <li>123 Creative St, City, Country</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Behance</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Your Agency Name. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Hamburger menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+            
+            if (hamburgerMenu) {
+                hamburgerMenu.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    hamburgerIcon.classList.toggle('active');
+                });
+            }
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.nav-links') && !event.target.closest('.hamburger-menu') && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburgerIcon.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
 </html>
