@@ -1076,6 +1076,12 @@ footer {
     color: var(--accent);
 }
 
+.footer-logo {
+    max-width: 200px; /* Adjust based on your logo size */
+    height: auto;
+    margin-bottom: 15px; /* Space between logo and paragraph */
+}
+
 .copyright {
     text-align: center;
     margin-top: 50px;
