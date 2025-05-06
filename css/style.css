@@ -1091,6 +1091,7 @@ footer {
     font-size: 0.9rem;
 }
 /*Social Icons*/
+/* Social Icons Styles */
 .social-icons {
     display: flex;
     list-style: none;
@@ -1106,19 +1107,22 @@ footer {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #333; /* Change this to match your brand color */
+    background-color: #333;
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .social-icons li a:hover {
-    background-color: #555; /* Lighter shade for hover effect */
+    background-color: #555;
     transform: translateY(-3px);
 }
 
-.social-icons i {
-    font-size: 20px;
+.footer-logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
 }
 
 /* Animations */
