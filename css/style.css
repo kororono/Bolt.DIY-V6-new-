@@ -873,7 +873,7 @@ body {
 }
 
 .client-role {
-    color: var(--text-secondary);
+    color: var(--accent);
     font-size: 0.9rem;
     margin-bottom: 0;
 }
