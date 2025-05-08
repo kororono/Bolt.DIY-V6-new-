@@ -839,6 +839,7 @@ body {
 .detail-item h3 {
     margin-bottom: 1rem;
     color: var(--accent);
+	opacity: .7;
 }
 
 /* Testimonials */
