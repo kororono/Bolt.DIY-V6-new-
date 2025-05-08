@@ -779,7 +779,7 @@ body {
 }
 
 .process-item h3 {
-    color: var(--accent);
+    color: var(--text-color);
     margin-bottom: 1rem;
     position: relative;
     z-index: 2;
@@ -806,8 +806,8 @@ body {
     right: 20px;
     font-size: 3rem;
     font-weight: 700;
-    color: var(--foreground);
-    opacity: 0.1;
+    color: var(--accent);
+    opacity: 0.4;
     transition: opacity 0.3s ease;
 }
 
