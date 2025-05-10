@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .service-hero {
-            height: 50vh;
-            min-height: 300px;
+            height: 60vh;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -18,51 +18,27 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-        }
-
-        .service-hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .service-hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(18, 18, 18, 0.7) 0%, rgba(18, 18, 18, 0.9) 100%);
-            z-index: -1;
+            background-image: url('assets/Images/gallery/photography/hero.webp');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
         .service-hero-content {
             position: relative;
             z-index: 1;
+            max-width: 800px;
         }
 
         .service-hero h1 {
-            font-size: 3rem;
-            font-weight: 500;
-            letter-spacing: -0.04em;
-            line-height: 1.15;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
-            animation: fadeIn 1s ease-out forwards;
+            margin-bottom: 1rem;
+            animation: fadeUp 1s ease-out forwards;
         }
 
-        .service-hero h2 {
-            font-style: italic;
-            font-weight: 400;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+        .service-hero p {
+            margin: 0 auto;
             opacity: 0;
-            animation: fadeIn 1s ease-out 1s forwards;
+            animation: fadeUp 1s ease-out 0.2s forwards;
         }
 
         .service-intro {
@@ -89,15 +65,17 @@
             margin-bottom: 40px;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from {
                 opacity: 0;
+                transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
+    </style>
     </style>
 </head>
 
@@ -138,11 +116,7 @@
         </div>
     </nav>
 
-    <header class="service-hero">
-        <div class="service-hero-bg">
-            <img src="assets/Images/gallery/3d-animation/3d-anim.webp" alt="Photography" class="service-hero-bg">
-        </div>
-        <div class="service-hero-overlay"></div>
+    <header class="service-hero parallax">
         <div class="service-hero-content">
             <h1>We capture moments that tell stories.</h1>
             <p><em>"You don't take a photograph, you make it." - Ansel Adams</em></p>
@@ -260,6 +234,68 @@
             const modal = document.getElementById("modal");
             modal.classList.remove("show");
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth parallax effect for headers
+            const parallaxHeaders = document.querySelectorAll('.parallax');
+            let lastScrollY = window.scrollY;
+            
+            function smoothParallax() {
+                const scrollY = window.scrollY;
+                
+                parallaxHeaders.forEach(header => {
+                    // Get the top position of the header
+                    const headerRect = header.getBoundingClientRect();
+                    const headerTop = headerRect.top + scrollY;
+                    const headerHeight = headerRect.height;
+                    
+                    // Check if the header is in the viewport
+                    if (scrollY < headerTop + headerHeight) {
+                        // Calculate parallax offset
+                        const offset = (scrollY - lastScrollY) * 0.4;
+                        
+                        // Get current background position
+                        const style = window.getComputedStyle(header);
+                        const bgPos = style.backgroundPosition.split(' ');
+                        const bgX = bgPos[0] || 'center';
+                        let bgY = parseFloat(bgPos[1]) || 0;
+                        
+                        // Update background position
+                        bgY += offset;
+                        header.style.backgroundPosition = `${bgX} ${bgY}px`;
+                    }
+                });
+                
+                lastScrollY = scrollY;
+                requestAnimationFrame(smoothParallax);
+            }
+            
+            // Start the animation
+            requestAnimationFrame(smoothParallax);
+            
+            // Mobile menu toggle
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+                hamburger.addEventListener('click', function() {
+                    document.querySelector('.nav-links').classList.toggle('active');
+                    document.querySelector('.hamburger-icon').classList.toggle('active');
+                });
+            }
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 
     <script src="js/main.js"></script>
