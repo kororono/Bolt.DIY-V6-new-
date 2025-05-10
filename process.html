@@ -7,6 +7,47 @@
     <title>Our Process — Nairoreel Productions</title>
     <meta name="description" content="Our systematic approach to visual storytelling - how we create compelling visual narratives for innovative brands.">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .project-header {
+            height: 60vh;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        
+        .project-header h1 {
+            margin-bottom: 1rem;
+            animation: fadeUp 1s ease-out forwards;
+        }
+        
+        .project-header p {
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.2s forwards;
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -16,11 +57,11 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-    <a href="index.html">
-        <span>Nairoreel Productions</span>
-        <span>Nairoreel Productions</span>
-    </a>
-</div>
+                <a href="index.html">
+                    <span>Nairoreel Productions</span>
+                    <span>Nairoreel Productions</span>
+                </a>
+            </div>
             <div class="nav-links">
                 <a href="work.html">
                     <span>Work</span>
@@ -38,7 +79,7 @@
                     <span>Process</span>
                     <span>Process</span>
                 </a>
-                 <a href="contact.html">
+                <a href="contact.html">
                     <span>Contact</span>
                     <span>Contact</span>
                 </a>
