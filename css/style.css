@@ -622,7 +622,7 @@ body {
 }
 
 .work-title {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
 	  color: var(--accent);
@@ -660,10 +660,10 @@ body {
 }
 
 .bento-title {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 1rem;
-    color: var(--accent);
+    color: var(--foreground);
     position: relative;
     z-index: 2;
 }
