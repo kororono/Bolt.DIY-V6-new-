@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="css/style.css">
     <style>
         .service-hero {
-            height: 50vh;
-            min-height: 300px;
+            height: 60vh;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -18,51 +18,27 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-        }
-
-        .service-hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .service-hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(18, 18, 18, 0.7) 0%, rgba(18, 18, 18, 0.9) 100%);
-            z-index: -1;
+            background-image: url('../assets/Images/gallery/3d-animation/3d-anim.webp');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
         .service-hero-content {
             position: relative;
             z-index: 1;
+            max-width: 800px;
         }
 
         .service-hero h1 {
-            font-size: 3rem;
-            font-weight: 500;
-            letter-spacing: -0.04em;
-            line-height: 1.15;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
-            animation: fadeIn 1s ease-out 1s forwards;
+            margin-bottom: 1rem;
+            animation: fadeUp 1s ease-out forwards;
         }
 
-        .service-hero h2 {
-            font-style: italic;
-            font-weight: 400;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+        .service-hero p {
+            margin: 0 auto;
             opacity: 0;
-            animation: fadeIn 1s ease-out 1s forwards;
+            animation: fadeUp 1s ease-out 0.2s forwards;
         }
 
         .service-intro {
@@ -77,12 +53,11 @@
             line-height: 1.5;
             margin-bottom: 1.5rem;
             max-width: 800px;
-            background-image: url('assets/images/video-bg.jpg');
+            background-image: url('assets/images/photography-bg.jpg');
             background-size: cover;
             color: var(--foreground);
             padding: 20px;
             border-radius: 10px;
-		animation: fadeIn 1s ease-out 1s forwards;
         }
 
         .cta-container {
@@ -90,27 +65,17 @@
             margin-bottom: 40px;
         }
 
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from {
                 opacity: 0;
+                transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
+    </style>
     </style>
 </head>
 
@@ -151,19 +116,12 @@
         </div>
     </nav>
 
-    <header class="service-hero">
-        <div class="service-hero-bg">
-            <img src="assets/images/video-hero.jpg" alt="Video Production" class="service-hero-bg">
-        </div>
-        <div class="service-hero-overlay"></div>
+    <header class="service-hero parallax">
         <div class="service-hero-content">
             <h1>We turn ideas into moving stories.</h1>
             <p><em>"The best film is like a train journey; you start in one place and end up somewhere else." - Orson Welles</em></p>
         </div>
     </header>
-	
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Image Gallery</title>
@@ -197,11 +155,6 @@
  
 	</div>
 
-  <!-- MODAL POPUP -->
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modal-img" src="" alt="">
-  </div>
-
   <script>
     function openModal(imageBox) {
       const img = imageBox.querySelector('img');
@@ -215,44 +168,73 @@
     }
   </script>
 
-</body>
-</html>
-	
     <div class="service-intro">
-        <p>We craft compelling brand films, commercials, and ad campaigns that tell your story with cinematic quality and emotional impact. Our video production service brings your brand narrative to life through expert cinematography, direction, and post-production.</p>
+         <p>We craft compelling brand films, commercials, and ad campaigns that tell your story with cinematic quality and emotional impact. Our video production service brings your brand narrative to life through expert cinematography, direction, and post-production.</p>
         <div class="cta-container">
-            <a href="index.html#contact" class="cta-button">Start Your Project</a>
+            <a href="../inquiry.html" class="cta-button">Start Your Project</a>
         </div>
     </div>
 
     <footer>
         <div class="footer-grid">
+            <!-- First column - Company info with logo -->
             <div class="footer-col">
-                <h3>Nairoreel Productions</h3>
-                <p>Visual storytelling studio crafting captivating narratives for innovative brands.</p>
+                <img src="../assets/images/footer/sf-logo-w.webp" alt="Nairoreel Productions Logo" class="footer-logo">
             </div>
+            
+            <!-- Second column - Services -->
             <div class="footer-col">
                 <h3>Services</h3>
                 <ul>
-                    <li><a href="video-production.html">Film Making</a></li>
-                    <li><a href="3d-motion-design.html">3D Animation</a></li>
-                    <li><a href="photography.html">Photography</a></li>
+                    <li><a href="../video-production.html">Film Making</a></li>
+                    <li><a href="../3d-motion-design.html">3D Animation</a></li>
+                    <li><a href="../photography.html">Photography</a></li>
                 </ul>
             </div>
+            
+            <!-- Third column - Pages -->
             <div class="footer-col">
                 <h3>Pages</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-									<li><a href="work.html">Work</a></li>
-                      <li><a href="us.html">Us</a></li>
-									    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="../work.html">Work</a></li>
+                    <li><a href="../services.html">Services</a></li>
+                    <li><a href="../us.html">Us</a></li>
+                    <li><a href="../process.html">Process</a></li>
                 </ul>
             </div>
+            
+            <!-- Fourth column - Social media icons -->
             <div class="footer-col">
                 <h3>Connect</h3>
-                <ul>
-                    <li><a href="mailto:hello@nairoreel.com">hello@nairoreel.com</a></li>
-                    <li><a href="https://instagram.com/nairoreel.productions" target="_blank">Instagram</a></li>
+                <ul class="social-icons">
+                    <li>
+                        <a href="mailto:hello@nairoreel.com" aria-label="Email">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="currentColor">
+                                <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com/nairoreel.productions" target="_blank" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20" fill="currentColor">
+                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="20" height="20" fill="currentColor">
+                                <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank" aria-label="TikTok">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20" fill="currentColor">
+                                <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+                            </svg>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -261,7 +243,84 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+
+    <script>
+        function openModal(element) {
+            const modal = document.getElementById("modal");
+            const modalImg = document.getElementById("modal-img");
+            const img = element.querySelector("img");
+            modalImg.src = img.src;
+            modal.classList.add("show");
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("modal");
+            modal.classList.remove("show");
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth parallax effect for headers
+            const parallaxHeaders = document.querySelectorAll('.parallax');
+            let lastScrollY = window.scrollY;
+            
+            function smoothParallax() {
+                const scrollY = window.scrollY;
+                
+                parallaxHeaders.forEach(header => {
+                    // Get the top position of the header
+                    const headerRect = header.getBoundingClientRect();
+                    const headerTop = headerRect.top + scrollY;
+                    const headerHeight = headerRect.height;
+                    
+                    // Check if the header is in the viewport
+                    if (scrollY < headerTop + headerHeight) {
+                        // Calculate parallax offset
+                        const offset = (scrollY - lastScrollY) * 0.4;
+                        
+                        // Get current background position
+                        const style = window.getComputedStyle(header);
+                        const bgPos = style.backgroundPosition.split(' ');
+                        const bgX = bgPos[0] || 'center';
+                        let bgY = parseFloat(bgPos[1]) || 0;
+                        
+                        // Update background position
+                        bgY += offset;
+                        header.style.backgroundPosition = `${bgX} ${bgY}px`;
+                    }
+                });
+                
+                lastScrollY = scrollY;
+                requestAnimationFrame(smoothParallax);
+            }
+            
+            // Start the animation
+            requestAnimationFrame(smoothParallax);
+            
+            // Mobile menu toggle
+            const hamburger = document.querySelector('.hamburger-menu');
+            if (hamburger) {
+                hamburger.addEventListener('click', function() {
+                    document.querySelector('.nav-links').classList.toggle('active');
+                    document.querySelector('.hamburger-icon').classList.toggle('active');
+                });
+            }
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
