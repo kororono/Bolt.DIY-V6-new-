@@ -613,7 +613,7 @@ body {
 
 .bento-item:hover .bento-title,
 .work-item:hover .work-title {
-    color: var(--accent);
+    color: var(--foreground);
     transition: color 0.3s ease;
 }
 
