@@ -208,39 +208,30 @@
     <script src="../js/main.js"></script>
 		    <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Smooth parallax effect for project headers
-        const parallaxHeaders = document.querySelectorAll('.project-header.parallax');
-        let lastScrollY = window.scrollY;
+    // Smooth parallax effect for project headers
+    const parallaxHeaders = document.querySelectorAll('.project-header.parallax');
+    
+    function smoothParallax() {
+        const scrollY = window.scrollY;
         
-        function smoothParallax() {
-            const scrollY = window.scrollY;
+        parallaxHeaders.forEach(header => {
+            // Get the top position of the header
+            const headerRect = header.getBoundingClientRect();
+            const headerHeight = headerRect.height;
             
-            parallaxHeaders.forEach(header => {
-                // Get the top position of the header
-                const headerRect = header.getBoundingClientRect();
-                const headerTop = headerRect.top + scrollY;
-                const headerHeight = headerRect.height;
+            // Check if the header is in the viewport
+            if (headerRect.bottom > 0 && headerRect.top < window.innerHeight) {
+                // Calculate relative scroll position (0 to 1)
+                const scrollProgress = Math.min(1, Math.max(0, scrollY / headerHeight));
                 
-                // Check if the header is in the viewport
-                if (scrollY < headerTop + headerHeight) {
-                    // Calculate parallax offset
-                    const offset = (scrollY - lastScrollY) * 0.4;
-                    
-                    // Get current background position
-                    const style = window.getComputedStyle(header);
-                    const bgPos = style.backgroundPosition.split(' ');
-                    const bgX = bgPos[0] || 'center';
-                    let bgY = parseFloat(bgPos[1]) || 0;
-                    
-                    // Update background position
-                    bgY += offset;
-                    header.style.backgroundPosition = `${bgX} ${bgY}px`;
-                }
-            });
-            
-            lastScrollY = scrollY;
-            requestAnimationFrame(smoothParallax);
-        }
+                // Apply parallax effect based on initial position
+                const yPosition = scrollProgress * 50; // 50px is the maximum movement
+                header.style.backgroundPosition = `top center, 0 ${yPosition}px`;
+            } else if (scrollY <= 0) {
+                // Reset position when at the top of the page
+                header.style.backgroundPosition = 'top center';
+            }
+        });
         
         // Start the animation
         requestAnimationFrame(smoothParallax);
