@@ -461,11 +461,10 @@
    FOOTER TRANSPARENCY
    ========================================== */
 
-/* 3D page footer style override */
-.footer-3d {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+footer.footer-3d {
+  background: transparent !important;
+  position: relative;
+  z-index: 2;
 }
 
 /* ==========================================
