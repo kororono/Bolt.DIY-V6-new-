@@ -33,7 +33,7 @@
     padding: 120px 20px 80px;
 }
 
-/* Animated Gradient Background - Enhanced for 3D depth */
+/* Animated Gradient Background */
 .holographic-background {
     position: fixed;
     top: 0;
@@ -41,24 +41,21 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: 
-        radial-gradient(ellipse at center, rgba(0, 245, 255, 0.05) 0%, transparent 50%),
-        linear-gradient(
-            135deg,
-            var(--holo-bg-start) 0%,
-            var(--holo-bg-mid) 50%,
-            var(--holo-bg-end) 100%
-        );
-    background-size: 100% 100%, 200% 200%;
+    background: linear-gradient(
+        135deg,
+        var(--holo-bg-start) 0%,
+        var(--holo-bg-mid) 50%,
+        var(--holo-bg-end) 100%
+    );
     animation: gradientShift 15s ease infinite;
 }
 
 @keyframes gradientShift {
     0%, 100% {
-        background-position: 0% 0%, 0% 50%;
+        background-position: 0% 50%;
     }
     50% {
-        background-position: 0% 0%, 100% 50%;
+        background-position: 100% 50%;
     }
 }
 
@@ -70,7 +67,7 @@
     position: relative;
     width: 100%;
     max-width: 1200px;
-    height: 500px;
+    height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,8 +95,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border: 2px solid var(--holo-cyan);
     border-radius: 50%;
     box-shadow: 
@@ -133,23 +130,22 @@
     height: var(--tile-height);
     transform-style: preserve-3d;
     cursor: pointer;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 15px;
-    overflow: visible;
-    border: 1px solid var(--card-glow, rgba(0, 245, 255, 0.4));
+    overflow: hidden;
+    border: 1px solid rgba(0, 245, 255, 0.4);
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 30px var(--card-glow, rgba(0, 245, 255, 0.3)),
-        inset 0 0 20px var(--card-glow, rgba(0, 245, 255, 0.1));
+        0 0 30px rgba(0, 245, 255, 0.3),
+        inset 0 0 20px rgba(0, 245, 255, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    --card-glow: #00F5FF; /* Default cyan glow */
 }
 
-/* Bottom cyan reflection/glow - uses custom card color */
+/* Bottom cyan reflection/glow */
 .wheel-tile::before {
     content: '';
     position: absolute;
@@ -158,7 +154,7 @@
     transform: translateX(-50%);
     width: 80%;
     height: 20px;
-    background: radial-gradient(ellipse at center, var(--card-glow, rgba(0, 245, 255, 0.4)) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.4) 0%, transparent 70%);
     filter: blur(10px);
     opacity: 0.6;
     transition: opacity 0.3s ease;
@@ -168,27 +164,23 @@
     width: 100%;
     height: 70%;
     position: relative;
-    padding: 15px; /* Space between card edge and image */
-    display: flex;
-    align-items: flex-start;
+    overflow: hidden;
 }
 
 .tile-image::before {
     content: '';
     position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: linear-gradient(
         135deg,
-        var(--card-glow, rgba(0, 245, 255, 0.08)) 0%,
+        rgba(0, 245, 255, 0.08) 0%,
         rgba(157, 0, 255, 0.08) 100%
     );
     opacity: 0.5;
     transition: opacity 0.3s ease;
-    border-radius: 10px;
-    pointer-events: none;
 }
 
 .tile-image img {
@@ -198,7 +190,6 @@
     display: block;
     opacity: 0.7;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: 10px; /* Rounded corners on image */
 }
 
 .tile-title {
@@ -219,19 +210,16 @@
 
 /* Hover Effects */
 .wheel-tile:hover {
+    transform: scale(1.05);
     z-index: 10;
 }
 
-.wheel-tile:hover::before {
-    opacity: 1;
-}
-
-.wheel-tile:hover {
-    border-color: var(--card-glow, #00F5FF);
+.wheel-tile:hover .tile-image {
+    border-color: var(--holo-cyan);
     box-shadow: 
         0 12px 48px rgba(0, 0, 0, 0.6),
-        0 0 60px var(--card-glow, #00F5FF),
-        inset 0 0 40px var(--card-glow, rgba(0, 245, 255, 0.2));
+        0 0 60px var(--holo-cyan),
+        inset 0 0 40px rgba(0, 245, 255, 0.2);
 }
 
 .wheel-tile:hover .tile-image::before {
@@ -244,30 +232,8 @@
 }
 
 .wheel-tile:hover .tile-title {
-    color: var(--card-glow, #00F5FF);
-    text-shadow: 0 0 15px var(--card-glow, #00F5FF);
-}
-
-/* Center card focus effect */
-.wheel-tile.center-card {
-    z-index: 15;
-}
-
-.wheel-tile.center-card::before {
-    opacity: 1;
-    height: 25px;
-    filter: blur(12px);
-}
-
-.wheel-tile.center-card .tile-image img {
-    opacity: 0.85;
-}
-
-.wheel-tile.center-card {
-    box-shadow: 
-        0 16px 56px rgba(0, 0, 0, 0.6),
-        0 0 80px var(--card-glow, #00F5FF),
-        inset 0 0 40px var(--card-glow, rgba(0, 245, 255, 0.25));
+    color: var(--holo-cyan);
+    text-shadow: 0 0 15px var(--holo-cyan);
 }
 
 /* ==========================================
@@ -587,20 +553,18 @@ footer {
     .wheel-tile {
         position: static;
         width: 100%;
-        max-width: 300px;
-        height: 400px;
+        height: auto;
         transform: none !important;
-        margin: 0 auto 20px;
+        margin-bottom: 20px;
     }
 
     .tile-image {
-        height: 70%;
-        padding: 15px;
+        height: 250px;
     }
 
     .tile-title {
-        height: 30%;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        margin-top: 10px;
     }
 
     /* Modal adjustments */
