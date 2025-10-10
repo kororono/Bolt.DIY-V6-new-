@@ -112,22 +112,30 @@ class HolographicWheel {
 
     positionTiles() {
         const radius = 450; // Distance from center
+        const curvature = 25; // Degrees to curve the card outward
         
         this.tiles.forEach((tile, index) => {
             const angle = parseFloat(tile.dataset.angle);
             
-            // Position tile in 3D space
+            // Position tile in 3D space with increased curve
             tile.style.transform = `
                 translate(-50%, -50%)
                 rotateY(${angle}deg)
                 translateZ(${radius}px)
-                rotateY(${-angle}deg)
+                rotateY(${curvature}deg)
             `;
-            
-            // Counter-rotate title to always face camera
+        });
+    }
+
+    updateTitleRotations() {
+        // Update title rotations to always face camera
+        this.tiles.forEach((tile) => {
+            const angle = parseFloat(tile.dataset.angle);
             const titleEl = tile.querySelector('.tile-title');
             if (titleEl) {
-                titleEl.style.transform = `rotateY(${angle}deg)`;
+                // Counter-rotate based on wheel rotation + tile angle
+                const totalRotation = this.currentRotation + angle;
+                titleEl.style.transform = `rotateY(${-totalRotation - 25}deg)`;
             }
         });
     }
@@ -160,6 +168,9 @@ class HolographicWheel {
             this.currentRotation += (this.targetRotation - this.currentRotation) * 0.1;
             
             this.wheel.style.transform = `rotateY(${this.currentRotation}deg)`;
+            
+            // Update title rotations to always face camera
+            this.updateTitleRotations();
 
             requestAnimationFrame(animate);
         };
@@ -233,7 +244,12 @@ class HolographicWheel {
 
         const currentX = e.clientX || e.pageX;
         const deltaX = currentX - this.lastDragX;
-        this.dragVelocity = deltaX * 0.5;
+        
+        // Reduce velocity and cap it
+        const rawVelocity = deltaX * 0.3;
+        const maxVelocity = 5; // Cap maximum velocity
+        this.dragVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, rawVelocity));
+        
         this.targetRotation += this.dragVelocity;
         this.lastDragX = currentX;
     }
