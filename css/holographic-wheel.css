@@ -139,12 +139,15 @@
     border-radius: 15px;
     overflow: hidden;
     position: relative;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(0, 245, 255, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 245, 255, 0.4);
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(0, 245, 255, 0.2);
+        0 0 30px rgba(0, 245, 255, 0.3),
+        inset 0 0 20px rgba(0, 245, 255, 0.1);
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .tile-image::before {
@@ -156,11 +159,36 @@
     bottom: 0;
     background: linear-gradient(
         135deg,
-        rgba(0, 245, 255, 0.1) 0%,
-        rgba(157, 0, 255, 0.1) 100%
+        rgba(0, 245, 255, 0.15) 0%,
+        rgba(157, 0, 255, 0.15) 100%
     );
-    opacity: 0;
+    opacity: 0.7;
     transition: opacity 0.3s ease;
+}
+
+.tile-image::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(0, 245, 255, 0.1) 50%,
+        transparent 70%
+    );
+    animation: hologramScan 3s linear infinite;
+}
+
+@keyframes hologramScan {
+    0% {
+        transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%);
+    }
 }
 
 .tile-image img {
@@ -169,6 +197,8 @@
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease;
+    opacity: 0.85;
+    mix-blend-mode: luminosity;
 }
 
 .tile-title {
@@ -180,6 +210,8 @@
     text-align: center;
     text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
     transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    position: relative;
 }
 
 /* Hover Effects */
@@ -192,7 +224,8 @@
     border-color: var(--holo-cyan);
     box-shadow: 
         0 12px 48px rgba(0, 0, 0, 0.6),
-        0 0 40px var(--holo-cyan);
+        0 0 60px var(--holo-cyan),
+        inset 0 0 40px rgba(0, 245, 255, 0.2);
 }
 
 .wheel-tile:hover .tile-image::before {
@@ -201,11 +234,38 @@
 
 .wheel-tile:hover .tile-image img {
     transform: scale(1.05);
+    opacity: 1;
+    mix-blend-mode: normal;
 }
 
 .wheel-tile:hover .tile-title {
     color: var(--holo-cyan);
     text-shadow: 0 0 15px var(--holo-cyan);
+}
+
+/* ==========================================
+   SCROLL ZONE INDICATOR
+   ========================================== */
+
+.scroll-zone-indicator {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 100%;
+    background: linear-gradient(
+        to left,
+        rgba(0, 245, 255, 0.05) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+body:hover .scroll-zone-indicator {
+    opacity: 0.5;
 }
 
 /* ==========================================
@@ -462,9 +522,9 @@
    ========================================== */
 
 footer.footer-3d {
-  background: transparent !important;
-  position: relative;
-  z-index: 2;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* ==========================================
