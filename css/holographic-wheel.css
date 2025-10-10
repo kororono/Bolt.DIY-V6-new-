@@ -461,7 +461,8 @@
    FOOTER TRANSPARENCY
    ========================================== */
 
-footer {
+/* 3D page footer style override */
+.footer-3d {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
