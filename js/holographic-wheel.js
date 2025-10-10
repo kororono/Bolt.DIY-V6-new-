@@ -10,6 +10,7 @@ const projects = {
         title: 'RELOAD',
         description: '3D Product Animation Showcase for RELOAD isotonic drink. A dynamic visualization bringing the product to life through stunning motion graphics and realistic rendering.',
         thumbnail: 'assets/projects/reload/reload-thumb.webp',
+        glowColor: '#00F5FF', // Cyan glow
         images: [
             'assets/projects/reload/reload-1.jpg',
             'assets/projects/reload/reload-2.jpg',
@@ -21,6 +22,7 @@ const projects = {
         title: 'KFC',
         description: 'Animated 3D Drive-Thru commercial showcasing the KFC brand experience through immersive 3D environments and product visualization.',
         thumbnail: 'assets/projects/kfc/KFC-thumb.webp',
+        glowColor: '#EA1821', // Red glow for KFC
         images: [
             'assets/projects/kfc/kfc-1.jpg',
             'assets/projects/kfc/kfc-2.jpg'
@@ -76,6 +78,10 @@ class HolographicWheel {
             tile.className = 'wheel-tile';
             tile.dataset.project = project.id;
             tile.dataset.angle = index * angleStep;
+            tile.dataset.glowColor = project.glowColor;
+
+            // Apply custom glow color as CSS variable
+            tile.style.setProperty('--card-glow', project.glowColor);
 
             tile.innerHTML = `
                 <div class="tile-image">
@@ -96,6 +102,10 @@ class HolographicWheel {
             const tile = document.createElement('div');
             tile.className = 'wheel-tile';
             tile.dataset.project = project.id;
+            tile.dataset.glowColor = project.glowColor;
+
+            // Apply custom glow color as CSS variable
+            tile.style.setProperty('--card-glow', project.glowColor);
 
             tile.innerHTML = `
                 <div class="tile-image">
@@ -115,39 +125,39 @@ class HolographicWheel {
         
         this.tiles.forEach((tile, index) => {
             const angle = parseFloat(tile.dataset.angle);
-            
-            // Store base transform for use with center card scaling
-            tile.dataset.baseTransform = `
-                translate(-50%, -50%)
-                rotateY(${angle}deg)
-                translateZ(${radius}px)
-                rotateY(${-angle}deg)
-            `;
-            
-            tile.style.transform = tile.dataset.baseTransform;
+            tile.dataset.initialAngle = angle;
         });
     }
 
-    detectCenterCard() {
-        // Find which card is closest to center (front-facing)
-        const normalizedRotation = ((this.currentRotation % 360) + 360) % 360;
-        
+    updateTilePositions() {
+        // Update positions with billboard effect - cards always face forward
         this.tiles.forEach((tile) => {
-            const angle = parseFloat(tile.dataset.angle);
-            const normalizedAngle = ((angle % 360) + 360) % 360;
+            const angle = parseFloat(tile.dataset.initialAngle);
+            const totalRotation = this.currentRotation + angle;
             
-            // Calculate difference from front (0° or 360°)
-            let diff = Math.abs(normalizedRotation - normalizedAngle);
+            // Calculate if this is the center card
+            const normalizedTotal = ((totalRotation % 360) + 360) % 360;
+            let diff = Math.abs(normalizedTotal);
             if (diff > 180) diff = 360 - diff;
             
-            // If within 30° of center, mark as center card and apply scale
+            // Apply scale for center card
+            const scale = diff < 30 ? 1.1 : 1.0;
+            
+            // Add/remove center class for styling
             if (diff < 30) {
                 tile.classList.add('center-card');
-                tile.style.transform = tile.dataset.baseTransform + ' scale(1.1)';
             } else {
                 tile.classList.remove('center-card');
-                tile.style.transform = tile.dataset.baseTransform;
             }
+            
+            // Position in circle + counter-rotate to face camera + scale
+            tile.style.transform = `
+                translate(-50%, -50%)
+                rotateY(${totalRotation}deg)
+                translateZ(320px)
+                rotateY(${-totalRotation}deg)
+                scale(${scale})
+            `;
         });
     }
 
@@ -180,8 +190,8 @@ class HolographicWheel {
             
             this.wheel.style.transform = `rotateY(${this.currentRotation}deg)`;
             
-            // Detect and highlight center card
-            this.detectCenterCard();
+            // Update all tile positions with billboard effect
+            this.updateTilePositions();
 
             requestAnimationFrame(animate);
         };
