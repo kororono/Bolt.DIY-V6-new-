@@ -111,31 +111,42 @@ class HolographicWheel {
     }
 
     positionTiles() {
-        const radius = 450; // Distance from center
-        const curvature = 25; // Degrees to curve the card outward
+        const radius = 320; // Reduced for tighter, more immersive circle
         
         this.tiles.forEach((tile, index) => {
             const angle = parseFloat(tile.dataset.angle);
             
-            // Position tile in 3D space with increased curve
-            tile.style.transform = `
+            // Store base transform for use with center card scaling
+            tile.dataset.baseTransform = `
                 translate(-50%, -50%)
                 rotateY(${angle}deg)
                 translateZ(${radius}px)
-                rotateY(${curvature}deg)
+                rotateY(${-angle}deg)
             `;
+            
+            tile.style.transform = tile.dataset.baseTransform;
         });
     }
 
-    updateTitleRotations() {
-        // Update title rotations to always face camera
+    detectCenterCard() {
+        // Find which card is closest to center (front-facing)
+        const normalizedRotation = ((this.currentRotation % 360) + 360) % 360;
+        
         this.tiles.forEach((tile) => {
             const angle = parseFloat(tile.dataset.angle);
-            const titleEl = tile.querySelector('.tile-title');
-            if (titleEl) {
-                // Counter-rotate based on wheel rotation + tile angle
-                const totalRotation = this.currentRotation + angle;
-                titleEl.style.transform = `rotateY(${-totalRotation - 25}deg)`;
+            const normalizedAngle = ((angle % 360) + 360) % 360;
+            
+            // Calculate difference from front (0° or 360°)
+            let diff = Math.abs(normalizedRotation - normalizedAngle);
+            if (diff > 180) diff = 360 - diff;
+            
+            // If within 30° of center, mark as center card and apply scale
+            if (diff < 30) {
+                tile.classList.add('center-card');
+                tile.style.transform = tile.dataset.baseTransform + ' scale(1.1)';
+            } else {
+                tile.classList.remove('center-card');
+                tile.style.transform = tile.dataset.baseTransform;
             }
         });
     }
@@ -169,8 +180,8 @@ class HolographicWheel {
             
             this.wheel.style.transform = `rotateY(${this.currentRotation}deg)`;
             
-            // Update title rotations to always face camera
-            this.updateTitleRotations();
+            // Detect and highlight center card
+            this.detectCenterCard();
 
             requestAnimationFrame(animate);
         };
