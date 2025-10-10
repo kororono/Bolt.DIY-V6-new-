@@ -7,107 +7,39 @@
     <title>3D Animation — Nairoreel</title>
     <meta name="description" content="We bring products and ideas to life through stunning 3D visualizations, character animations, and motion graphics.">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .service-hero {
-            height: 60vh;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            background-image: url('../assets/3d-animation/hero/3d-anim.webp');
-            background-position: center center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        .service-hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-        }
-
-        .service-hero h1 {
-            margin-bottom: 1rem;
-            animation: fadeUp 1s ease-out forwards;
-        }
-
-        .service-hero p {
-            margin: 0 auto;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 0.2s forwards;
-        }
-
-        .service-intro {
-            padding: 40px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .service-intro p {
-            font-size: 1.12rem;
-            line-height: 1.5;
-            margin-bottom: 1.5rem;
-            max-width: 800px;
-            background-image: url('assets/images/photography-bg.jpg');
-            background-size: cover;
-            color: var(--foreground);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .cta-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-    </style>
+    <link rel="stylesheet" href="css/holographic-wheel.css">
 </head>
 
-
 <body>
+    <!-- Page Overlay for darkening effect -->
+    <div class="page-overlay"></div>
 
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-     <a href="../index.html">
-        <span>Nairoreel Productions</span>
-        <span>Nairoreel Productions</span>
-    </a>
-</div>
+                <a href="index.html">
+                    <span>Nairoreel Productions</span>
+                    <span>Nairoreel Productions</span>
+                </a>
+            </div>
             <div class="nav-links">
-                <a href="../work.html">
+                <a href="work.html">
                     <span>Work</span>
                     <span>Work</span>
                 </a>
-                <a href="../services.html">
+                <a href="services.html">
                     <span>Services</span>
                     <span>Services</span>
                 </a>
-                <a href="../us.html">
+                <a href="us.html">
                     <span>Us</span>
                     <span>Us</span>
                 </a>
-                <a href="../process.html">
+                <a href="process.html">
                     <span>Process</span>
                     <span>Process</span>
                 </a>
-                <a href="../contact.html">
+                <a href="contact.html">
                     <span>Contact</span>
                     <span>Contact</span>
                 </a>
@@ -115,83 +47,79 @@
         </div>
     </nav>
 
-    <header class="service-hero parallax">
-        <div class="service-hero-content">
-            <h1>We bring your imagination to life.</h1>
-            <p><em>"The only limit to our realization of tomorrow will be our doubts of today." - Bob Ross</em></p>
+    <!-- Holographic Wheel Section -->
+    <main class="holographic-main">
+        <div class="holographic-background"></div>
+        
+        <div class="holographic-container">
+            <!-- Wheel wrapper for 3D perspective -->
+            <div class="wheel-wrapper">
+                <div class="wheel-content" id="wheel">
+                    <!-- Tiles will be generated dynamically by JS -->
+                    <!-- Structure for reference:
+                    <div class="wheel-tile" data-project="reload">
+                        <div class="tile-image">
+                            <img src="path/to/image.jpg" alt="Project Name">
+                        </div>
+                        <div class="tile-title">Project Name</div>
+                    </div>
+                    -->
+                </div>
+            </div>
+
+            <!-- Center decorative element (optional holographic ring) -->
+            <div class="center-ring"></div>
         </div>
-    </header>
 
-  <!-- GALLERY SECTION -->
-  <div class="gallery-container">
-    <div class="image-grid">
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/reload.jpg" alt="Reload">
-        <div class="image-label">RELOAD</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nrfw.jpeg" alt="Nairobi fashion week">
-        <div class="image-label">NAIROBI FASHION WEEK</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nike.jpeg" alt="Nike">
-        <div class="image-label">NIKE</div>
-      </div>
-			 <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/reload.jpg" alt="Reload">
-        <div class="image-label">RELOAD</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nrfw.jpeg" alt="Nairobi fashion week">
-        <div class="image-label">NAIROBI FASHION WEEK</div>
-      </div>
-      <div class="image-box" onclick="openModal(this)">
-        <img src="/assets/images/gallery/photography/nike.jpeg" alt="Nike">
-        <div class="image-label">NIKE</div>
-      </div>
-    </div>
- 
-	</div>
-
-  <!-- MODAL POPUP -->
-  <div id="modal" class="modal" onclick="closeModal()">
-    <img id="modal-img" src="" alt="">
-  </div>
-
-  <script>
-    function openModal(imageBox) {
-      const img = imageBox.querySelector('img');
-      const modalImg = document.getElementById('modal-img');
-      modalImg.src = img.src;
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-  </script>
-
-    <div class="service-intro">
-        <p>Through stunning 3D visualizations, character animations, and motion graphics, we showcase your offerings in their best light. Our technical expertise combined with artistic vision creates captivating visual experiences.</p>
-        <div class="cta-container">
-            <a href="../inquiry.html" class="cta-button">Start Your Project</a>
+        <!-- Project Info Modal -->
+        <div class="info-modal" id="infoModal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-card">
+                <button class="modal-close" id="modalClose" aria-label="Close modal">×</button>
+                
+                <div class="modal-content">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <p class="modal-description" id="modalDescription"></p>
+                    
+                    <div class="modal-gallery" id="modalGallery">
+                        <!-- Images will be generated dynamically -->
+                        <!-- Structure:
+                        <div class="gallery-image">
+                            <img src="path" alt="Project image">
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- Image Lightbox -->
+        <div class="image-lightbox" id="imageLightbox">
+            <div class="lightbox-backdrop"></div>
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">×</button>
+            
+            <div class="lightbox-content">
+                <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+                <img class="lightbox-image" id="lightboxImage" src="" alt="">
+                <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">›</button>
+            </div>
+        </div>
+    </main>
 
     <footer>
         <div class="footer-grid">
             <!-- First column - Company info with logo -->
             <div class="footer-col">
-                <img src="../assets/footer/sf-logo-w.webp" alt="Nairoreel Productions Logo" class="footer-logo">
+                <img src="assets/footer/sf-logo-w.webp" alt="Nairoreel Productions Logo" class="footer-logo">
             </div>
             
             <!-- Second column - Services -->
             <div class="footer-col">
                 <h3>Services</h3>
                 <ul>
-                    <li><a href="../film-making.html">Film Making</a></li>
-                    <li><a href="../3d-motion-design.html">3D Animation</a></li>
-                    <li><a href="../photography.html">Photography</a></li>
+                    <li><a href="film-making.html">Film Making</a></li>
+                    <li><a href="3d-motion-design.html">3D Animation</a></li>
+                    <li><a href="photography.html">Photography</a></li>
                 </ul>
             </div>
             
@@ -199,10 +127,10 @@
             <div class="footer-col">
                 <h3>Pages</h3>
                 <ul>
-                    <li><a href="../work.html">Work</a></li>
-                    <li><a href="../services.html">Services</a></li>
-                    <li><a href="../us.html">Us</a></li>
-                    <li><a href="../process.html">Process</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="us.html">Us</a></li>
+                    <li><a href="process.html">Process</a></li>
                 </ul>
             </div>
             
@@ -246,83 +174,9 @@
         </div>
     </footer>
 
-
-    <script>
-        function openModal(element) {
-            const modal = document.getElementById("modal");
-            const modalImg = document.getElementById("modal-img");
-            const img = element.querySelector("img");
-            modalImg.src = img.src;
-            modal.classList.add("show");
-        }
-
-        function closeModal() {
-            const modal = document.getElementById("modal");
-            modal.classList.remove("show");
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth parallax effect for headers
-            const parallaxHeaders = document.querySelectorAll('.parallax');
-            let lastScrollY = window.scrollY;
-            
-            function smoothParallax() {
-                const scrollY = window.scrollY;
-                
-                parallaxHeaders.forEach(header => {
-                    // Get the top position of the header
-                    const headerRect = header.getBoundingClientRect();
-                    const headerTop = headerRect.top + scrollY;
-                    const headerHeight = headerRect.height;
-                    
-                    // Check if the header is in the viewport
-                    if (scrollY < headerTop + headerHeight) {
-                        // Calculate parallax offset
-                        const offset = (scrollY - lastScrollY) * 0.4;
-                        
-                        // Get current background position
-                        const style = window.getComputedStyle(header);
-                        const bgPos = style.backgroundPosition.split(' ');
-                        const bgX = bgPos[0] || 'center';
-                        let bgY = parseFloat(bgPos[1]) || 0;
-                        
-                        // Update background position
-                        bgY += offset;
-                        header.style.backgroundPosition = `${bgX} ${bgY}px`;
-                    }
-                });
-                
-                lastScrollY = scrollY;
-                requestAnimationFrame(smoothParallax);
-            }
-            
-            // Start the animation
-            requestAnimationFrame(smoothParallax);
-            
-            // Mobile menu toggle
-            const hamburger = document.querySelector('.hamburger-menu');
-            if (hamburger) {
-                hamburger.addEventListener('click', function() {
-                    document.querySelector('.nav-links').classList.toggle('active');
-                    document.querySelector('.hamburger-icon').classList.toggle('active');
-                });
-            }
-
-            // Smooth scrolling for navigation
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        window.scrollTo({
-                            top: target.offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="js/holographic-wheel.js"></script>
 </body>
 
 </html>
