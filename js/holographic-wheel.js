@@ -41,11 +41,16 @@ class HolographicWheel {
         this.tiles = [];
         this.currentRotation = 0;
         this.targetRotation = 0;
+        this.velocity = 0.1; // Current rotation speed
+        this.idleVelocity = 0.1; // Idle rotation speed
         this.isAutoRotating = true;
         this.isDragging = false;
         this.startX = 0;
         this.startRotation = 0;
+        this.lastDragX = 0;
+        this.dragVelocity = 0;
         this.isMobile = window.innerWidth <= 768;
+        this.scrollGutter = 80; // Right-side scroll zone
         
         this.init();
     }
@@ -54,6 +59,7 @@ class HolographicWheel {
         if (!this.isMobile) {
             this.generateTiles();
             this.positionTiles();
+            this.createScrollIndicator();
             this.startAutoRotation();
             this.attachEvents();
         } else {
@@ -109,12 +115,27 @@ class HolographicWheel {
         
         this.tiles.forEach((tile, index) => {
             const angle = parseFloat(tile.dataset.angle);
+            
+            // Position tile in 3D space
             tile.style.transform = `
                 translate(-50%, -50%)
                 rotateY(${angle}deg)
                 translateZ(${radius}px)
+                rotateY(${-angle}deg)
             `;
+            
+            // Counter-rotate title to always face camera
+            const titleEl = tile.querySelector('.tile-title');
+            if (titleEl) {
+                titleEl.style.transform = `rotateY(${angle}deg)`;
+            }
         });
+    }
+
+    createScrollIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-zone-indicator';
+        document.body.appendChild(indicator);
     }
 
     startAutoRotation() {
@@ -122,7 +143,17 @@ class HolographicWheel {
 
         const animate = () => {
             if (this.isAutoRotating && !this.isDragging) {
-                this.targetRotation += 0.1; // Slow continuous rotation
+                // Smoothly transition velocity to idle speed
+                this.velocity += (this.idleVelocity - this.velocity) * 0.05;
+                this.targetRotation += this.velocity;
+            } else if (this.isDragging) {
+                // Apply drag velocity
+                this.targetRotation += this.dragVelocity;
+                this.dragVelocity *= 0.95; // Natural friction
+            } else {
+                // Coasting after drag - smoothly reduce to idle
+                this.velocity += (this.idleVelocity - this.velocity) * 0.02;
+                this.targetRotation += this.velocity;
             }
 
             // Smooth interpolation
@@ -139,17 +170,29 @@ class HolographicWheel {
     attachEvents() {
         if (this.isMobile) return;
 
-        // Scroll event
+        // Scroll event with gutter detection
         window.addEventListener('wheel', (e) => {
+            const mouseX = e.clientX;
+            const windowWidth = window.innerWidth;
+            const holographicSection = document.querySelector('.holographic-main');
+            const sectionRect = holographicSection.getBoundingClientRect();
+            const isInSection = e.clientY >= sectionRect.top && e.clientY <= sectionRect.bottom;
+            
+            // Check if mouse is in scroll gutter (right 80px) or outside section
+            if (mouseX > windowWidth - this.scrollGutter || !isInSection) {
+                return; // Allow natural scrolling
+            }
+            
             e.preventDefault();
             this.targetRotation += e.deltaY * 0.05;
+            this.velocity = e.deltaY * 0.05; // Set current velocity
             this.isAutoRotating = false;
             
-            // Resume auto-rotation after 2 seconds of no interaction
+            // Resume auto-rotation after brief pause
             clearTimeout(this.autoRotateTimeout);
             this.autoRotateTimeout = setTimeout(() => {
                 this.isAutoRotating = true;
-            }, 2000);
+            }, 300);
         }, { passive: false });
 
         // Drag events
@@ -162,7 +205,7 @@ class HolographicWheel {
         window.addEventListener('touchmove', (e) => this.onDrag(e.touches[0]));
         window.addEventListener('touchend', () => this.endDrag());
 
-        // Hover pause (optional)
+        // Hover pause
         this.tiles.forEach(tile => {
             tile.addEventListener('mouseenter', () => {
                 this.isAutoRotating = false;
@@ -170,7 +213,7 @@ class HolographicWheel {
             tile.addEventListener('mouseleave', () => {
                 setTimeout(() => {
                     this.isAutoRotating = true;
-                }, 1000);
+                }, 300);
             });
         });
     }
@@ -178,7 +221,9 @@ class HolographicWheel {
     startDrag(e) {
         this.isDragging = true;
         this.startX = e.clientX || e.pageX;
+        this.lastDragX = this.startX;
         this.startRotation = this.currentRotation;
+        this.dragVelocity = 0;
         this.isAutoRotating = false;
         document.body.style.cursor = 'grabbing';
     }
@@ -187,8 +232,10 @@ class HolographicWheel {
         if (!this.isDragging) return;
 
         const currentX = e.clientX || e.pageX;
-        const deltaX = currentX - this.startX;
-        this.targetRotation = this.startRotation + deltaX * 0.5;
+        const deltaX = currentX - this.lastDragX;
+        this.dragVelocity = deltaX * 0.5;
+        this.targetRotation += this.dragVelocity;
+        this.lastDragX = currentX;
     }
 
     endDrag() {
@@ -196,11 +243,12 @@ class HolographicWheel {
 
         this.isDragging = false;
         document.body.style.cursor = 'default';
+        this.velocity = this.dragVelocity; // Carry momentum
 
-        // Resume auto-rotation after drag
+        // Smoothly coast back to idle rotation
         setTimeout(() => {
             this.isAutoRotating = true;
-        }, 1500);
+        }, 300);
     }
 
     openModal(projectId) {
