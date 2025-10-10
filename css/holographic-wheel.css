@@ -1,0 +1,590 @@
+/* ==========================================
+   HOLOGRAPHIC WHEEL - 3D SHOWCASE PAGE
+   CSS Variables & Base Styles
+   ========================================== */
+
+:root {
+    /* Color Scheme */
+    --holo-bg-start: #000000;
+    --holo-bg-mid: #1a0033;
+    --holo-bg-end: #001a33;
+    --holo-cyan: #00F5FF;
+    --holo-purple: #9D00FF;
+    --holo-white: #ffffff;
+    --holo-accent: #EA1821;
+    
+    /* Spacing & Sizing */
+    --wheel-radius: 450px;
+    --tile-size: 280px;
+    --tile-gap: 100px;
+}
+
+/* ==========================================
+   MAIN HOLOGRAPHIC SECTION
+   ========================================== */
+
+.holographic-main {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 20px 80px;
+}
+
+/* Animated Gradient Background */
+.holographic-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(
+        135deg,
+        var(--holo-bg-start) 0%,
+        var(--holo-bg-mid) 50%,
+        var(--holo-bg-end) 100%
+    );
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ==========================================
+   HOLOGRAPHIC WHEEL CONTAINER
+   ========================================== */
+
+.holographic-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1200px;
+    perspective-origin: center center;
+}
+
+.wheel-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+/* Center Decorative Ring */
+.center-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--holo-cyan);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 20px var(--holo-cyan),
+        inset 0 0 20px var(--holo-cyan);
+    opacity: 0.3;
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.5;
+    }
+}
+
+/* ==========================================
+   WHEEL TILES
+   ========================================== */
+
+.wheel-tile {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--tile-size);
+    height: calc(var(--tile-size) * 1.2);
+    transform-style: preserve-3d;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.tile-image {
+    width: 100%;
+    height: var(--tile-size);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 245, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.tile-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 245, 255, 0.1) 0%,
+        rgba(157, 0, 255, 0.1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.tile-title {
+    margin-top: 15px;
+    font-family: 'Recia', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--holo-white);
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+/* Hover Effects */
+.wheel-tile:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.wheel-tile:hover .tile-image {
+    border-color: var(--holo-cyan);
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.6),
+        0 0 40px var(--holo-cyan);
+}
+
+.wheel-tile:hover .tile-image::before {
+    opacity: 1;
+}
+
+.wheel-tile:hover .tile-image img {
+    transform: scale(1.05);
+}
+
+.wheel-tile:hover .tile-title {
+    color: var(--holo-cyan);
+    text-shadow: 0 0 15px var(--holo-cyan);
+}
+
+/* ==========================================
+   INFO MODAL
+   ========================================== */
+
+.info-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.info-modal.active {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+}
+
+.modal-card {
+    position: relative;
+    max-width: 900px;
+    max-height: 85vh;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    overflow-y: auto;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 245, 255, 0.2);
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.info-modal.active .modal-card {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--holo-accent);
+    border: none;
+    border-radius: 50%;
+    color: var(--holo-white);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: var(--holo-white);
+    color: var(--holo-accent);
+    transform: rotate(90deg);
+}
+
+.modal-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.2s;
+}
+
+.info-modal.active .modal-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal-title {
+    font-family: 'Boska', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--holo-white);
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+}
+
+.modal-description {
+    font-family: 'Recia', serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 30px;
+}
+
+/* Modal Gallery */
+.modal-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.gallery-image {
+    position: relative;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.gallery-image:hover {
+    transform: translateY(-5px);
+    border-color: var(--holo-cyan);
+    box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+}
+
+.gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-image:hover img {
+    transform: scale(1.1);
+}
+
+/* ==========================================
+   IMAGE LIGHTBOX
+   ========================================== */
+
+.image-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-lightbox.active {
+    display: flex;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.4s ease;
+}
+
+.image-lightbox.active .lightbox-image {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--holo-accent);
+    border: none;
+    border-radius: 50%;
+    color: var(--holo-white);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.lightbox-close:hover {
+    background: var(--holo-white);
+    color: var(--holo-accent);
+    transform: rotate(90deg);
+}
+
+.lightbox-nav {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: var(--holo-white);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-nav:hover {
+    background: var(--holo-cyan);
+    border-color: var(--holo-cyan);
+    transform: scale(1.1);
+}
+
+.lightbox-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   FOOTER TRANSPARENCY
+   ========================================== */
+
+footer {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE STYLES
+   ========================================== */
+
+@media (max-width: 768px) {
+    .holographic-main {
+        padding: 100px 15px 60px;
+    }
+
+    /* Hide 3D wheel on mobile */
+    .wheel-wrapper,
+    .center-ring {
+        display: none;
+    }
+
+    .holographic-container {
+        height: auto;
+        flex-direction: column;
+    }
+
+    /* Mobile vertical list */
+    .wheel-content {
+        position: static;
+        transform: none;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    .wheel-tile {
+        position: static;
+        width: 100%;
+        height: auto;
+        transform: none !important;
+        margin-bottom: 20px;
+    }
+
+    .tile-image {
+        height: 250px;
+    }
+
+    .tile-title {
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+
+    /* Modal adjustments */
+    .modal-card {
+        padding: 30px 20px;
+        max-height: 90vh;
+    }
+
+    .modal-title {
+        font-size: 1.8rem;
+    }
+
+    .modal-description {
+        font-size: 1rem;
+    }
+
+    .modal-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    /* Lightbox adjustments */
+    .lightbox-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .lightbox-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .lightbox-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tile-image {
+        height: 200px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-close {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ==========================================
+   SCROLLBAR STYLING
+   ========================================== */
+
+.modal-card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-card::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.modal-card::-webkit-scrollbar-thumb {
+    background: var(--holo-cyan);
+    border-radius: 10px;
+}
+
+.modal-card::-webkit-scrollbar-thumb:hover {
+    background: var(--holo-purple);
+}
