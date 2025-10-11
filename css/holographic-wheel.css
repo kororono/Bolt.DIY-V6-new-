@@ -1,643 +1,286 @@
 /* ==========================================
-   HOLOGRAPHIC WHEEL - 3D SHOWCASE PAGE
-   CSS Variables & Base Styles
+   3D CARD DECK SHOWCASE
    ========================================== */
 
 :root {
-    /* Color Scheme */
-    --holo-bg-start: #000000;
-    --holo-bg-mid: #1a0033;
-    --holo-bg-end: #001a33;
-    --holo-cyan: #00F5FF;
-    --holo-purple: #9D00FF;
-    --holo-white: #ffffff;
-    --holo-accent: #EA1821;
-    
-    /* Spacing & Sizing - Reduced for tighter, more immersive effect */
-    --wheel-radius: 320px;
-    --tile-width: 240px;
-    --tile-height: 320px;
+    /* Variables for easy tweaking */
+    --card-width: 300px;
+    --card-height: 420px;
+    --card-gap: 80px; /* Horizontal distance between cards */
+    --card-depth: 200px; /* Z-axis distance */
+    --card-rotate: 45deg; /* Angle of side cards */
 }
 
-/* ==========================================
-   MAIN HOLOGRAPHIC SECTION
-   ========================================== */
-
-.holographic-main {
-    position: relative;
+/* Main container for the whole section */
+.showcase-main {
     min-height: 100vh;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 120px 20px 80px;
+    overflow: hidden;
+    background: var(--background);
 }
 
-/* Animated Gradient Background */
-.holographic-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(
-        135deg,
-        var(--holo-bg-start) 0%,
-        var(--holo-bg-mid) 50%,
-        var(--holo-bg-end) 100%
-    );
-    animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-/* ==========================================
-   HOLOGRAPHIC WHEEL CONTAINER
-   ========================================== */
-
-.holographic-container {
-    position: relative;
-    width: 100%;
+.showcase-container {
     max-width: 1200px;
-    height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
 }
 
-.wheel-wrapper {
+.section-intro {
+    margin-bottom: 4rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.section-intro h2 {
+    color: var(--foreground);
+}
+.section-intro p {
+    color: var(--text-color);
+}
+
+
+/* Wrapper to establish the 3D space */
+.card-deck-wrapper {
+    position: relative;
+    width: 100%;
+    height: calc(var(--card-height) + 20px);
+    perspective: 1500px; /* This creates the 3D space */
+    margin-bottom: 3rem;
+}
+
+.card-deck {
     position: relative;
     width: 100%;
     height: 100%;
-    perspective: 1200px;
-    perspective-origin: center center;
+    transform-style: preserve-3d; /* Crucial for nesting 3D elements */
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.wheel-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
-}
-
-/* Center Decorative Ring */
-.center-ring {
+/* Base styling for all cards */
+.card {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100px;
-    height: 100px;
-    border: 2px solid var(--holo-cyan);
-    border-radius: 50%;
-    box-shadow: 
-        0 0 20px var(--holo-cyan),
-        inset 0 0 20px var(--holo-cyan);
-    opacity: 0.3;
-    animation: pulse 3s ease-in-out infinite;
-    pointer-events: none;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.3;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.5;
-    }
-}
-
-/* ==========================================
-   WHEEL TILES
-   ========================================== */
-
-.wheel-tile {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: var(--tile-width);
-    height: var(--tile-height);
-    transform-style: preserve-3d;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    background: rgba(255, 255, 255, 0.08);
+    width: var(--card-width);
+    height: var(--card-height);
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid rgba(0, 245, 255, 0.4);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(0, 245, 255, 0.3),
-        inset 0 0 20px rgba(0, 245, 255, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    opacity: 0.5; /* Non-active cards are faded */
+    transform: translateX(-50%) scale(0.8);
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Bottom cyan reflection/glow */
-.wheel-tile::before {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 20px;
-    background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.4) 0%, transparent 70%);
-    filter: blur(10px);
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
-}
-
-.tile-image {
+.card-image {
     width: 100%;
-    height: 70%;
-    position: relative;
-    overflow: hidden;
+    height: 100%;
 }
 
-.tile-image::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 245, 255, 0.08) 0%,
-        rgba(157, 0, 255, 0.08) 100%
-    );
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-}
-
-.tile-image img {
+.card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    opacity: 0.7;
-    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.tile-title {
-    height: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    font-family: 'Recia', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--holo-white);
-    text-align: center;
-    text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
-    transition: all 0.3s ease;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-/* Hover Effects */
-.wheel-tile:hover {
-    transform: scale(1.05);
-    z-index: 10;
-}
-
-.wheel-tile:hover .tile-image {
-    border-color: var(--holo-cyan);
-    box-shadow: 
-        0 12px 48px rgba(0, 0, 0, 0.6),
-        0 0 60px var(--holo-cyan),
-        inset 0 0 40px rgba(0, 245, 255, 0.2);
-}
-
-.wheel-tile:hover .tile-image::before {
-    opacity: 0.8;
-}
-
-.wheel-tile:hover .tile-image img {
-    transform: scale(1.05);
-    opacity: 0.9;
-}
-
-.wheel-tile:hover .tile-title {
-    color: var(--holo-cyan);
-    text-shadow: 0 0 15px var(--holo-cyan);
-}
-
-/* ==========================================
-   SCROLL ZONE INDICATOR
-   ========================================== */
-
-.scroll-zone-indicator {
-    position: fixed;
-    top: 0;
+.card-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     right: 0;
-    width: 80px;
-    height: 100%;
-    background: linear-gradient(
-        to left,
-        rgba(0, 245, 255, 0.05) 0%,
-        transparent 100%
-    );
-    pointer-events: none;
-    z-index: 50;
-    opacity: 0.3;
-    transition: opacity 0.3s ease;
-}
-
-body:hover .scroll-zone-indicator {
-    opacity: 0.5;
+    padding: 30px 20px;
+    font-size: 1.5rem;
+    font-family: 'Boska', serif;
+    font-weight: 900;
+    color: var(--foreground);
+    text-align: left;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
 }
 
 /* ==========================================
-   INFO MODAL
+   CARD STATES (THE CORE LOGIC)
    ========================================== */
 
-.info-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.info-modal.active {
-    display: flex;
-}
-
-.modal-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-}
-
-.modal-card {
-    position: relative;
-    max-width: 900px;
-    max-height: 85vh;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 40px;
-    overflow-y: auto;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(0, 245, 255, 0.2);
-    transform: scale(0);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.info-modal.active .modal-card {
-    transform: scale(1);
+/* The active (center) card */
+.card.active {
+    z-index: 3;
     opacity: 1;
-}
-
-.modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: var(--holo-accent);
-    border: none;
-    border-radius: 50%;
-    color: var(--holo-white);
-    font-size: 1.5rem;
-    line-height: 1;
     cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
+    border-color: var(--accent);
+    transform: translateX(-50%) translateZ(0) rotateY(0) scale(1);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 
-.modal-close:hover {
-    background: var(--holo-white);
-    color: var(--holo-accent);
-    transform: rotate(90deg);
+.card.active:hover {
+    transform: translateX(-50%) translateZ(0) rotateY(0) scale(1.03);
 }
 
-.modal-content {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease 0.2s;
-}
-
-.info-modal.active .modal-content {
+.card.active .card-title {
     opacity: 1;
     transform: translateY(0);
 }
 
-.modal-title {
-    font-family: 'Boska', serif;
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--holo-white);
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
-}
-
-.modal-description {
-    font-family: 'Recia', serif;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 30px;
-}
-
-/* Modal Gallery */
-.modal-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-}
-
-.gallery-image {
-    position: relative;
-    aspect-ratio: 4/3;
-    border-radius: 10px;
-    overflow: hidden;
+/* The card immediately to the left */
+.card.prev {
+    z-index: 2;
+    opacity: 0.7;
     cursor: pointer;
-    border: 1px solid rgba(0, 245, 255, 0.3);
-    transition: all 0.3s ease;
+    transform: translateX(calc(-50% - var(--card-gap))) translateZ(calc(-1 * var(--card-depth))) rotateY(var(--card-rotate));
 }
 
-.gallery-image:hover {
-    transform: translateY(-5px);
-    border-color: var(--holo-cyan);
-    box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+/* The card immediately to the right */
+.card.next {
+    z-index: 2;
+    opacity: 0.7;
+    cursor: pointer;
+    transform: translateX(calc(-50% + var(--card-gap))) translateZ(calc(-1 * var(--card-depth))) rotateY(calc(-1 * var(--card-rotate)));
 }
 
-.gallery-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.gallery-image:hover img {
-    transform: scale(1.1);
-}
-
-/* ==========================================
-   IMAGE LIGHTBOX
-   ========================================== */
-
-.image-lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-lightbox.active {
-    display: flex;
-}
-
-.lightbox-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-.lightbox-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90%;
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-.lightbox-image {
-    max-width: 100%;
-    max-height: 80vh;
-    border-radius: 10px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+/* Cards further away (hidden) */
+.card.hide-left {
+    transform: translateX(calc(-50% - (var(--card-gap) * 2))) translateZ(calc(-1 * var(--card-depth) * 2)) rotateY(var(--card-rotate));
     opacity: 0;
-    transform: scale(0.9);
-    transition: all 0.4s ease;
+    pointer-events: none;
 }
 
-.image-lightbox.active .lightbox-image {
-    opacity: 1;
-    transform: scale(1);
+.card.hide-right {
+    transform: translateX(calc(-50% + (var(--card-gap) * 2))) translateZ(calc(-1 * var(--card-depth) * 2)) rotateY(calc(-1 * var(--card-rotate)));
+    opacity: 0;
+    pointer-events: none;
 }
 
-.lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+/* Navigation Buttons */
+.deck-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-arrow {
     width: 50px;
     height: 50px;
-    background: var(--holo-accent);
-    border: none;
     border-radius: 50%;
-    color: var(--holo-white);
-    font-size: 2rem;
-    line-height: 1;
+    border: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--foreground);
     cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.lightbox-close:hover {
-    background: var(--holo-white);
-    color: var(--holo-accent);
-    transform: rotate(90deg);
-}
-
-.lightbox-nav {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    color: var(--holo-white);
-    font-size: 2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
-.lightbox-nav:hover {
-    background: var(--holo-cyan);
-    border-color: var(--holo-cyan);
+.nav-arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.nav-arrow:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
     transform: scale(1.1);
 }
 
-.lightbox-nav:disabled {
+.nav-arrow:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    transform: scale(1);
+    background-color: transparent;
+    border-color: var(--border);
 }
 
+
 /* ==========================================
-   FOOTER TRANSPARENCY
+   REUSED MODAL & LIGHTBOX STYLES (FROM YOUR FILE)
    ========================================== */
 
-footer {
-    background: rgba(0, 0, 0, 0.5) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+.info-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+    --holo-accent: #EA1821; --holo-white: #ffffff; --holo-cyan: #00F5FF;
 }
+.info-modal.active { display: flex; }
+.modal-backdrop {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+}
+.modal-card {
+    position: relative; max-width: 900px; max-height: 85vh; width: 100%;
+    background: rgba(28, 28, 28, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 40px;
+    overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 245, 255, 0.1);
+    transform: scale(0.9); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.info-modal.active .modal-card { transform: scale(1); opacity: 1; }
+.modal-close {
+    position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: var(--holo-accent);
+    border: none; border-radius: 50%; color: var(--holo-white); font-size: 1.5rem; line-height: 1;
+    cursor: pointer; transition: all 0.3s ease; z-index: 10;
+}
+.modal-close:hover { background: var(--holo-white); color: var(--holo-accent); transform: rotate(90deg); }
+.modal-content { opacity: 0; transform: translateY(20px); transition: all 0.5s ease 0.2s; }
+.info-modal.active .modal-content { opacity: 1; transform: translateY(0); }
+.modal-title { font-family: 'Boska', serif; font-size: 2.5rem; font-weight: 900; color: var(--holo-white); margin-bottom: 20px; }
+.modal-description { font-family: 'Recia', serif; font-size: 1.1rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9); margin-bottom: 30px; }
+.modal-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+.gallery-image {
+    position: relative; aspect-ratio: 4/3; border-radius: 10px; overflow: hidden; cursor: pointer;
+    border: 1px solid rgba(0, 245, 255, 0.3); transition: all 0.3s ease;
+}
+.gallery-image:hover { transform: translateY(-5px); border-color: var(--holo-cyan); box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2); }
+.gallery-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+.gallery-image:hover img { transform: scale(1.1); }
 
-/* ==========================================
-   MOBILE RESPONSIVE STYLES
-   ========================================== */
+.image-lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+}
+.image-lightbox.active { display: flex; }
+.lightbox-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); }
+.lightbox-content { position: relative; max-width: 90%; max-height: 90%; display: flex; align-items: center; gap: 30px; }
+.lightbox-image {
+    max-width: 100%; max-height: 80vh; border-radius: 10px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    opacity: 0; transform: scale(0.9); transition: all 0.4s ease;
+}
+.image-lightbox.active .lightbox-image { opacity: 1; transform: scale(1); }
+.lightbox-close {
+    position: absolute; top: 20px; right: 20px; width: 50px; height: 50px; background: var(--holo-accent);
+    border: none; border-radius: 50%; color: var(--holo-white); font-size: 2rem; line-height: 1;
+    cursor: pointer; transition: all 0.3s ease; z-index: 10;
+}
+.lightbox-close:hover { background: var(--holo-white); color: var(--holo-accent); transform: rotate(90deg); }
+.lightbox-nav {
+    width: 60px; height: 60px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; color: var(--holo-white);
+    font-size: 2rem; cursor: pointer; transition: all 0.3s ease;
+    display: flex; align-items: center; justify-content: center;
+}
+.lightbox-nav:hover { background: var(--holo-cyan); border-color: var(--holo-cyan); transform: scale(1.1); }
+.lightbox-nav:disabled { opacity: 0.3; cursor: not-allowed; }
 
+.modal-card::-webkit-scrollbar { width: 8px; }
+.modal-card::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+.modal-card::-webkit-scrollbar-thumb { background: var(--holo-cyan); border-radius: 10px; }
+
+/* Responsive tweaks */
 @media (max-width: 768px) {
-    .holographic-main {
-        padding: 100px 15px 60px;
+    :root {
+        --card-width: 260px; --card-height: 364px; --card-gap: 40px;
+        --card-depth: 100px; --card-rotate: 35deg;
     }
-
-    /* Hide 3D wheel on mobile */
-    .wheel-wrapper,
-    .center-ring {
-        display: none;
-    }
-
-    .holographic-container {
-        height: auto;
-        flex-direction: column;
-    }
-
-    /* Mobile vertical list */
-    .wheel-content {
-        position: static;
-        transform: none;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px 0;
-    }
-
-    .wheel-tile {
-        position: static;
-        width: 100%;
-        height: auto;
-        transform: none !important;
-        margin-bottom: 20px;
-    }
-
-    .tile-image {
-        height: 250px;
-    }
-
-    .tile-title {
-        font-size: 1.1rem;
-        margin-top: 10px;
-    }
-
-    /* Modal adjustments */
-    .modal-card {
-        padding: 30px 20px;
-        max-height: 90vh;
-    }
-
-    .modal-title {
-        font-size: 1.8rem;
-    }
-
-    .modal-description {
-        font-size: 1rem;
-    }
-
-    .modal-gallery {
-        grid-template-columns: 1fr;
-    }
-
-    /* Lightbox adjustments */
-    .lightbox-content {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .lightbox-nav {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-
-    .lightbox-close {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-    }
+    .section-intro { margin-bottom: 2rem; }
 }
 
 @media (max-width: 480px) {
-    .tile-image {
-        height: 200px;
-    }
-
-    .modal-title {
-        font-size: 1.5rem;
-    }
-
-    .modal-close {
-        width: 35px;
-        height: 35px;
-        font-size: 1.2rem;
-    }
-}
-
-/* ==========================================
-   SCROLLBAR STYLING
-   ========================================== */
-
-.modal-card::-webkit-scrollbar {
-    width: 8px;
-}
-
-.modal-card::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-.modal-card::-webkit-scrollbar-thumb {
-    background: var(--holo-cyan);
-    border-radius: 10px;
-}
-
-.modal-card::-webkit-scrollbar-thumb:hover {
-    background: var(--holo-purple);
+    :root { --card-gap: 20px; --card-width: 240px; --card-height: 336px; }
+    .modal-card { padding: 30px 20px; } .modal-title { font-size: 1.8rem; }
+    .lightbox-content { flex-direction: column; }
 }
