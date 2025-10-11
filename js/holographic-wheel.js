@@ -1,5 +1,5 @@
 // ==========================================
-// 3D CARD DECK SHOWCASE - V3 (FINAL)
+// 3D CARD DECK SHOWCASE - SIMPLIFIED
 // ==========================================
 
 // --- Project Data ---
@@ -45,14 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = [];
     const modalController = new ModalController();
 
-    // Drag functionality variables
-    let isDragging = false;
-    let startX = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = 0;
-    const dragThreshold = 50;
-
     // 1. Generate the card elements
     function generateCards() {
         projectsArray.forEach((project, index) => {
@@ -71,7 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
             cardDeck.appendChild(card);
             cards.push(card);
 
-            card.querySelector('img').addEventListener('dragstart', (e) => e.preventDefault());
+            // Prevent image drag
+            const img = card.querySelector('img');
+            if (img) img.addEventListener('dragstart', (e) => e.preventDefault());
+
+            // Click handler: navigate to card or open modal
+            card.addEventListener('click', () => {
+                const clickedIndex = parseInt(card.dataset.index, 10);
+                if (isNaN(clickedIndex)) return;
+
+                if (clickedIndex === currentIndex) {
+                    // Active card clicked → open modal
+                    const projectId = card.dataset.projectId;
+                    if (projects[projectId]) modalController.open(projects[projectId]);
+                } else {
+                    // Navigate to clicked card
+                    currentIndex = clickedIndex;
+                    updateDeck();
+                }
+            });
         });
     }
 
@@ -106,93 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. DRAG AND SWIPE LOGIC (INTERACTIVE)
-    function dragStart(event) {
-        isDragging = true;
-        startX = getPositionX(event);
-        cardDeck.classList.add('is-dragging');
-        animationID = requestAnimationFrame(animation);
-
-        window.addEventListener('mousemove', dragMove);
-        window.addEventListener('mouseup', dragEnd);
-        window.addEventListener('touchmove', dragMove, { passive: true });
-        window.addEventListener('touchend', dragEnd);
-    }
-
-    function dragMove(event) {
-        if (!isDragging) return;
-        const currentPosition = getPositionX(event);
-        currentTranslate = prevTranslate + currentPosition - startX;
-    }
-
-    function dragEnd(event) {
-        if (!isDragging) return;
-
-        cancelAnimationFrame(animationID);
-        isDragging = false;
-
-        const movedBy = currentTranslate - prevTranslate;
-
-        // Swipe vs Click logic
-        if (Math.abs(movedBy) > dragThreshold) {
-            // It's a swipe
-            if (movedBy < 0 && currentIndex < projectsArray.length - 1) {
-                currentIndex++;
-            } else if (movedBy > 0 && currentIndex > 0) {
-                currentIndex--;
-            }
-        } else {
-            // It's a click
-            const card = event.target.closest('.card');
-            if (card) {
-                const clickedIndex = parseInt(card.dataset.index, 10);
-                // Clicking on adjacent cards navigates to them
-                if (clickedIndex !== currentIndex) {
-                    currentIndex = clickedIndex;
-                } else {
-                    // Clicked on active card → open modal
-                    const projectId = card.dataset.projectId;
-                    if (projects[projectId]) modalController.open(projects[projectId]);
-                }
-            }
-        }
-
-        cardDeck.classList.remove('is-dragging');
-        currentTranslate = 0;
-        prevTranslate = 0;
-        setDeckTransform(true);
-        updateDeck();
-
-        window.removeEventListener('mousemove', dragMove);
-        window.removeEventListener('mouseup', dragEnd);
-        window.removeEventListener('touchmove', dragMove);
-        window.removeEventListener('touchend', dragEnd);
-    }
-
-    function getPositionX(event) {
-        if (event.type.includes('end')) {
-            return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
-        }
-        return event.touches ? event.touches[0].clientX : event.clientX;
-    }
-
-    function animation() {
-        setDeckTransform();
-        if (isDragging) requestAnimationFrame(animation);
-    }
-
-    function setDeckTransform(reset = false) {
-        if (reset) {
-            cardDeck.style.transform = ''; // Clear inline style
-        } else {
-            cardDeck.style.transform = `translateX(${currentTranslate}px)`;
-        }
-    }
-
-    // Attach initial listeners
-    cardDeck.addEventListener('mousedown', dragStart);
-    cardDeck.addEventListener('touchstart', dragStart, { passive: true });
-
     // Initialize
     generateCards();
     updateDeck();
@@ -200,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==========================================
-// REUSED MODAL & LIGHTBOX CONTROLLERS
+// MODAL & LIGHTBOX CONTROLLERS
 // ==========================================
 class ModalController {
     constructor() {
