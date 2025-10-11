@@ -4,11 +4,11 @@
 
 :root {
     /* Variables for easy tweaking */
-    --card-width: 300px;
-    --card-height: 420px;
-    --card-gap: 140px; /* Increased space between cards */
-    --card-depth: 180px; /* Adjusted Z-axis distance */
-    --card-rotate: 40deg; /* Adjusted angle of side cards */
+    --card-width: 400px; /* Increased width */
+    --card-height: 300px; /* Decreased height for 4:3 ratio */
+    --card-gap: 200px; /* Increased space between cards */
+    --card-depth: 150px; /* Adjusted Z-axis distance for new layout */
+    --card-rotate: 35deg; /* Adjusted angle of side cards */
 }
 
 /* Main container for the whole section */
@@ -315,14 +315,21 @@
 /* Responsive tweaks */
 @media (max-width: 768px) {
     :root {
-        --card-width: 260px; --card-height: 364px; --card-gap: 80px;
-        --card-depth: 100px; --card-rotate: 35deg;
+        --card-width: 320px; /* Responsive 4:3 width */
+        --card-height: 240px; /* Responsive 4:3 height */
+        --card-gap: 100px;
+        --card-depth: 100px; 
+        --card-rotate: 35deg;
     }
     .section-intro { margin-bottom: 2rem; }
 }
 
 @media (max-width: 480px) {
-    :root { --card-gap: 40px; --card-width: 240px; --card-height: 336px; }
+    :root { 
+        --card-gap: 50px; 
+        --card-width: 280px; /* Smaller mobile 4:3 width */
+        --card-height: 210px; /* Smaller mobile 4:3 height */
+    }
     .modal-card { padding: 30px 20px; } .modal-title { font-size: 1.8rem; }
     .lightbox-content { flex-direction: column; }
 }
