@@ -6,9 +6,9 @@
     /* Variables for easy tweaking */
     --card-width: 300px;
     --card-height: 420px;
-    --card-gap: 80px; /* Horizontal distance between cards */
-    --card-depth: 200px; /* Z-axis distance */
-    --card-rotate: 45deg; /* Angle of side cards */
+    --card-gap: 140px; /* Increased space between cards */
+    --card-depth: 180px; /* Adjusted Z-axis distance */
+    --card-rotate: 40deg; /* Adjusted angle of side cards */
 }
 
 /* Main container for the whole section */
@@ -19,8 +19,18 @@
     justify-content: center;
     padding: 120px 20px 80px;
     overflow: hidden;
-    background: var(--background);
+    /* NEW: Animated Gradient Background */
+    background: linear-gradient(135deg, #0d0d0d, #1a0033, #001a33, #0d0d0d);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
 }
+
+@keyframes gradientShift {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
 
 .showcase-container {
     max-width: 1200px;
@@ -48,7 +58,7 @@
     position: relative;
     width: 100%;
     height: calc(var(--card-height) + 20px);
-    perspective: 1500px; /* This creates the 3D space */
+    perspective: 1500px;
     margin-bottom: 3rem;
 }
 
@@ -56,9 +66,18 @@
     position: relative;
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d; /* Crucial for nesting 3D elements */
+    transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+/* NEW: Style for when user is dragging */
+.card-deck.is-dragging .card {
+    transition: none; /* Disable transitions during drag for instant feedback */
+}
+.card-deck.is-dragging {
+    cursor: grabbing;
+}
+
 
 /* Base styling for all cards */
 .card {
@@ -70,11 +89,29 @@
     border-radius: 15px;
     overflow: hidden;
     background-color: var(--card-bg);
-    border: 1px solid var(--border);
+    /* REMOVED border, will use glow instead */
     opacity: 0.5; /* Non-active cards are faded */
     transform: translateX(-50%) scale(0.8);
     transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    /* NEW: Custom property for the glow color */
+    --card-glow-color: transparent;
 }
+
+/* NEW: Pseudo-element to create the soft glow */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 15px;
+    box-shadow: 0 0 25px var(--card-glow-color);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: -1;
+}
+
 
 .card-image {
     width: 100%;
@@ -113,11 +150,16 @@
 .card.active {
     z-index: 3;
     opacity: 1;
-    cursor: pointer;
-    border-color: var(--accent);
+    cursor: grab;
     transform: translateX(-50%) translateZ(0) rotateY(0) scale(1);
     box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
+
+/* NEW: Make glow visible on active card */
+.card.active::before {
+    opacity: 0.7;
+}
+
 
 .card.active:hover {
     transform: translateX(-50%) translateZ(0) rotateY(0) scale(1.03);
@@ -273,14 +315,15 @@
 /* Responsive tweaks */
 @media (max-width: 768px) {
     :root {
-        --card-width: 260px; --card-height: 364px; --card-gap: 40px;
+        --card-width: 260px; --card-height: 364px; --card-gap: 80px;
         --card-depth: 100px; --card-rotate: 35deg;
     }
     .section-intro { margin-bottom: 2rem; }
 }
 
 @media (max-width: 480px) {
-    :root { --card-gap: 20px; --card-width: 240px; --card-height: 336px; }
+    :root { --card-gap: 40px; --card-width: 240px; --card-height: 336px; }
     .modal-card { padding: 30px 20px; } .modal-title { font-size: 1.8rem; }
     .lightbox-content { flex-direction: column; }
 }
+
