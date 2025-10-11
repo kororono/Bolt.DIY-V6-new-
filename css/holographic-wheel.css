@@ -506,7 +506,6 @@ footer.footer-3d {
     margin: 0 auto;
     background: transparent;
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px 20px 0 0;
     position: relative;
     z-index: 1;
