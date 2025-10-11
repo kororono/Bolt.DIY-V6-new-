@@ -23,7 +23,7 @@
     padding: 80px 20px;
     overflow: hidden;
     position: relative;
-    background-color: #0d0d0d;
+    background-color: transparent;
 }
 
 /* Video Background Styling */
@@ -87,6 +87,7 @@
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
 /* Base styling for all cards */
@@ -504,8 +505,9 @@ footer.footer-3d {
     padding: 60px 20px;
     max-width: 90%;
     margin: 0 auto;
-    background: transparent;
+    background: rgba(13, 13, 13, 0.7);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 20px 20px 0 0;
     position: relative;
     z-index: 1;
