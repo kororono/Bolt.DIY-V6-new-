@@ -12,9 +12,9 @@ const projects = {
         thumbnail: 'assets/projects/reload/reload-thumb.webp',
         glowColor: '#00F5FF',
         images: [
-            'assets/projects/reload/reload-1.jpg',
-            'assets/projects/reload/reload-2.jpg',
-            'assets/projects/reload/reload-3.jpg'
+            'assets/3d-animation/gallery/reload-1.jpg',
+            'assets/3d-animation/gallery/reload-2.jpg',
+            'assets/3d-animation/gallery/reload-3.jpg'
         ]
     },
     kfc: {
@@ -25,8 +25,8 @@ const projects = {
         thumbnail: 'assets/projects/kfc/KFC-thumb.webp',
         glowColor: '#EA1821',
         images: [
-            'assets/projects/kfc/kfc-1.jpg',
-            'assets/projects/kfc/kfc-2.jpg'
+            'assets/3d-animation/gallery/kfc-1.jpg',
+            'assets/3d-animation/gallery/kfc-2.jpg'
         ]
     },
 };
