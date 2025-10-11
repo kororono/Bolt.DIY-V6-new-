@@ -4,11 +4,12 @@
 
 :root {
     /* Variables for easy tweaking */
-    --card-width: 400px; /* Increased width */
-    --card-height: 300px; /* Decreased height for 4:3 ratio */
-    --card-gap: 200px; /* Increased space between cards */
-    --card-depth: 150px; /* Adjusted Z-axis distance for new layout */
-    --card-rotate: 35deg; /* Adjusted angle of side cards */
+    --card-width: 400px;
+    --card-height: 300px;
+    --card-gap: 200px;
+    --card-depth: 150px;
+    --card-rotate: 35deg;
+    --card-bg: #111; /* Added a variable for the card background color */
 }
 
 /* Main container for the whole section */
@@ -17,22 +18,43 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 120px 20px 80px;
+    padding: 150px 20px 80px; /* Adjusted padding for fixed nav */
     overflow: hidden;
-    /* NEW: Animated Gradient Background */
-    background: linear-gradient(135deg, #0d0d0d, #1a0033, #001a33, #0d0d0d);
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
+    position: relative; /* Needed for the ::before pseudo-element */
+    background-color: #0d0d0d; /* Base background color */
 }
 
-@keyframes gradientShift {
-	0% { background-position: 0% 50%; }
-	50% { background-position: 100% 50%; }
-	100% { background-position: 0% 50%; }
+/* NEW: Liquid Gradient Pseudo-element */
+.showcase-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 20%, #1a0033 0%, transparent 40%),
+        radial-gradient(circle at 80% 90%, #001a33 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #33001a 0%, transparent 35%);
+    filter: blur(100px);
+    z-index: 0;
+    animation: liquidFlow 25s ease-in-out infinite alternate;
 }
 
+/* NEW: Keyframes for a fluid, liquid-like animation */
+@keyframes liquidFlow {
+    0% {
+        transform: rotate(0deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(360deg) scale(1.5);
+    }
+}
 
+/* Make sure content is above the background */
 .showcase-container {
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
@@ -70,7 +92,6 @@
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* NEW: Style for when user is dragging */
 .card-deck.is-dragging .card {
     transition: none; /* Disable transitions during drag for instant feedback */
 }
@@ -79,7 +100,7 @@
 }
 
 
-/* Base styling for all cards */
+/* Base styling for all cards (FIXED) */
 .card {
     position: absolute;
     top: 0;
@@ -88,34 +109,40 @@
     height: var(--card-height);
     border-radius: 15px;
     overflow: hidden;
-    background-color: var(--card-bg);
-    /* REMOVED border, will use glow instead */
-    opacity: 0.5; /* Non-active cards are faded */
+    background-color: transparent; /* Make parent transparent */
+    opacity: 0.5;
     transform: translateX(-50%) scale(0.8);
     transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    /* NEW: Custom property for the glow color */
     --card-glow-color: transparent;
 }
 
-/* NEW: Pseudo-element to create the soft glow */
+/* Glow element (FIXED) */
 .card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 15px;
-    box-shadow: 0 0 25px var(--card-glow-color);
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border-radius: 20px;
+    box-shadow: 0 0 35px var(--card-glow-color), 0 0 15px var(--card-glow-color);
     opacity: 0;
     transition: opacity 0.6s ease;
     z-index: -1;
 }
 
+/* Background element (NEW) */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    z-index: -2;
+}
 
 .card-image {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .card-image img {
@@ -140,13 +167,13 @@
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.4s ease;
+    z-index: 2;
 }
 
 /* ==========================================
-   CARD STATES (THE CORE LOGIC)
+   CARD STATES
    ========================================== */
 
-/* The active (center) card */
 .card.active {
     z-index: 3;
     opacity: 1;
@@ -155,11 +182,9 @@
     box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 
-/* NEW: Make glow visible on active card */
 .card.active::before {
-    opacity: 0.7;
+    opacity: 0.7; /* Make glow visible on active card */
 }
-
 
 .card.active:hover {
     transform: translateX(-50%) translateZ(0) rotateY(0) scale(1.03);
@@ -170,7 +195,6 @@
     transform: translateY(0);
 }
 
-/* The card immediately to the left */
 .card.prev {
     z-index: 2;
     opacity: 0.7;
@@ -178,7 +202,6 @@
     transform: translateX(calc(-50% - var(--card-gap))) translateZ(calc(-1 * var(--card-depth))) rotateY(var(--card-rotate));
 }
 
-/* The card immediately to the right */
 .card.next {
     z-index: 2;
     opacity: 0.7;
@@ -186,7 +209,6 @@
     transform: translateX(calc(-50% + var(--card-gap))) translateZ(calc(-1 * var(--card-depth))) rotateY(calc(-1 * var(--card-rotate)));
 }
 
-/* Cards further away (hidden) */
 .card.hide-left {
     transform: translateX(calc(-50% - (var(--card-gap) * 2))) translateZ(calc(-1 * var(--card-depth) * 2)) rotateY(var(--card-rotate));
     opacity: 0;
@@ -241,7 +263,7 @@
 
 
 /* ==========================================
-   REUSED MODAL & LIGHTBOX STYLES (FROM YOUR FILE)
+   MODAL & LIGHTBOX STYLES (UNCHANGED)
    ========================================== */
 
 .info-modal {
@@ -315,11 +337,10 @@
 /* Responsive tweaks */
 @media (max-width: 768px) {
     :root {
-        --card-width: 320px; /* Responsive 4:3 width */
-        --card-height: 240px; /* Responsive 4:3 height */
+        --card-width: 320px;
+        --card-height: 240px;
         --card-gap: 100px;
         --card-depth: 100px; 
-        --card-rotate: 35deg;
     }
     .section-intro { margin-bottom: 2rem; }
 }
@@ -327,10 +348,32 @@
 @media (max-width: 480px) {
     :root { 
         --card-gap: 50px; 
-        --card-width: 280px; /* Smaller mobile 4:3 width */
-        --card-height: 210px; /* Smaller mobile 4:3 height */
+        --card-width: 280px;
+        --card-height: 210px;
     }
     .modal-card { padding: 30px 20px; } .modal-title { font-size: 1.8rem; }
     .lightbox-content { flex-direction: column; }
 }
 
+/* ==========================================
+   TRANSPARENT HEADER & FOOTER
+   ========================================== */
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(13, 13, 13, 0.5); /* Semi-transparent black */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer.footer-3d {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+    /* You may need to remove any background-color from your main style.css for the footer */
+}
