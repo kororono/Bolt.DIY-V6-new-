@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = [];
     const modalController = new ModalController();
 
+    // Drag/Swipe variables
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    const swipeThreshold = 50;
+
     // 1. Generate the card elements
     function generateCards() {
         projectsArray.forEach((project, index) => {
@@ -116,6 +122,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 4. DRAG/SWIPE (Simple implementation with visual feedback)
+    cardDeck.addEventListener('touchstart', handleTouchStart, { passive: true });
+    cardDeck.addEventListener('touchmove', handleTouchMove, { passive: false });
+    cardDeck.addEventListener('touchend', handleTouchEnd);
+
+    function handleTouchStart(e) {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        cardDeck.style.transition = 'none';
+    }
+
+    function handleTouchMove(e) {
+        if (!isDragging) return;
+        const currentX = e.touches[0].clientX;
+        currentTranslate = currentX - startX;
+        
+        // Apply visual feedback - slight horizontal movement
+        cardDeck.style.transform = `translateX(${currentTranslate * 0.5}px)`;
+    }
+
+    function handleTouchEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+
+        // Reset transform with smooth transition
+        cardDeck.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+        cardDeck.style.transform = 'translateX(0)';
+
+        // Determine if it's a swipe or click
+        if (Math.abs(currentTranslate) > swipeThreshold) {
+            // It's a swipe
+            if (currentTranslate < 0 && currentIndex < projectsArray.length - 1) {
+                // Swipe left → next
+                currentIndex++;
+                updateDeck();
+            } else if (currentTranslate > 0 && currentIndex > 0) {
+                // Swipe right → prev
+                currentIndex--;
+                updateDeck();
+            }
+        }
+
+        currentTranslate = 0;
+    }
+
     // Initialize
     generateCards();
     updateDeck();
@@ -133,6 +184,7 @@ class ModalController {
         this.modalGallery = document.getElementById('modalGallery');
         this.closeBtn = document.getElementById('modalClose');
         this.lightboxController = new LightboxController();
+        this.isOpen = false;
         this.attachEvents();
     }
 
@@ -148,6 +200,14 @@ class ModalController {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal.classList.contains('active')) {
                 this.close();
+            }
+        });
+
+        // Handle back button
+        window.addEventListener('popstate', (e) => {
+            if (this.isOpen) {
+                e.preventDefault();
+                this.close(true); // true = skip history manipulation
             }
         });
     }
@@ -169,11 +229,21 @@ class ModalController {
 
         this.modal.style.display = 'flex';
         setTimeout(() => this.modal.classList.add('active'), 10);
+        
+        // Push history state for back button
+        history.pushState({ modal: 'open' }, '');
+        this.isOpen = true;
     }
 
-    close() {
+    close(skipHistory = false) {
         this.modal.classList.remove('active');
         setTimeout(() => (this.modal.style.display = 'none'), 400);
+        this.isOpen = false;
+
+        // Go back in history if not triggered by back button
+        if (!skipHistory && history.state && history.state.modal === 'open') {
+            history.back();
+        }
     }
 }
 
@@ -187,6 +257,7 @@ class LightboxController {
         this.nextBtn = document.getElementById('lightboxNext');
         this.images = [];
         this.currentIndex = 0;
+        this.isOpen = false;
         this.attachEvents();
     }
 
@@ -208,6 +279,14 @@ class LightboxController {
                 if (e.key === 'ArrowRight') this.navigate(1);
             }
         });
+
+        // Handle back button
+        window.addEventListener('popstate', (e) => {
+            if (this.isOpen) {
+                e.preventDefault();
+                this.close(true); // true = skip history manipulation
+            }
+        });
     }
 
     open(images, index = 0) {
@@ -217,11 +296,21 @@ class LightboxController {
 
         this.lightbox.style.display = 'flex';
         setTimeout(() => this.lightbox.classList.add('active'), 10);
+        
+        // Push history state for back button
+        history.pushState({ lightbox: 'open' }, '');
+        this.isOpen = true;
     }
 
-    close() {
+    close(skipHistory = false) {
         this.lightbox.classList.remove('active');
         setTimeout(() => (this.lightbox.style.display = 'none'), 400);
+        this.isOpen = false;
+
+        // Go back in history if not triggered by back button
+        if (!skipHistory && history.state && history.state.lightbox === 'open') {
+            history.back();
+        }
     }
 
     navigate(direction) {
