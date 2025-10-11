@@ -530,9 +530,9 @@ nav {
 
 footer.footer-3d {
     padding: 60px 20px;
-    max-width: 90%;
+    max-width: 95%;
     margin: 0 auto;
-    background: transparent; /* Fully transparent footer */
+    background: transparent: !important; /* Fully transparent footer */
     position: relative;
     z-index: 1;
 }
