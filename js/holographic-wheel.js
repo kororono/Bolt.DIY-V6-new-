@@ -1,5 +1,5 @@
 // ==========================================
-// 3D CARD DECK SHOWCASE - PREMIUM VERSION
+// 3D CARD DECK SHOWCASE - V2 (Draggable with Glow)
 // ==========================================
 
 // --- Project Data ---
@@ -9,6 +9,7 @@ const projects = {
         title: 'RELOAD',
         description: '3D Product Animation Showcase for RELOAD isotonic drink. A dynamic visualization bringing the product to life through stunning motion graphics and realistic rendering.',
         thumbnail: 'assets/projects/reload/reload-thumb.webp',
+        glowColor: '#00F5FF', // Cyan Glow
         images: [
             'assets/projects/reload/reload-1.jpg',
             'assets/projects/reload/reload-2.jpg',
@@ -20,6 +21,7 @@ const projects = {
         title: 'KFC',
         description: 'Animated 3D Drive-Thru commercial showcasing the KFC brand experience through immersive 3D environments and product visualization.',
         thumbnail: 'assets/projects/kfc/KFC-thumb.webp',
+        glowColor: '#EA1821', // Red Glow
         images: [
             'assets/projects/kfc/kfc-1.jpg',
             'assets/projects/kfc/kfc-2.jpg'
@@ -31,8 +33,9 @@ const projects = {
     //     id: 'project3',
     //     title: 'Project Three',
     //     description: 'Description for the third project goes here.',
-    //     thumbnail: 'https://placehold.co/300x420/FF5733/FFFFFF?text=Project+3',
-    //     images: ['https://placehold.co/800x600/FF5733/FFFFFF?text=Image+1']
+    //     thumbnail: 'https://placehold.co/300x420/9D00FF/FFFFFF?text=Project+3',
+    //     glowColor: '#9D00FF', // Purple Glow
+    //     images: ['https://placehold.co/800x600/9D00FF/FFFFFF?text=Image+1']
     // }
 };
 const projectsArray = Object.values(projects);
@@ -47,7 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
     let cards = [];
-    const modalController = new ModalController(); // Instantiate your existing modal controller
+    const modalController = new ModalController();
+
+    // Drag functionality variables
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = 0;
+    const dragThreshold = 50; // Min pixels to swipe
 
     // 1. Generate the card elements
     function generateCards() {
@@ -56,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.dataset.projectId = project.id;
             card.dataset.index = index;
+            // NEW: Set the custom glow color variable for CSS
+            if (project.glowColor) {
+                card.style.setProperty('--card-glow-color', project.glowColor);
+            }
             
             card.innerHTML = `
                 <div class="card-image">
@@ -71,24 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Update card classes based on currentIndex
     function updateDeck() {
+        // This function remains largely the same, applying classes
         cards.forEach((card, index) => {
-            // Clear all special classes
             card.classList.remove('active', 'prev', 'next', 'hide-left', 'hide-right');
 
-            if (index === currentIndex) {
-                card.classList.add('active');
-            } else if (index === currentIndex - 1) {
-                card.classList.add('prev');
-            } else if (index === currentIndex + 1) {
-                card.classList.add('next');
-            } else if (index < currentIndex) {
-                card.classList.add('hide-left');
-            } else {
-                card.classList.add('hide-right');
-            }
+            if (index === currentIndex) card.classList.add('active');
+            else if (index === currentIndex - 1) card.classList.add('prev');
+            else if (index === currentIndex + 1) card.classList.add('next');
+            else if (index < currentIndex) card.classList.add('hide-left');
+            else card.classList.add('hide-right');
         });
         
-        // Disable/Enable nav buttons
         prevBtn.disabled = currentIndex === 0;
         nextBtn.disabled = currentIndex === projectsArray.length - 1;
 
@@ -97,21 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 3. Set up click listeners for cards
     function setupCardClickListeners() {
-        cards.forEach((card, index) => {
-            card.addEventListener('click', () => {
-                const clickedIndex = parseInt(card.dataset.index);
-                if (clickedIndex === currentIndex) {
-                    // It's the active card, open the modal
-                    const projectId = card.dataset.projectId;
-                    if (projects[projectId]) {
-                        modalController.open(projects[projectId]);
-                    }
-                } else {
-                    // It's a side card, navigate to it
-                    currentIndex = clickedIndex;
-                    updateDeck();
-                }
-            });
+        cards.forEach((card) => {
+            // We handle clicks in the dragEnd function to differentiate from drags
+            // but we can add hover effects or other non-drag interactions here if needed.
         });
     }
 
@@ -130,14 +126,94 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 5. DRAG AND SWIPE LOGIC
+    function dragStart(index) {
+        return function(event) {
+            isDragging = true;
+            startX = getPositionX(event);
+            cardDeck.classList.add('is-dragging');
+            // Used for animation frame
+            animationID = requestAnimationFrame(animation);
+        }
+    }
+
+    function dragMove(event) {
+        if (isDragging) {
+            const currentPosition = getPositionX(event);
+            currentTranslate = prevTranslate + currentPosition - startX;
+        }
+    }
+    
+    function dragEnd(event) {
+        cancelAnimationFrame(animationID);
+        isDragging = false;
+        
+        const movedBy = currentTranslate - prevTranslate;
+
+        // Swipe vs Click logic
+        if (Math.abs(movedBy) > dragThreshold) { // It's a swipe
+            if (movedBy < 0 && currentIndex < projectsArray.length - 1) currentIndex++;
+            if (movedBy > 0 && currentIndex > 0) currentIndex--;
+        } else { // It's a click
+            const card = event.target.closest('.card');
+            if (card) {
+                const clickedIndex = parseInt(card.dataset.index);
+                if(clickedIndex === currentIndex) { // Clicked on active card
+                    const projectId = card.dataset.projectId;
+                    if (projects[projectId]) modalController.open(projects[projectId]);
+                } else { // Clicked on side card
+                    currentIndex = clickedIndex;
+                }
+            }
+        }
+
+        cardDeck.classList.remove('is-dragging');
+        // Reset translate and snap to new position
+        currentTranslate = 0;
+        prevTranslate = 0;
+        setDeckTransform();
+        updateDeck();
+    }
+
+    function getPositionX(event) {
+        return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+    }
+
+    function animation() {
+        setDeckTransform();
+        if (isDragging) requestAnimationFrame(animation);
+    }
+
+    function setDeckTransform() {
+        // Move the whole deck slightly during drag for visual feedback
+        cardDeck.style.transform = `translateX(${currentTranslate}px)`;
+    }
+
+    // Attach drag event listeners
+    cards.forEach((card, index) => {
+        const cardImg = card.querySelector('img');
+        // Prevent default image drag behavior
+        cardImg.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // Mouse events
+        card.addEventListener('mousedown', dragStart(index));
+        card.addEventListener('mouseup', dragEnd);
+        card.addEventListener('mouseleave', dragEnd);
+        card.addEventListener('mousemove', dragMove);
+
+        // Touch events
+        card.addEventListener('touchstart', dragStart(index));
+        card.addEventListener('touchend', dragEnd);
+        card.addEventListener('touchmove', dragMove);
+    });
+
     // Initialize
     generateCards();
     updateDeck();
 });
 
-
 // ==========================================
-// REUSED MODAL & LIGHTBOX CONTROLLERS (FROM YOUR FILE)
+// REUSED MODAL & LIGHTBOX CONTROLLERS (UNCHANGED)
 // ==========================================
 
 class ModalController {
@@ -147,25 +223,19 @@ class ModalController {
         this.modalDescription = document.getElementById('modalDescription');
         this.modalGallery = document.getElementById('modalGallery');
         this.closeBtn = document.getElementById('modalClose');
-        this.lightboxController = new LightboxController(); // Each modal gets a lightbox
+        this.lightboxController = new LightboxController();
 
         this.attachEvents();
     }
-
     attachEvents() {
         this.closeBtn.addEventListener('click', () => this.close());
         this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal || e.target.classList.contains('modal-backdrop')) {
-                this.close();
-            }
+            if (e.target === this.modal || e.target.classList.contains('modal-backdrop')) this.close();
         });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-                this.close();
-            }
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) this.close();
         });
     }
-
     open(project) {
         this.modalTitle.textContent = project.title;
         this.modalDescription.textContent = project.description;
@@ -174,16 +244,12 @@ class ModalController {
             const imgWrapper = document.createElement('div');
             imgWrapper.className = 'gallery-image';
             imgWrapper.innerHTML = `<img src="${imagePath}" alt="${project.title} - Image ${index + 1}">`;
-            imgWrapper.addEventListener('click', () => {
-                this.lightboxController.open(project.images, index);
-            });
+            imgWrapper.addEventListener('click', () => this.lightboxController.open(project.images, index));
             this.modalGallery.appendChild(imgWrapper);
         });
-
         this.modal.style.display = 'flex';
         setTimeout(() => this.modal.classList.add('active'), 10);
     }
-
     close() {
         this.modal.classList.remove('active');
         setTimeout(() => this.modal.style.display = 'none', 400);
@@ -199,18 +265,14 @@ class LightboxController {
         this.nextBtn = document.getElementById('lightboxNext');
         this.images = [];
         this.currentIndex = 0;
-
         this.attachEvents();
     }
-
     attachEvents() {
         this.closeBtn.addEventListener('click', () => this.close());
         this.prevBtn.addEventListener('click', () => this.navigate(-1));
         this.nextBtn.addEventListener('click', () => this.navigate(1));
         this.lightbox.addEventListener('click', (e) => {
-            if (e.target === this.lightbox || e.target.classList.contains('lightbox-backdrop')) {
-                this.close();
-            }
+            if (e.target === this.lightbox || e.target.classList.contains('lightbox-backdrop')) this.close();
         });
         document.addEventListener('keydown', (e) => {
             if (!this.lightbox.classList.contains('active')) return;
@@ -219,7 +281,6 @@ class LightboxController {
             if (e.key === 'ArrowRight') this.navigate(1);
         });
     }
-
     open(images, startIndex = 0) {
         this.images = images;
         this.currentIndex = startIndex;
@@ -227,17 +288,14 @@ class LightboxController {
         this.lightbox.style.display = 'flex';
         setTimeout(() => this.lightbox.classList.add('active'), 10);
     }
-
     close() {
         this.lightbox.classList.remove('active');
         setTimeout(() => this.lightbox.style.display = 'none', 400);
     }
-
     navigate(direction) {
         this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
         this.updateImage();
     }
-
     updateImage() {
         gsap.to(this.lightboxImage, {
             opacity: 0,
@@ -249,3 +307,4 @@ class LightboxController {
         });
     }
 }
+
