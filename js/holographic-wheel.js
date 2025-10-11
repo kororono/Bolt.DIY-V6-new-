@@ -1,8 +1,18 @@
 // ==========================================
 // 3D CARD DECK SHOWCASE - SIMPLIFIED
+//
+// QUICK NAVIGATION:
+// 1. Project Data - Add/edit projects here
+// 2. Main Deck Controller - Card generation & navigation
+// 3. Drag/Swipe Settings - Adjust sensitivity
+// 4. Modal Controller - Project detail overlay
+// 5. Lightbox Controller - Fullscreen image gallery
+// 6. Global Back Button Handler - Mobile back button behavior
 // ==========================================
 
-// --- Project Data ---
+// ========================================
+// PROJECT DATA
+// ========================================
 const projects = {
     reload: {
         id: 'reload',
@@ -33,7 +43,9 @@ const projects = {
 
 const projectsArray = Object.values(projects);
 
-// --- Main Deck Controller ---
+// ========================================
+// MAIN DECK CONTROLLER
+// ========================================
 document.addEventListener('DOMContentLoaded', () => {
     const cardDeck = document.getElementById('card-deck');
     const nextBtn = document.getElementById('next-btn');
@@ -45,13 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = [];
     const modalController = new ModalController();
 
-    // Drag/Swipe variables
+    // ========================================
+    // DRAG/SWIPE SETTINGS
+    // Adjust swipeThreshold (in pixels) to change swipe sensitivity
+    // ========================================
     let isDragging = false;
     let startX = 0;
     let currentTranslate = 0;
-    const swipeThreshold = 50;
+    const swipeThreshold = 50; // Minimum swipe distance to trigger navigation
 
-    // 1. Generate the card elements
+    // ========================================
+    // CARD GENERATION
+    // Creates card elements dynamically from project data
+    // ========================================
     function generateCards() {
         projectsArray.forEach((project, index) => {
             const card = document.createElement('div');
@@ -91,7 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Update card classes based on currentIndex
+    // ========================================
+    // DECK UPDATE
+    // Updates card positions/states based on currentIndex
+    // ========================================
     function updateDeck() {
         cards.forEach((card, index) => {
             card.classList.remove('active', 'prev', 'next', 'hide-left', 'hide-right');
@@ -107,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.disabled = currentIndex === projectsArray.length - 1;
     }
 
-    // 3. Navigation Button Listeners
+    // ========================================
+    // NAVIGATION BUTTONS
+    // Prev/Next button click handlers
+    // ========================================
     nextBtn.addEventListener('click', () => {
         if (currentIndex < projectsArray.length - 1) {
             currentIndex++;
@@ -122,7 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. DRAG/SWIPE (Simple implementation with visual feedback)
+    // ========================================
+    // DRAG/SWIPE HANDLERS
+    // Touch gestures for mobile navigation with visual feedback
+    // ========================================
     cardDeck.addEventListener('touchstart', handleTouchStart, { passive: true });
     cardDeck.addEventListener('touchmove', handleTouchMove, { passive: false });
     cardDeck.addEventListener('touchend', handleTouchEnd);
@@ -173,9 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ==========================================
-// MODAL & LIGHTBOX CONTROLLERS
-// ==========================================
+// ========================================
+// MODAL CONTROLLER
+// Handles project detail modal
+// ========================================
 class ModalController {
     constructor() {
         this.modal = document.getElementById('infoModal');
@@ -200,14 +228,6 @@ class ModalController {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal.classList.contains('active')) {
                 this.close();
-            }
-        });
-
-        // Handle back button
-        window.addEventListener('popstate', (e) => {
-            if (this.isOpen) {
-                e.preventDefault();
-                this.close(true); // true = skip history manipulation
             }
         });
     }
@@ -240,14 +260,21 @@ class ModalController {
         setTimeout(() => (this.modal.style.display = 'none'), 400);
         this.isOpen = false;
 
-        // Go back in history if not triggered by back button
-        if (!skipHistory && history.state && history.state.modal === 'open') {
-            history.back();
+        // Only manipulate history if not triggered by back button
+        if (!skipHistory) {
+            // Remove the history entry we added
+            if (window.history.state) {
+                window.history.back();
+            }
         }
     }
 }
 
 
+// ========================================
+// LIGHTBOX CONTROLLER
+// Handles fullscreen image gallery
+// ========================================
 class LightboxController {
     constructor() {
         this.lightbox = document.getElementById('imageLightbox');
@@ -279,14 +306,6 @@ class LightboxController {
                 if (e.key === 'ArrowRight') this.navigate(1);
             }
         });
-
-        // Handle back button
-        window.addEventListener('popstate', (e) => {
-            if (this.isOpen) {
-                e.preventDefault();
-                this.close(true); // true = skip history manipulation
-            }
-        });
     }
 
     open(images, index = 0) {
@@ -307,9 +326,12 @@ class LightboxController {
         setTimeout(() => (this.lightbox.style.display = 'none'), 400);
         this.isOpen = false;
 
-        // Go back in history if not triggered by back button
-        if (!skipHistory && history.state && history.state.lightbox === 'open') {
-            history.back();
+        // Only manipulate history if not triggered by back button
+        if (!skipHistory) {
+            // Remove the history entry we added
+            if (window.history.state) {
+                window.history.back();
+            }
         }
     }
 
@@ -329,3 +351,40 @@ class LightboxController {
         });
     }
 }
+
+// ========================================
+// GLOBAL BACK BUTTON HANDLER
+// Handles phone back button for modal/lightbox hierarchy
+// Lightbox → Modal → Cards (hierarchical close)
+// ========================================
+let modalControllerInstance = null;
+let lightboxControllerInstance = null;
+
+// Store controller instances when modal is created
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit for controllers to be instantiated
+    setTimeout(() => {
+        const modalElement = document.getElementById('infoModal');
+        const lightboxElement = document.getElementById('imageLightbox');
+        
+        // Find instances by checking if they exist in window or via elements
+        // This is a simple approach - controllers set their instances
+    }, 100);
+});
+
+// Global popstate handler
+window.addEventListener('popstate', () => {
+    // Check lightbox first (topmost overlay)
+    const lightboxElement = document.getElementById('imageLightbox');
+    const modalElement = document.getElementById('infoModal');
+    
+    if (lightboxElement && lightboxElement.classList.contains('active')) {
+        // Lightbox is open - close it
+        lightboxElement.classList.remove('active');
+        setTimeout(() => (lightboxElement.style.display = 'none'), 400);
+    } else if (modalElement && modalElement.classList.contains('active')) {
+        // Modal is open but lightbox is not - close modal
+        modalElement.classList.remove('active');
+        setTimeout(() => (modalElement.style.display = 'none'), 400);
+    }
+});
