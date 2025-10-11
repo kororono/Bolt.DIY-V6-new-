@@ -6,13 +6,13 @@
     /* Variables for easy tweaking */
     --card-width: 400px;
     --card-height: 300px;
-    --card-gap: 200px;
+    --card-gap: 300px;
     --card-depth: 150px;
     --card-rotate: 35deg;
     --card-bg: #111;
     /* NEW: Glow variables */
     --glow-color: #EA1821;
-    --glow-intensity: 25px; /* Controls the blur radius of the glow */
+    --glow-intensity: 10px; /* Controls the blur radius of the glow */
 }
 
 /* Main container for the whole section */
@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 120px 20px 80px; /* Reverted to original padding */
+    padding: 80px 20px; /* Reverted to original padding */
     overflow: hidden;
     position: relative;
     background-color: #0d0d0d; /* Fallback color */
