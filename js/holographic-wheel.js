@@ -1,9 +1,8 @@
 // ==========================================
-// HOLOGRAPHIC WHEEL - 3D SHOWCASE
-// Main JavaScript Controller
+// 3D CARD DECK SHOWCASE - PREMIUM VERSION
 // ==========================================
 
-// Project Data
+// --- Project Data ---
 const projects = {
     reload: {
         id: 'reload',
@@ -25,254 +24,120 @@ const projects = {
             'assets/projects/kfc/kfc-1.jpg',
             'assets/projects/kfc/kfc-2.jpg'
         ]
-    }
+    },
+    // You can add more projects here
+    // Example:
+    // project3: {
+    //     id: 'project3',
+    //     title: 'Project Three',
+    //     description: 'Description for the third project goes here.',
+    //     thumbnail: 'https://placehold.co/300x420/FF5733/FFFFFF?text=Project+3',
+    //     images: ['https://placehold.co/800x600/FF5733/FFFFFF?text=Image+1']
+    // }
 };
-
-// Convert to array for easier iteration
 const projectsArray = Object.values(projects);
 
-// ==========================================
-// WHEEL CONTROLLER
-// ==========================================
+// --- Main Deck Controller ---
+document.addEventListener('DOMContentLoaded', () => {
+    const cardDeck = document.getElementById('card-deck');
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
 
-class HolographicWheel {
-    constructor() {
-        this.wheel = document.getElementById('wheel');
-        this.tiles = [];
-        this.currentRotation = 0;
-        this.targetRotation = 0;
-        this.velocity = 0.1; // Current rotation speed
-        this.idleVelocity = 0.1; // Idle rotation speed
-        this.isAutoRotating = true;
-        this.isDragging = false;
-        this.startX = 0;
-        this.startRotation = 0;
-        this.lastDragX = 0;
-        this.dragVelocity = 0;
-        this.isMobile = window.innerWidth <= 768;
-        this.scrollGutter = 80; // Right-side scroll zone
-        
-        this.init();
-    }
+    if (!cardDeck || !nextBtn || !prevBtn) return;
 
-    init() {
-        if (!this.isMobile) {
-            this.generateTiles();
-            this.positionTiles();
-            this.createScrollIndicator();
-            this.startAutoRotation();
-            this.attachEvents();
-        } else {
-            this.generateMobileTiles();
-        }
-    }
+    let currentIndex = 0;
+    let cards = [];
+    const modalController = new ModalController(); // Instantiate your existing modal controller
 
-    generateTiles() {
-        const numTiles = projectsArray.length;
-        const angleStep = 360 / numTiles;
-
+    // 1. Generate the card elements
+    function generateCards() {
         projectsArray.forEach((project, index) => {
-            const tile = document.createElement('div');
-            tile.className = 'wheel-tile';
-            tile.dataset.project = project.id;
-            tile.dataset.angle = index * angleStep;
-
-            tile.innerHTML = `
-                <div class="tile-image">
-                    <img src="${project.thumbnail}" alt="${project.title}">
-                </div>
-                <div class="tile-title">${project.title}</div>
-            `;
-
-            tile.addEventListener('click', () => this.openModal(project.id));
-
-            this.wheel.appendChild(tile);
-            this.tiles.push(tile);
-        });
-    }
-
-    generateMobileTiles() {
-        projectsArray.forEach((project) => {
-            const tile = document.createElement('div');
-            tile.className = 'wheel-tile';
-            tile.dataset.project = project.id;
-
-            tile.innerHTML = `
-                <div class="tile-image">
-                    <img src="${project.thumbnail}" alt="${project.title}">
-                </div>
-                <div class="tile-title">${project.title}</div>
-            `;
-
-            tile.addEventListener('click', () => this.openModal(project.id));
-
-            this.wheel.appendChild(tile);
-        });
-    }
-
-    positionTiles() {
-        const radius = 450; // Distance from center
-        const curvature = 25; // Degrees to curve the card outward
-        
-        this.tiles.forEach((tile, index) => {
-            const angle = parseFloat(tile.dataset.angle);
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.projectId = project.id;
+            card.dataset.index = index;
             
-            // Position tile in 3D space with increased curve
-            tile.style.transform = `
-                translate(-50%, -50%)
-                rotateY(${angle}deg)
-                translateZ(${radius}px)
-                rotateY(${curvature}deg)
+            card.innerHTML = `
+                <div class="card-image">
+                    <img src="${project.thumbnail}" alt="${project.title}">
+                </div>
+                <div class="card-title">${project.title}</div>
             `;
+            
+            cardDeck.appendChild(card);
+            cards.push(card);
         });
     }
 
-    updateTitleRotations() {
-        // Update title rotations to always face camera
-        this.tiles.forEach((tile) => {
-            const angle = parseFloat(tile.dataset.angle);
-            const titleEl = tile.querySelector('.tile-title');
-            if (titleEl) {
-                // Counter-rotate based on wheel rotation + tile angle
-                const totalRotation = this.currentRotation + angle;
-                titleEl.style.transform = `rotateY(${-totalRotation - 25}deg)`;
-            }
-        });
-    }
+    // 2. Update card classes based on currentIndex
+    function updateDeck() {
+        cards.forEach((card, index) => {
+            // Clear all special classes
+            card.classList.remove('active', 'prev', 'next', 'hide-left', 'hide-right');
 
-    createScrollIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'scroll-zone-indicator';
-        document.body.appendChild(indicator);
-    }
-
-    startAutoRotation() {
-        if (this.isMobile) return;
-
-        const animate = () => {
-            if (this.isAutoRotating && !this.isDragging) {
-                // Smoothly transition velocity to idle speed
-                this.velocity += (this.idleVelocity - this.velocity) * 0.05;
-                this.targetRotation += this.velocity;
-            } else if (this.isDragging) {
-                // Apply drag velocity
-                this.targetRotation += this.dragVelocity;
-                this.dragVelocity *= 0.95; // Natural friction
+            if (index === currentIndex) {
+                card.classList.add('active');
+            } else if (index === currentIndex - 1) {
+                card.classList.add('prev');
+            } else if (index === currentIndex + 1) {
+                card.classList.add('next');
+            } else if (index < currentIndex) {
+                card.classList.add('hide-left');
             } else {
-                // Coasting after drag - smoothly reduce to idle
-                this.velocity += (this.idleVelocity - this.velocity) * 0.02;
-                this.targetRotation += this.velocity;
+                card.classList.add('hide-right');
             }
+        });
+        
+        // Disable/Enable nav buttons
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === projectsArray.length - 1;
 
-            // Smooth interpolation
-            this.currentRotation += (this.targetRotation - this.currentRotation) * 0.1;
-            
-            this.wheel.style.transform = `rotateY(${this.currentRotation}deg)`;
-            
-            // Update title rotations to always face camera
-            this.updateTitleRotations();
-
-            requestAnimationFrame(animate);
-        };
-
-        animate();
+        setupCardClickListeners();
     }
-
-    attachEvents() {
-        if (this.isMobile) return;
-
-        // Scroll event with gutter detection
-        window.addEventListener('wheel', (e) => {
-            const mouseX = e.clientX;
-            const windowWidth = window.innerWidth;
-            const holographicSection = document.querySelector('.holographic-main');
-            const sectionRect = holographicSection.getBoundingClientRect();
-            const isInSection = e.clientY >= sectionRect.top && e.clientY <= sectionRect.bottom;
-            
-            // Check if mouse is in scroll gutter (right 80px) or outside section
-            if (mouseX > windowWidth - this.scrollGutter || !isInSection) {
-                return; // Allow natural scrolling
-            }
-            
-            e.preventDefault();
-            this.targetRotation += e.deltaY * 0.05;
-            this.velocity = e.deltaY * 0.05; // Set current velocity
-            this.isAutoRotating = false;
-            
-            // Resume auto-rotation after brief pause
-            clearTimeout(this.autoRotateTimeout);
-            this.autoRotateTimeout = setTimeout(() => {
-                this.isAutoRotating = true;
-            }, 300);
-        }, { passive: false });
-
-        // Drag events
-        this.wheel.addEventListener('mousedown', (e) => this.startDrag(e));
-        window.addEventListener('mousemove', (e) => this.onDrag(e));
-        window.addEventListener('mouseup', () => this.endDrag());
-
-        // Touch events
-        this.wheel.addEventListener('touchstart', (e) => this.startDrag(e.touches[0]));
-        window.addEventListener('touchmove', (e) => this.onDrag(e.touches[0]));
-        window.addEventListener('touchend', () => this.endDrag());
-
-        // Hover pause
-        this.tiles.forEach(tile => {
-            tile.addEventListener('mouseenter', () => {
-                this.isAutoRotating = false;
-            });
-            tile.addEventListener('mouseleave', () => {
-                setTimeout(() => {
-                    this.isAutoRotating = true;
-                }, 300);
+    
+    // 3. Set up click listeners for cards
+    function setupCardClickListeners() {
+        cards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const clickedIndex = parseInt(card.dataset.index);
+                if (clickedIndex === currentIndex) {
+                    // It's the active card, open the modal
+                    const projectId = card.dataset.projectId;
+                    if (projects[projectId]) {
+                        modalController.open(projects[projectId]);
+                    }
+                } else {
+                    // It's a side card, navigate to it
+                    currentIndex = clickedIndex;
+                    updateDeck();
+                }
             });
         });
     }
 
-    startDrag(e) {
-        this.isDragging = true;
-        this.startX = e.clientX || e.pageX;
-        this.lastDragX = this.startX;
-        this.startRotation = this.currentRotation;
-        this.dragVelocity = 0;
-        this.isAutoRotating = false;
-        document.body.style.cursor = 'grabbing';
-    }
+    // 4. Navigation Button Listeners
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < projectsArray.length - 1) {
+            currentIndex++;
+            updateDeck();
+        }
+    });
 
-    onDrag(e) {
-        if (!this.isDragging) return;
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateDeck();
+        }
+    });
 
-        const currentX = e.clientX || e.pageX;
-        const deltaX = currentX - this.lastDragX;
-        this.dragVelocity = deltaX * 0.5;
-        this.targetRotation += this.dragVelocity;
-        this.lastDragX = currentX;
-    }
+    // Initialize
+    generateCards();
+    updateDeck();
+});
 
-    endDrag() {
-        if (!this.isDragging) return;
-
-        this.isDragging = false;
-        document.body.style.cursor = 'default';
-        this.velocity = this.dragVelocity; // Carry momentum
-
-        // Smoothly coast back to idle rotation
-        setTimeout(() => {
-            this.isAutoRotating = true;
-        }, 300);
-    }
-
-    openModal(projectId) {
-        const project = projects[projectId];
-        if (!project) return;
-
-        modalController.open(project);
-        this.isAutoRotating = false; // Pause wheel while modal is open
-    }
-}
 
 // ==========================================
-// MODAL CONTROLLER
+// REUSED MODAL & LIGHTBOX CONTROLLERS (FROM YOUR FILE)
 // ==========================================
 
 class ModalController {
@@ -282,22 +147,18 @@ class ModalController {
         this.modalDescription = document.getElementById('modalDescription');
         this.modalGallery = document.getElementById('modalGallery');
         this.closeBtn = document.getElementById('modalClose');
-        this.currentProject = null;
+        this.lightboxController = new LightboxController(); // Each modal gets a lightbox
 
         this.attachEvents();
     }
 
     attachEvents() {
         this.closeBtn.addEventListener('click', () => this.close());
-        
-        // Close on backdrop click
         this.modal.addEventListener('click', (e) => {
             if (e.target === this.modal || e.target.classList.contains('modal-backdrop')) {
                 this.close();
             }
         });
-
-        // Close on ESC key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal.classList.contains('active')) {
                 this.close();
@@ -306,54 +167,28 @@ class ModalController {
     }
 
     open(project) {
-        this.currentProject = project;
-        
-        // Populate content
         this.modalTitle.textContent = project.title;
         this.modalDescription.textContent = project.description;
-        
-        // Generate gallery
         this.modalGallery.innerHTML = '';
         project.images.forEach((imagePath, index) => {
             const imgWrapper = document.createElement('div');
             imgWrapper.className = 'gallery-image';
             imgWrapper.innerHTML = `<img src="${imagePath}" alt="${project.title} - Image ${index + 1}">`;
             imgWrapper.addEventListener('click', () => {
-                lightboxController.open(project.images, index);
+                this.lightboxController.open(project.images, index);
             });
             this.modalGallery.appendChild(imgWrapper);
         });
 
-        // Animate in
-        gsap.to(this.modal, {
-            duration: 0,
-            display: 'flex',
-            onComplete: () => {
-                this.modal.classList.add('active');
-            }
-        });
+        this.modal.style.display = 'flex';
+        setTimeout(() => this.modal.classList.add('active'), 10);
     }
 
     close() {
         this.modal.classList.remove('active');
-        
-        gsap.to(this.modal, {
-            duration: 0.4,
-            delay: 0.3,
-            display: 'none',
-            onComplete: () => {
-                // Resume wheel rotation
-                if (wheelController && !wheelController.isMobile) {
-                    wheelController.isAutoRotating = true;
-                }
-            }
-        });
+        setTimeout(() => this.modal.style.display = 'none', 400);
     }
 }
-
-// ==========================================
-// LIGHTBOX CONTROLLER
-// ==========================================
 
 class LightboxController {
     constructor() {
@@ -372,25 +207,16 @@ class LightboxController {
         this.closeBtn.addEventListener('click', () => this.close());
         this.prevBtn.addEventListener('click', () => this.navigate(-1));
         this.nextBtn.addEventListener('click', () => this.navigate(1));
-
-        // Close on backdrop click
         this.lightbox.addEventListener('click', (e) => {
             if (e.target === this.lightbox || e.target.classList.contains('lightbox-backdrop')) {
                 this.close();
             }
         });
-
-        // Close on ESC key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.lightbox.classList.contains('active')) {
-                this.close();
-            }
-            if (e.key === 'ArrowLeft' && this.lightbox.classList.contains('active')) {
-                this.navigate(-1);
-            }
-            if (e.key === 'ArrowRight' && this.lightbox.classList.contains('active')) {
-                this.navigate(1);
-            }
+            if (!this.lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') this.close();
+            if (e.key === 'ArrowLeft') this.navigate(-1);
+            if (e.key === 'ArrowRight') this.navigate(1);
         });
     }
 
@@ -398,82 +224,28 @@ class LightboxController {
         this.images = images;
         this.currentIndex = startIndex;
         this.updateImage();
-
-        gsap.to(this.lightbox, {
-            duration: 0,
-            display: 'flex',
-            onComplete: () => {
-                this.lightbox.classList.add('active');
-            }
-        });
+        this.lightbox.style.display = 'flex';
+        setTimeout(() => this.lightbox.classList.add('active'), 10);
     }
 
     close() {
         this.lightbox.classList.remove('active');
-        
-        gsap.to(this.lightbox, {
-            duration: 0.4,
-            delay: 0.3,
-            display: 'none'
-        });
+        setTimeout(() => this.lightbox.style.display = 'none', 400);
     }
 
     navigate(direction) {
-        this.currentIndex += direction;
-        
-        // Wrap around
-        if (this.currentIndex < 0) {
-            this.currentIndex = this.images.length - 1;
-        } else if (this.currentIndex >= this.images.length) {
-            this.currentIndex = 0;
-        }
-
+        this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
         this.updateImage();
     }
 
     updateImage() {
-        // Fade out
         gsap.to(this.lightboxImage, {
             opacity: 0,
             duration: 0.2,
             onComplete: () => {
                 this.lightboxImage.src = this.images[this.currentIndex];
-                // Fade in
-                gsap.to(this.lightboxImage, {
-                    opacity: 1,
-                    duration: 0.3
-                });
+                gsap.to(this.lightboxImage, { opacity: 1, duration: 0.3 });
             }
         });
-
-        // Update button states
-        this.prevBtn.disabled = this.currentIndex === 0 && this.images.length === 1;
-        this.nextBtn.disabled = this.currentIndex === this.images.length - 1 && this.images.length === 1;
     }
 }
-
-// ==========================================
-// INITIALIZATION
-// ==========================================
-
-let wheelController;
-let modalController;
-let lightboxController;
-
-document.addEventListener('DOMContentLoaded', () => {
-    wheelController = new HolographicWheel();
-    modalController = new ModalController();
-    lightboxController = new LightboxController();
-
-    console.log('🌀 Holographic Wheel initialized');
-});
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    const wasMobile = wheelController.isMobile;
-    const isMobileNow = window.innerWidth <= 768;
-
-    if (wasMobile !== isMobileNow) {
-        location.reload(); // Reload to switch between mobile/desktop layouts
-    }
-});
