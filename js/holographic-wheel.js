@@ -1,5 +1,5 @@
 // ==========================================
-// 3D CARD DECK SHOWCASE - V2 (Draggable with Glow)
+// 3D CARD DECK SHOWCASE - V2 (FIXED)
 // ==========================================
 
 // --- Project Data ---
@@ -27,16 +27,6 @@ const projects = {
             'assets/projects/kfc/kfc-2.jpg'
         ]
     },
-    // You can add more projects here
-    // Example:
-    // project3: {
-    //     id: 'project3',
-    //     title: 'Project Three',
-    //     description: 'Description for the third project goes here.',
-    //     thumbnail: 'https://placehold.co/300x420/9D00FF/FFFFFF?text=Project+3',
-    //     glowColor: '#9D00FF', // Purple Glow
-    //     images: ['https://placehold.co/800x600/9D00FF/FFFFFF?text=Image+1']
-    // }
 };
 const projectsArray = Object.values(projects);
 
@@ -49,15 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!cardDeck || !nextBtn || !prevBtn) return;
 
     let currentIndex = 0;
-    let cards = [];
+    const cards = [];
     const modalController = new ModalController();
 
     // Drag functionality variables
     let isDragging = false;
     let startX = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = 0;
     const dragThreshold = 50; // Min pixels to swipe
 
     // 1. Generate the card elements
@@ -67,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.dataset.projectId = project.id;
             card.dataset.index = index;
-            // NEW: Set the custom glow color variable for CSS
             if (project.glowColor) {
                 card.style.setProperty('--card-glow-color', project.glowColor);
             }
@@ -81,12 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             cardDeck.appendChild(card);
             cards.push(card);
+            
+            // Prevent default image drag behavior
+            card.querySelector('img').addEventListener('dragstart', (e) => e.preventDefault());
         });
     }
 
     // 2. Update card classes based on currentIndex
     function updateDeck() {
-        // This function remains largely the same, applying classes
         cards.forEach((card, index) => {
             card.classList.remove('active', 'prev', 'next', 'hide-left', 'hide-right');
 
@@ -99,19 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         prevBtn.disabled = currentIndex === 0;
         nextBtn.disabled = currentIndex === projectsArray.length - 1;
-
-        setupCardClickListeners();
     }
     
-    // 3. Set up click listeners for cards
-    function setupCardClickListeners() {
-        cards.forEach((card) => {
-            // We handle clicks in the dragEnd function to differentiate from drags
-            // but we can add hover effects or other non-drag interactions here if needed.
-        });
-    }
-
-    // 4. Navigation Button Listeners
+    // 3. Navigation Button Listeners
     nextBtn.addEventListener('click', () => {
         if (currentIndex < projectsArray.length - 1) {
             currentIndex++;
@@ -126,39 +104,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 5. DRAG AND SWIPE LOGIC
-    function dragStart(index) {
-        return function(event) {
-            isDragging = true;
-            startX = getPositionX(event);
-            cardDeck.classList.add('is-dragging');
-            // Used for animation frame
-            animationID = requestAnimationFrame(animation);
-        }
+    // 4. DRAG AND SWIPE LOGIC (FIXED)
+    function dragStart(event) {
+        isDragging = true;
+        startX = getPositionX(event);
+        cardDeck.classList.add('is-dragging');
+        
+        // Attach listeners to the window for robust dragging
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchmove', dragMove, { passive: true });
+        window.addEventListener('touchend', dragEnd);
     }
-
+    
     function dragMove(event) {
-        if (isDragging) {
-            const currentPosition = getPositionX(event);
-            currentTranslate = prevTranslate + currentPosition - startX;
-        }
+        if (!isDragging) return;
+        // The 'is-dragging' class disables transitions, so movement feels responsive
+        // without needing to manually transform the element with JS.
     }
     
     function dragEnd(event) {
-        cancelAnimationFrame(animationID);
-        isDragging = false;
+        if (!isDragging) return;
         
-        const movedBy = currentTranslate - prevTranslate;
+        const currentX = getPositionX(event);
+        const movedBy = currentX - startX;
 
         // Swipe vs Click logic
         if (Math.abs(movedBy) > dragThreshold) { // It's a swipe
-            if (movedBy < 0 && currentIndex < projectsArray.length - 1) currentIndex++;
-            if (movedBy > 0 && currentIndex > 0) currentIndex--;
+            if (movedBy < 0 && currentIndex < projectsArray.length - 1) {
+                currentIndex++;
+            } else if (movedBy > 0 && currentIndex > 0) {
+                currentIndex--;
+            }
         } else { // It's a click
             const card = event.target.closest('.card');
             if (card) {
-                const clickedIndex = parseInt(card.dataset.index);
-                if(clickedIndex === currentIndex) { // Clicked on active card
+                const clickedIndex = parseInt(card.dataset.index, 10);
+                if (clickedIndex === currentIndex) { // Clicked on active card
                     const projectId = card.dataset.projectId;
                     if (projects[projectId]) modalController.open(projects[projectId]);
                 } else { // Clicked on side card
@@ -167,50 +149,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        isDragging = false;
         cardDeck.classList.remove('is-dragging');
-        // Reset translate and snap to new position
-        currentTranslate = 0;
-        prevTranslate = 0;
-        setDeckTransform();
         updateDeck();
+
+        // Remove window listeners
+        window.removeEventListener('mousemove', dragMove);
+        window.removeEventListener('mouseup', dragEnd);
+        window.removeEventListener('touchmove', dragMove);
+        window.removeEventListener('touchend', dragEnd);
     }
 
     function getPositionX(event) {
-        return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+        // For touchend event, there are no touches, so we use changedTouches
+        if (event.type.includes('end')) {
+            return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
+        }
+        return event.touches ? event.touches[0].clientX : event.clientX;
     }
 
-    function animation() {
-        setDeckTransform();
-        if (isDragging) requestAnimationFrame(animation);
-    }
-
-    function setDeckTransform() {
-        // Move the whole deck slightly during drag for visual feedback
-        cardDeck.style.transform = `translateX(${currentTranslate}px)`;
-    }
-
-    // Attach drag event listeners
-    cards.forEach((card, index) => {
-        const cardImg = card.querySelector('img');
-        // Prevent default image drag behavior
-        cardImg.addEventListener('dragstart', (e) => e.preventDefault());
-
-        // Mouse events
-        card.addEventListener('mousedown', dragStart(index));
-        card.addEventListener('mouseup', dragEnd);
-        card.addEventListener('mouseleave', dragEnd);
-        card.addEventListener('mousemove', dragMove);
-
-        // Touch events
-        card.addEventListener('touchstart', dragStart(index));
-        card.addEventListener('touchend', dragEnd);
-        card.addEventListener('touchmove', dragMove);
-    });
+    // Attach initial mousedown/touchstart listeners to the deck
+    cardDeck.addEventListener('mousedown', dragStart);
+    cardDeck.addEventListener('touchstart', dragStart, { passive: true });
 
     // Initialize
     generateCards();
     updateDeck();
 });
+
 
 // ==========================================
 // REUSED MODAL & LIGHTBOX CONTROLLERS (UNCHANGED)
@@ -297,6 +263,7 @@ class LightboxController {
         this.updateImage();
     }
     updateImage() {
+        // Assuming gsap is loaded from the HTML file
         gsap.to(this.lightboxImage, {
             opacity: 0,
             duration: 0.2,
@@ -307,4 +274,3 @@ class LightboxController {
         });
     }
 }
-
