@@ -1,5 +1,5 @@
 // ==========================================
-// 3D CARD DECK SHOWCASE - V2 (FIXED)
+// 3D CARD DECK SHOWCASE - V3 (FINAL)
 // ==========================================
 
 // --- Project Data ---
@@ -7,9 +7,10 @@ const projects = {
     reload: {
         id: 'reload',
         title: 'RELOAD',
-        description: '3D Product Animation Showcase for RELOAD isotonic drink. A dynamic visualization bringing the product to life through stunning motion graphics and realistic rendering.',
+        description:
+            '3D Product Animation Showcase for RELOAD isotonic drink. A dynamic visualization bringing the product to life through stunning motion graphics and realistic rendering.',
         thumbnail: 'assets/projects/reload/reload-thumb.webp',
-        glowColor: '#00F5FF', // Cyan Glow
+        glowColor: '#00F5FF',
         images: [
             'assets/projects/reload/reload-1.jpg',
             'assets/projects/reload/reload-2.jpg',
@@ -19,15 +20,17 @@ const projects = {
     kfc: {
         id: 'kfc',
         title: 'KFC',
-        description: 'Animated 3D Drive-Thru commercial showcasing the KFC brand experience through immersive 3D environments and product visualization.',
+        description:
+            'Animated 3D Drive-Thru commercial showcasing the KFC brand experience through immersive 3D environments and product visualization.',
         thumbnail: 'assets/projects/kfc/KFC-thumb.webp',
-        glowColor: '#EA1821', // Red Glow
+        glowColor: '#EA1821',
         images: [
             'assets/projects/kfc/kfc-1.jpg',
             'assets/projects/kfc/kfc-2.jpg'
         ]
     },
 };
+
 const projectsArray = Object.values(projects);
 
 // --- Main Deck Controller ---
@@ -45,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Drag functionality variables
     let isDragging = false;
     let startX = 0;
-    const dragThreshold = 50; // Min pixels to swipe
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = 0;
+    const dragThreshold = 50;
 
     // 1. Generate the card elements
     function generateCards() {
@@ -54,21 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.dataset.projectId = project.id;
             card.dataset.index = index;
-            if (project.glowColor) {
-                card.style.setProperty('--card-glow-color', project.glowColor);
-            }
-            
+
             card.innerHTML = `
                 <div class="card-image">
                     <img src="${project.thumbnail}" alt="${project.title}">
                 </div>
                 <div class="card-title">${project.title}</div>
             `;
-            
+
             cardDeck.appendChild(card);
             cards.push(card);
-            
-            // Prevent default image drag behavior
+
             card.querySelector('img').addEventListener('dragstart', (e) => e.preventDefault());
         });
     }
@@ -84,11 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (index < currentIndex) card.classList.add('hide-left');
             else card.classList.add('hide-right');
         });
-        
+
         prevBtn.disabled = currentIndex === 0;
         nextBtn.disabled = currentIndex === projectsArray.length - 1;
     }
-    
+
     // 3. Navigation Button Listeners
     nextBtn.addEventListener('click', () => {
         if (currentIndex < projectsArray.length - 1) {
@@ -104,56 +106,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. DRAG AND SWIPE LOGIC (FIXED)
+    // 4. DRAG AND SWIPE LOGIC (INTERACTIVE)
     function dragStart(event) {
         isDragging = true;
         startX = getPositionX(event);
         cardDeck.classList.add('is-dragging');
-        
-        // Attach listeners to the window for robust dragging
+        animationID = requestAnimationFrame(animation);
+
         window.addEventListener('mousemove', dragMove);
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchmove', dragMove, { passive: true });
         window.addEventListener('touchend', dragEnd);
     }
-    
+
     function dragMove(event) {
         if (!isDragging) return;
-        // The 'is-dragging' class disables transitions, so movement feels responsive
-        // without needing to manually transform the element with JS.
+        const currentPosition = getPositionX(event);
+        currentTranslate = prevTranslate + currentPosition - startX;
     }
-    
+
     function dragEnd(event) {
         if (!isDragging) return;
-        
-        const currentX = getPositionX(event);
-        const movedBy = currentX - startX;
+
+        cancelAnimationFrame(animationID);
+        isDragging = false;
+
+        const movedBy = currentTranslate - prevTranslate;
 
         // Swipe vs Click logic
-        if (Math.abs(movedBy) > dragThreshold) { // It's a swipe
+        if (Math.abs(movedBy) > dragThreshold) {
+            // It's a swipe
             if (movedBy < 0 && currentIndex < projectsArray.length - 1) {
                 currentIndex++;
             } else if (movedBy > 0 && currentIndex > 0) {
                 currentIndex--;
             }
-        } else { // It's a click
+        } else {
+            // It's a click
             const card = event.target.closest('.card');
             if (card) {
                 const clickedIndex = parseInt(card.dataset.index, 10);
-                if (clickedIndex === currentIndex) { // Clicked on active card
+                // Clicking on adjacent cards navigates to them
+                if (clickedIndex !== currentIndex) {
+                    currentIndex = clickedIndex;
+                } else {
+                    // Clicked on active card → open modal
                     const projectId = card.dataset.projectId;
                     if (projects[projectId]) modalController.open(projects[projectId]);
-                } else { // Clicked on side card
-                    currentIndex = clickedIndex;
                 }
             }
         }
 
-        isDragging = false;
         cardDeck.classList.remove('is-dragging');
+        currentTranslate = 0;
+        prevTranslate = 0;
+        setDeckTransform(true);
         updateDeck();
 
-        // Remove window listeners
         window.removeEventListener('mousemove', dragMove);
         window.removeEventListener('mouseup', dragEnd);
         window.removeEventListener('touchmove', dragMove);
@@ -161,14 +170,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getPositionX(event) {
-        // For touchend event, there are no touches, so we use changedTouches
         if (event.type.includes('end')) {
             return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
         }
         return event.touches ? event.touches[0].clientX : event.clientX;
     }
 
-    // Attach initial mousedown/touchstart listeners to the deck
+    function animation() {
+        setDeckTransform();
+        if (isDragging) requestAnimationFrame(animation);
+    }
+
+    function setDeckTransform(reset = false) {
+        if (reset) {
+            cardDeck.style.transform = ''; // Clear inline style
+        } else {
+            cardDeck.style.transform = `translateX(${currentTranslate}px)`;
+        }
+    }
+
+    // Attach initial listeners
     cardDeck.addEventListener('mousedown', dragStart);
     cardDeck.addEventListener('touchstart', dragStart, { passive: true });
 
@@ -179,9 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==========================================
-// REUSED MODAL & LIGHTBOX CONTROLLERS (UNCHANGED)
+// REUSED MODAL & LIGHTBOX CONTROLLERS
 // ==========================================
-
 class ModalController {
     constructor() {
         this.modal = document.getElementById('infoModal');
@@ -190,37 +210,50 @@ class ModalController {
         this.modalGallery = document.getElementById('modalGallery');
         this.closeBtn = document.getElementById('modalClose');
         this.lightboxController = new LightboxController();
-
         this.attachEvents();
     }
+
     attachEvents() {
         this.closeBtn.addEventListener('click', () => this.close());
+
         this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal || e.target.classList.contains('modal-backdrop')) this.close();
+            if (e.target === this.modal || e.target.classList.contains('modal-backdrop')) {
+                this.close();
+            }
         });
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('active')) this.close();
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+                this.close();
+            }
         });
     }
+
     open(project) {
         this.modalTitle.textContent = project.title;
         this.modalDescription.textContent = project.description;
         this.modalGallery.innerHTML = '';
-        project.images.forEach((imagePath, index) => {
-            const imgWrapper = document.createElement('div');
-            imgWrapper.className = 'gallery-image';
-            imgWrapper.innerHTML = `<img src="${imagePath}" alt="${project.title} - Image ${index + 1}">`;
-            imgWrapper.addEventListener('click', () => this.lightboxController.open(project.images, index));
-            this.modalGallery.appendChild(imgWrapper);
+
+        project.images.forEach((src, i) => {
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'gallery-image';
+            imgContainer.innerHTML = `<img src="${src}" alt="${project.title} - Image ${i + 1}">`;
+            imgContainer.addEventListener('click', () =>
+                this.lightboxController.open(project.images, i)
+            );
+            this.modalGallery.appendChild(imgContainer);
         });
+
         this.modal.style.display = 'flex';
         setTimeout(() => this.modal.classList.add('active'), 10);
     }
+
     close() {
         this.modal.classList.remove('active');
-        setTimeout(() => this.modal.style.display = 'none', 400);
+        setTimeout(() => (this.modal.style.display = 'none'), 400);
     }
 }
+
 
 class LightboxController {
     constructor() {
@@ -233,37 +266,47 @@ class LightboxController {
         this.currentIndex = 0;
         this.attachEvents();
     }
+
     attachEvents() {
         this.closeBtn.addEventListener('click', () => this.close());
         this.prevBtn.addEventListener('click', () => this.navigate(-1));
         this.nextBtn.addEventListener('click', () => this.navigate(1));
+
         this.lightbox.addEventListener('click', (e) => {
-            if (e.target === this.lightbox || e.target.classList.contains('lightbox-backdrop')) this.close();
+            if (e.target === this.lightbox || e.target.classList.contains('lightbox-backdrop')) {
+                this.close();
+            }
         });
+
         document.addEventListener('keydown', (e) => {
-            if (!this.lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') this.close();
-            if (e.key === 'ArrowLeft') this.navigate(-1);
-            if (e.key === 'ArrowRight') this.navigate(1);
+            if (this.lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') this.close();
+                if (e.key === 'ArrowLeft') this.navigate(-1);
+                if (e.key === 'ArrowRight') this.navigate(1);
+            }
         });
     }
-    open(images, startIndex = 0) {
+
+    open(images, index = 0) {
         this.images = images;
-        this.currentIndex = startIndex;
+        this.currentIndex = index;
         this.updateImage();
+
         this.lightbox.style.display = 'flex';
         setTimeout(() => this.lightbox.classList.add('active'), 10);
     }
+
     close() {
         this.lightbox.classList.remove('active');
-        setTimeout(() => this.lightbox.style.display = 'none', 400);
+        setTimeout(() => (this.lightbox.style.display = 'none'), 400);
     }
+
     navigate(direction) {
         this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
         this.updateImage();
     }
+
     updateImage() {
-        // Assuming gsap is loaded from the HTML file
         gsap.to(this.lightboxImage, {
             opacity: 0,
             duration: 0.2,
