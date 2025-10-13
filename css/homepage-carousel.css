@@ -274,81 +274,76 @@
     }
 }
 /* ==========================================
-   HOMEPAGE BACKGROUND ANIMATION
-   Subtle gradient animation behind all content
+   ETHEREAL LIQUID BACKGROUND
+   Dark, flowing, cinematic gradient animation
    ========================================== */
 
-/* Fixed background container */
 .homepage-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -10;                               /* Behind everything */
-    overflow: hidden;
-    background: #5D060A;                        /* Fallback black */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -10;
+  overflow: hidden;
+  background: #090202; /* deep backdrop */
 }
 
-/* Individual gradient strips */
+/* Gradient strips - glowing layers */
 .gradient-strip {
-    height: 100vh;
-    width: 25vw;
-    top: 0;
-    position: absolute;
-    transform: rotate(10deg);
-    transform-origin: top right;
-    filter: blur(100px);                         /* Soft, dreamy blur */
-    opacity: 0.5;                              /* Subtle presence */
+  position: absolute;
+  top: 0;
+  height: 120vh;
+  width: 8vw;
+  transform: rotate(12deg);
+  transform-origin: top right;
+  opacity: 0.5; /* Increase this to increase glow of the colour strips */
+  filter: blur(100px);
+  mix-blend-mode: screen; /* lets colours merge */
+  background-size: 400% 400%;
+  animation: liquidDrift 40s ease-in-out infinite alternate; /* Increase seconds for slower animation */
 }
 
-/* Warm burgundy to cool navy palette - harmonizes with red accent */
-.gradient-strip:nth-child(1) { left: 0%; background: linear-gradient(180deg, #2a0a14 0%, #0f1419 50%, #0a0e1a 100%); animation: gradientFlow 38s ease-in-out infinite; animation-delay: 0s; }
-.gradient-strip:nth-child(2) { left: 4%; background: linear-gradient(180deg, #1a0d1f 0%, #141419 50%, #0d1120 100%); animation: gradientFlow 36s ease-in-out infinite; animation-delay: -2s; }
-.gradient-strip:nth-child(3) { left: 8%; background: linear-gradient(180deg, #200815 0%, #121418 50%, #0b0f1c 100%); animation: gradientFlow 40s ease-in-out infinite; animation-delay: -4s; }
-.gradient-strip:nth-child(4) { left: 12%; background: linear-gradient(180deg, #150a20 0%, #101419 50%, #0c1221 100%); animation: gradientFlow 37s ease-in-out infinite; animation-delay: -6s; }
-.gradient-strip:nth-child(5) { left: 16%; background: linear-gradient(180deg, #2d0a12 0%, #161419 50%, #0a0d1d 100%); animation: gradientFlow 39s ease-in-out infinite; animation-delay: -8s; }
-.gradient-strip:nth-child(6) { left: 20%; background: linear-gradient(180deg, #1c0c1d 0%, #131419 50%, #0e1120 100%); animation: gradientFlow 35s ease-in-out infinite; animation-delay: -10s; }
-.gradient-strip:nth-child(7) { left: 24%; background: linear-gradient(180deg, #250912 0%, #141318 50%, #0b101b 100%); animation: gradientFlow 41s ease-in-out infinite; animation-delay: -12s; }
-.gradient-strip:nth-child(8) { left: 28%; background: linear-gradient(180deg, #180b1e 0%, #111419 50%, #0d121f 100%); animation: gradientFlow 36s ease-in-out infinite; animation-delay: -14s; }
-.gradient-strip:nth-child(9) { left: 32%; background: linear-gradient(180deg, #2b0b10 0%, #151419 50%, #0a0e1c 100%); animation: gradientFlow 38s ease-in-out infinite; animation-delay: -16s; }
-.gradient-strip:nth-child(10) { left: 36%; background: linear-gradient(180deg, #1d0d1c 0%, #121419 50%, #0f1222 100%); animation: gradientFlow 40s ease-in-out infinite; animation-delay: -18s; }
-.gradient-strip:nth-child(11) { left: 40%; background: linear-gradient(180deg, #280a14 0%, #131318 50%, #0c101e 100%); animation: gradientFlow 37s ease-in-out infinite; animation-delay: -20s; }
-.gradient-strip:nth-child(12) { left: 44%; background: linear-gradient(180deg, #190c1f 0%, #101419 50%, #0e1320 100%); animation: gradientFlow 39s ease-in-out infinite; animation-delay: -22s; }
-.gradient-strip:nth-child(13) { left: 48%; background: linear-gradient(180deg, #2c0a11 0%, #141419 50%, #0b0f1d 100%); animation: gradientFlow 35s ease-in-out infinite; animation-delay: -24s; }
-.gradient-strip:nth-child(14) { left: 52%; background: linear-gradient(180deg, #1e0d1d 0%, #111318 50%, #0d1121 100%); animation: gradientFlow 41s ease-in-out infinite; animation-delay: -26s; }
-.gradient-strip:nth-child(15) { left: 56%; background: linear-gradient(180deg, #260915 0%, #151419 50%, #0a0e1f 100%); animation: gradientFlow 36s ease-in-out infinite; animation-delay: -28s; }
-.gradient-strip:nth-child(16) { left: 60%; background: linear-gradient(180deg, #1a0b1e 0%, #121419 50%, #0f1220 100%); animation: gradientFlow 38s ease-in-out infinite; animation-delay: -30s; }
-.gradient-strip:nth-child(17) { left: 64%; background: linear-gradient(180deg, #290a13 0%, #131318 50%, #0c101c 100%); animation: gradientFlow 40s ease-in-out infinite; animation-delay: -32s; }
-.gradient-strip:nth-child(18) { left: 68%; background: linear-gradient(180deg, #1b0c1f 0%, #101419 50%, #0e1322 100%); animation: gradientFlow 37s ease-in-out infinite; animation-delay: -34s; }
-.gradient-strip:nth-child(19) { left: 72%; background: linear-gradient(180deg, #2e0a10 0%, #141419 50%, #0b0f1e 100%); animation: gradientFlow 39s ease-in-out infinite; animation-delay: -36s; }
-.gradient-strip:nth-child(20) { left: 76%; background: linear-gradient(180deg, #1f0d1c 0%, #111318 50%, #0d1121 100%); animation: gradientFlow 35s ease-in-out infinite; animation-delay: -38s; }
-.gradient-strip:nth-child(21) { left: 80%; background: linear-gradient(180deg, #270916 0%, #151419 50%, #0a0e1f 100%); animation: gradientFlow 41s ease-in-out infinite; animation-delay: -40s; }
-.gradient-strip:nth-child(22) { left: 84%; background: linear-gradient(180deg, #1c0b1d 0%, #121419 50%, #0f1223 100%); animation: gradientFlow 36s ease-in-out infinite; animation-delay: -42s; }
-.gradient-strip:nth-child(23) { left: 88%; background: linear-gradient(180deg, #2a0a12 0%, #131318 50%, #0c101d 100%); animation: gradientFlow 38s ease-in-out infinite; animation-delay: -44s; }
-.gradient-strip:nth-child(24) { left: 92%; background: linear-gradient(180deg, #1d0c1e 0%, #101419 50%, #0e1320 100%); animation: gradientFlow 40s ease-in-out infinite; animation-delay: -46s; }
-.gradient-strip:nth-child(25) { left: 96%; background: linear-gradient(180deg, #2f0a11 0%, #141419 50%, #0b0f1c 100%); animation: gradientFlow 37s ease-in-out infinite; animation-delay: -48s; }
+/* Colour palette: deep red to amber glow variations */
+.gradient-strip:nth-child(1)  { left: 0%;  background: linear-gradient(180deg, #3b060a, #8a0000, #c83f12); animation-delay: 0s; }
+.gradient-strip:nth-child(2)  { left: 4%;  background: linear-gradient(180deg, #8a0000, #c83f12, #fff287); animation-delay: -2s; }
+.gradient-strip:nth-child(3)  { left: 8%;  background: linear-gradient(180deg, #c83f12, #8a0000, #5a0707); animation-delay: -4s; }
+.gradient-strip:nth-child(4)  { left: 12%; background: linear-gradient(180deg, #5a0707, #b30b0b, #c83f12); animation-delay: -6s; }
+.gradient-strip:nth-child(5)  { left: 16%; background: linear-gradient(180deg, #3b060a, #8a0000, #fff287); animation-delay: -8s; }
+.gradient-strip:nth-child(6)  { left: 20%; background: linear-gradient(180deg, #8a0000, #c83f12, #ffae42); animation-delay: -10s; }
+.gradient-strip:nth-child(7)  { left: 24%; background: linear-gradient(180deg, #3b060a, #9b1c06, #c83f12); animation-delay: -12s; }
+.gradient-strip:nth-child(8)  { left: 28%; background: linear-gradient(180deg, #5a0707, #8a0000, #ffdd8d); animation-delay: -14s; }
+.gradient-strip:nth-child(9)  { left: 32%; background: linear-gradient(180deg, #7a070c, #c83f12, #b37b0b); animation-delay: -16s; }
+.gradient-strip:nth-child(10) { left: 36%; background: linear-gradient(180deg, #3b060a, #8a0000, #ffae42); animation-delay: -18s; }
+.gradient-strip:nth-child(11) { left: 40%; background: linear-gradient(180deg, #8a0000, #c83f12, #fff287); animation-delay: -20s; }
+.gradient-strip:nth-child(12) { left: 44%; background: linear-gradient(180deg, #c83f12, #8a0000, #ff7b00); animation-delay: -22s; }
+.gradient-strip:nth-child(13) { left: 48%; background: linear-gradient(180deg, #9b1c06, #c83f12, #ffdd8d); animation-delay: -24s; }
+.gradient-strip:nth-child(14) { left: 52%; background: linear-gradient(180deg, #3b060a, #b30b0b, #c83f12); animation-delay: -26s; }
+.gradient-strip:nth-child(15) { left: 56%; background: linear-gradient(180deg, #5a0707, #8a0000, #ffae42); animation-delay: -28s; }
+.gradient-strip:nth-child(16) { left: 60%; background: linear-gradient(180deg, #7a070c, #c83f12, #fff287); animation-delay: -30s; }
+.gradient-strip:nth-child(17) { left: 64%; background: linear-gradient(180deg, #3b060a, #9b1c06, #c83f12); animation-delay: -32s; }
+.gradient-strip:nth-child(18) { left: 68%; background: linear-gradient(180deg, #8a0000, #c83f12, #ffdd8d); animation-delay: -34s; }
+.gradient-strip:nth-child(19) { left: 72%; background: linear-gradient(180deg, #b30b0b, #8a0000, #ffae42); animation-delay: -36s; }
+.gradient-strip:nth-child(20) { left: 76%; background: linear-gradient(180deg, #3b060a, #c83f12, #ff7b00); animation-delay: -38s; }
+.gradient-strip:nth-child(21) { left: 80%; background: linear-gradient(180deg, #8a0000, #c83f12, #fff287); animation-delay: -40s; }
+.gradient-strip:nth-child(22) { left: 84%; background: linear-gradient(180deg, #c83f12, #8a0000, #9b1c06); animation-delay: -42s; }
+.gradient-strip:nth-child(23) { left: 88%; background: linear-gradient(180deg, #5a0707, #b30b0b, #c83f12); animation-delay: -44s; }
+.gradient-strip:nth-child(24) { left: 92%; background: linear-gradient(180deg, #8a0000, #c83f12, #ffdd8d); animation-delay: -46s; }
+.gradient-strip:nth-child(25) { left: 96%; background: linear-gradient(180deg, #3b060a, #8a0000, #ffae42); animation-delay: -48s; }
 
-/* Gentle flowing animation */
-@keyframes gradientFlow {
-    0% {
-        /* Starting point: Rotated far to the left */
-        transform: rotate(-100deg);
-    }
-    100% {
-        /* Ending point: Rotated far to the right */
-        transform: rotate(150deg);
-    }
+/* Gentle, liquid movement */
+@keyframes liquidDrift {
+  0% {
+    background-position: 0% 0%;
+    transform: rotate(10deg) translateX(0);
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(14deg) translateX(25px);
+  }
+  100% {
+    background-position: 0% 100%;
+    transform: rotate(8deg) translateX(-25px);
+  }
 }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .gradient-strip {
-        filter: blur(60px);                     /* Less blur on mobile */
-        opacity: 0.12;                          /* Slightly more subtle */
-    }
-}
-/* In homepage-carousel.css */
 
 /* ========================================\
    4. STATIC GRAIN/NOISE OVERLAY
