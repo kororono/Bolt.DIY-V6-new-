@@ -329,7 +329,7 @@
 .gradient-strip:nth-child(24) { left: 92%; background: linear-gradient(180deg, #8a0000, #c83f12, #ffdd8d); animation-delay: -46s; }
 .gradient-strip:nth-child(25) { left: 96%; background: linear-gradient(180deg, #3b060a, #8a0000, #ffae42); animation-delay: -48s; }
 
-/* Gentle, liquid movement 
+/* Gentle, liquid movement */
 @keyframes liquidDrift {
   0% {
     background-position: 0% 0%;
@@ -343,18 +343,18 @@
     background-position: 0% 100%;
     transform: rotate(8deg) translateX(-25px);
   }
-} */
-/* In homepage-carousel.css - REPLACE the existing keyframes */
+} 
+/* In homepage-carousel.css - REPLACE the existing keyframes *
 @keyframes gradientFlow {
     0% {
-        /* Starting point: Rotated far to the left */
+        /* Starting point: Rotated far to the left *
         transform: rotate(-100deg);
     }
     100% {
-        /* Ending point: Rotated far to the right */
+        /* Ending point: Rotated far to the right *
         transform: rotate(150deg);
     }
-}
+} */
 
 /* ========================================\
    4. STATIC GRAIN/NOISE OVERLAY
