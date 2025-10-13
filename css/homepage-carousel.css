@@ -293,7 +293,7 @@
 /* Individual gradient strips */
 .gradient-strip {
     height: 100vh;
-    width: 20vw;
+    width: 10vw;
     top: 0;
     position: absolute;
     transform: rotate(10deg);
