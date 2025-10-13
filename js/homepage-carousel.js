@@ -189,7 +189,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+   
     // ========================================
+    // INITIALIZE
+    // Generate cards and set initial positions
+    // ======================================== 
+    generateCards();
+    updatePositions();
+
+     // ========================================
     // 7. ETHEREAL BACKGROUND ENHANCEMENT
     // Periodic, smooth gradient color shifts
     // ========================================
@@ -233,10 +241,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial randomization (optional subtle variation on load)
     setTimeout(updateRandomStrips, 3000);
 
-    // ========================================
-    // INITIALIZE
-    // Generate cards and set initial positions
-    // ======================================== 
-    generateCards();
-    updatePositions();
 });
