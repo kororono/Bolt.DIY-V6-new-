@@ -287,7 +287,7 @@
     height: 100%;
     z-index: -10;                               /* Behind everything */
     overflow: hidden;
-    background: #EA1821;                        /* Fallback black */
+    background: #5D060A;                        /* Fallback black */
 }
 
 /* Individual gradient strips */
