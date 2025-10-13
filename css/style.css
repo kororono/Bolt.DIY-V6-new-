@@ -32,8 +32,8 @@
 }
 
 /* ===============================
-   🌐 GLOBAL STYLES
-   =============================== */
+   🌐 GLOBAL STYLES
+   =============================== */
 :root {
   --background: #000000;
   --foreground: #ffffff;
@@ -135,19 +135,19 @@ a:hover {
 }
 
 /* ===============================
-   🔝 NAVIGATION BAR (NEW & IMPROVED)
-   =============================== */
+   🔝 NAVIGATION BAR (NEW & IMPROVED)
+   =============================== */
 nav {
-  width: 100%;
-  padding: 1.2rem 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
+  width: 100%;
+  padding: 1.2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .nav-container {
@@ -238,37 +238,37 @@ nav {
 
 /* --- Active Page Link --- */
 .nav-links a.active {
-  color: var(--accent);
+  color: var(--accent);
 }
 
 /* ===============================
-   🍔 HAMBURGER ICON (NEW & IMPROVED)
-   =============================== */
+   🍔 HAMBURGER ICON (NEW & IMPROVED)
+   =============================== */
 .hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 110;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 110;
 }
 
 .hamburger span {
-  width: 24px;
-  height: 2px;
-  background: var(--foreground);
-  border-radius: 2px;
-  transition: all 0.3s ease;
+  width: 24px;
+  height: 2px;
+  background: var(--foreground);
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 /* Animate hamburger → X */
 .hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translateY(7px);
+  transform: rotate(45deg) translateY(7px);
 }
 .hamburger.active span:nth-child(2) {
-  opacity: 0;
+  opacity: 0;
 }
 .hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-7px);
+  transform: rotate(-45deg) translateY(-7px);
 }
 
 /* Layout */
@@ -594,7 +594,11 @@ header, section {
     margin: 0;
 }
 
-/* Services(What we Do) - Bento Box Layout */
+/* Services(What we Do) - Bento Box Layout - TRANSPARENT BACKGROUNDS */
+#services {
+    background: transparent;
+}
+
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -603,17 +607,18 @@ header, section {
     margin-bottom: 3rem;
 }
 
-/* Work-style hover animation for bento items */
+/* Work-style hover animation for bento items - SEMI-TRANSPARENT WITH BLUR */
 .bento-item {
-    background-color: var(--card-bg);
+    background-color: rgba(28, 28, 28, 0.7);    /* Semi-transparent */
+    backdrop-filter: blur(10px);                 /* Frosted glass effect */
     border-radius: 15px;
     padding: 30px;
     position: relative;
     overflow: hidden;
     min-height: 180px;
     transition: transform 0.3s ease;
-    display: block; /* Ensure anchor tag behaves like a block */
-    color: var(--text-color); /* Default text color for items inside */
+    display: block;
+    color: var(--text-color);
 }
 
 .bento-item:hover {
@@ -652,17 +657,27 @@ header, section {
     opacity: 0.2;
 }
 
-/* Pricing info - Services Section */
+/* Pricing info - Services Section - TRANSPARENT */
 .pricing-info {
-    margin-top: 6rem; /* Increased margin to create space */
+    margin-top: 6rem;
     padding-top: 1rem;
+    background: transparent;
 }
 
 .pricing-text {
-    font-size: 1.8rem; /* Adjust this value as needed */
-    margin-top: 0.5rem; /* Optional: Add some spacing */
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
 }
 
+/* Featured Work Section - TRANSPARENT */
+#featured-work {
+    background: transparent;
+}
+
+/* Contact Section - TRANSPARENT */
+#contact {
+    background: transparent;
+}
 
 /* Team Section */
 .team-section {
@@ -1005,11 +1020,12 @@ header, section {
     margin: 1rem auto;
 }
 
-/* Footer */
+/* Footer - TRANSPARENT */
 footer {
     padding: 60px 20px;
     max-width: 95%;
     margin: 0 auto;
+    background: transparent;
 }
 
 .footer-grid {
@@ -1099,8 +1115,8 @@ footer {
 }
 
 /* ===============================
-   📱 RESPONSIVE & MOBILE NAVIGATION
-   =============================== */
+   📱 RESPONSIVE & MOBILE NAVIGATION
+   =============================== */
 
 @media (max-width: 1024px) {
     h1 {
