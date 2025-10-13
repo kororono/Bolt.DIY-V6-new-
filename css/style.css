@@ -199,44 +199,41 @@ nav {
 
 /* --- Desktop Nav Links --- */
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
 }
 
 .nav-links a {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--foreground);
-    opacity: 0.9;
-    position: relative;
-    overflow: hidden;
-    display: block;
-    height: 20px;
+  position: relative;
+  text-decoration: none;
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 500;
+  overflow: hidden;
+  /* Crucial for animation: set a fixed height clipping mask */
+  display: block;
+  height: 20px; /* This height must match the 'translateY' and 'top' values below */
 }
-
 
 .nav-links a span {
-  display: block;
-  transition: transform 0.3s ease-out;
-}
-
-.nav-links a span:nth-child(1) {
-    top: 0;
+  display: block;
+  position: relative;
+  transition: transform 0.3s ease-out;
 }
 
 .nav-links a span:nth-child(2) {
-  position: absolute;
-  top: 20px;
-  left: 0;
+  position: absolute;
+  top: 20px; /* Position the second span just below the visible area */
+  left: 0;
 }
 
 .nav-links a:hover span:nth-child(1) {
-  transform: translateY(-20px);
+  transform: translateY(-20px); /* Move the first span up and out of view */
 }
 
 .nav-links a:hover span:nth-child(2) {
-  transform: translateY(-20px);
+  transform: translateY(-20px); /* Move the second span up into view */
 }
 
 /* --- Active Page Link --- */
