@@ -274,147 +274,31 @@
     }
 }
 /* ==========================================
-   ETHEREAL LIQUID BACKGROUND
-   Smooth left-to-right flowing gradient
+   HOMEPAGE VIDEO BACKGROUND
+   Simple, reliable video background
    ========================================== */
 
-.homepage-background {
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%;
-  z-index: -10;
-  overflow: hidden;
-  background: #090202;
+.homepage-video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
 }
 
-/* Gradient strips - flowing layers */
-.gradient-strip {
-  position: absolute;
-  top: -10%;
-  height: 120vh;
-  width: 10vw;
-  transform: rotate(12deg);
-  transform-origin: top right;
-  opacity: 0.5;
-  filter: blur(70px);
-  mix-blend-mode: screen;
-  background-size: 300% 100%;
-  animation: liquidFlow 45s ease-in-out infinite;
+.homepage-video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* Staggered positioning and gradients for organic feel */
-.gradient-strip:nth-child(1)  { 
-  left: 0%;  
-  background: linear-gradient(90deg, #3b060a, #8a0000, #c83f12); 
-  animation-delay: 0s; 
-}
-.gradient-strip:nth-child(2)  { 
-  left: 8%;  
-  background: linear-gradient(90deg, #8a0000, #c83f12, #fff287); 
-  animation-delay: -3.75s; 
-}
-.gradient-strip:nth-child(3)  { 
-  left: 16%; 
-  background: linear-gradient(90deg, #c83f12, #fff287, #8a0000); 
-  animation-delay: -7.5s; 
-}
-.gradient-strip:nth-child(4)  { 
-  left: 24%; 
-  background: linear-gradient(90deg, #fff287, #8a0000, #3b060a); 
-  animation-delay: -11.25s; 
-}
-.gradient-strip:nth-child(5)  { 
-  left: 32%; 
-  background: linear-gradient(90deg, #3b060a, #c83f12, #fff287); 
-  animation-delay: -15s; 
-}
-.gradient-strip:nth-child(6)  { 
-  left: 40%; 
-  background: linear-gradient(90deg, #8a0000, #fff287, #c83f12); 
-  animation-delay: -18.75s; 
-}
-.gradient-strip:nth-child(7)  { 
-  left: 48%; 
-  background: linear-gradient(90deg, #c83f12, #3b060a, #8a0000); 
-  animation-delay: -22.5s; 
-}
-.gradient-strip:nth-child(8)  { 
-  left: 56%; 
-  background: linear-gradient(90deg, #fff287, #c83f12, #3b060a); 
-  animation-delay: -26.25s; 
-}
-.gradient-strip:nth-child(9)  { 
-  left: 64%; 
-  background: linear-gradient(90deg, #3b060a, #fff287, #8a0000); 
-  animation-delay: -30s; 
-}
-.gradient-strip:nth-child(10) { 
-  left: 72%; 
-  background: linear-gradient(90deg, #8a0000, #3b060a, #c83f12); 
-  animation-delay: -33.75s; 
-}
-.gradient-strip:nth-child(11) { 
-  left: 80%; 
-  background: linear-gradient(90deg, #c83f12, #8a0000, #fff287); 
-  animation-delay: -37.5s; 
-}
-.gradient-strip:nth-child(12) { 
-  left: 88%; 
-  background: linear-gradient(90deg, #fff287, #3b060a, #c83f12); 
-  animation-delay: -41.25s; 
-}
-
-/* Smooth left-to-right liquid flow */
-@keyframes liquidFlow {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-/* Subtle grain texture overlay */
-.homepage-background::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-size: cover;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* ========================================\
-   4. STATIC GRAIN/NOISE OVERLAY
-   ======================================== */
-.homepage-background::after {
-    content: "";
+.homepage-video-background .video-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* Subtle noise texture using an SVG Data URI */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: cover;
-    
-    /* Control the appearance and stacking */
-    opacity: 0.05; /* Adjust for desired intensity */
-    pointer-events: none; /* Allows user interaction with elements beneath the grain */
-    z-index: 10; /* Ensures the grain sits on top of the rainbow strips */
-}
-
-    
-    /* Control the appearance and stacking */
-    opacity: 0.05; /* Adjust this value (e.g., 0.1 for more visible grain) */
-    pointer-events: none; /* Allows clicks to pass through to the page below */
-    z-index: 10; /* Make sure the grain sits on top of the rainbow strips */
+    background-color: rgba(0, 0, 0, 0.6);
 }
