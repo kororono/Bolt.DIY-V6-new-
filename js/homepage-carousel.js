@@ -196,49 +196,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======================================== 
     generateCards();
     updatePositions();
-
-     // ========================================
-    // 7. ETHEREAL BACKGROUND ENHANCEMENT
-    // Periodic, smooth gradient color shifts
-    // ========================================
-    const strips = document.querySelectorAll('.gradient-strip');
-
-    // Warm, cinematic palette (deep red → amber glow)
-    const palette = [
-        ["#3b060a", "#8a0000", "#c83f12"],
-        ["#8a0000", "#c83f12", "#fff287"],
-        ["#5a0707", "#9b1c06", "#ffae42"],
-        ["#7a070c", "#c83f12", "#ffdd8d"],
-        ["#3b060a", "#8a0000", "#ffae42"]
-    ];
-
-    // Helper: pick a random gradient from the palette
-    function randomGradient() {
-        const combo = palette[Math.floor(Math.random() * palette.length)];
-        return `linear-gradient(180deg, ${combo.join(', ')})`;
-    }
-
-    // Smoothly update a random strip’s gradient
-    function updateRandomStrips() {
-        const randomIndices = Array.from({ length: 3 }, () =>
-            Math.floor(Math.random() * strips.length)
-        );
-
-        randomIndices.forEach((i) => {
-            const el = strips[i];
-            if (!el) return;
-            const newGradient = randomGradient();
-            
-            // Smooth fade transition
-            el.style.transition = "background 8s ease-in-out";
-            el.style.background = newGradient;
-        });
-    }
-
-    // Periodic updates (every 20 seconds)
-    setInterval(updateRandomStrips, 20000);
-
-    // Initial randomization (optional subtle variation on load)
-    setTimeout(updateRandomStrips, 3000);
-
 });
