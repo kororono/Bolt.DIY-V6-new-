@@ -331,11 +331,13 @@
 
 /* Gentle flowing animation */
 @keyframes gradientFlow {
-    0%, 100% { 
-        transform: rotate(10deg) translateY(0) scale(1);
+    0% {
+        /* Starting point: Rotated far to the left */
+        transform: rotate(-100deg);
     }
-    50% { 
-        transform: rotate(10deg) translateY(-5vh) scale(1.05);
+    100% {
+        /* Ending point: Rotated far to the right */
+        transform: rotate(150deg);
     }
 }
 
@@ -369,19 +371,6 @@
     z-index: 10; /* Ensures the grain sits on top of the rainbow strips */
 }
 
-/* ========================================\
-   3. RAINBOW ANIMATION KEYFRAMES (MUST BE PRESENT)
-   ======================================== */
-@keyframes gradientFlow {
-    0% {
-        /* Start position (far left) */
-        transform: rotate(10deg) translateX(-100vw); 
-    }
-    100% {
-        /* End position (far right) */
-        transform: rotate(10deg) translateX(100vw);
-    }
-}
     
     /* Control the appearance and stacking */
     opacity: 0.05; /* Adjust this value (e.g., 0.1 for more visible grain) */
