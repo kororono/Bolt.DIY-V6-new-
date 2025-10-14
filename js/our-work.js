@@ -60,15 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. GENERATE PHOTOGRAPHY GALLERY
     // Dynamically creates gallery items from data
     // ========================================
-     document.addEventListener('DOMContentLoaded', function() {
-     const galleryGrid = document.querySelector('.gallery-grid');
+    const galleryGrid = document.querySelector('.gallery-grid');
     
-     if (galleryGrid && typeof photographyGallery !== 'undefined') {
-    // Clear existing gallery items (if any)
-    galleryGrid.innerHTML = '';
+    if (galleryGrid && typeof photographyGallery !== 'undefined') {
+        // Clear existing gallery items (if any)
+        galleryGrid.innerHTML = '';
         
-    // Generate gallery items from data
-    photographyGallery.forEach((photo) => {
+        // Generate gallery items from data
+        photographyGallery.forEach((photo) => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
             galleryItem.dataset.title = photo.title;
@@ -84,8 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             galleryGrid.appendChild(galleryItem);
         });
-       }
-     });
+    }
  
     // ========================================
     // 3. GALLERY MODAL (Photography Lightbox)
