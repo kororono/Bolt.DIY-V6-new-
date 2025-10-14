@@ -3,9 +3,10 @@
 //
 // SECTIONS:
 // 1. Filter System - Show/hide categories + deep linking
-// 2. Gallery Modal - Photography lightbox with metadata
-// 3. URL Hash Handler - Auto-apply filter from URL
-// 4. Back Button Handler - Close modal on back
+// 2. Generate Photography Gallery
+// 3. Gallery Modal - Photography lightbox with metadata
+// 4. URL Hash Handler - Auto-apply filter from URL
+// 5. Back Button Handler - Close modal on back
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -54,10 +55,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 section.classList.remove('active');
             }
         });
-    }
-    
+    } 
     // ========================================
-    // 2. GALLERY MODAL (Photography Lightbox)
+    // 2. GENERATE PHOTOGRAPHY GALLERY
+    // Dynamically creates gallery items from data
+    // ========================================
+     document.addEventListener('DOMContentLoaded', function() {
+     const galleryGrid = document.querySelector('.gallery-grid');
+    
+     if (galleryGrid && typeof photographyGallery !== 'undefined') {
+    // Clear existing gallery items (if any)
+    galleryGrid.innerHTML = '';
+        
+    // Generate gallery items from data
+    photographyGallery.forEach((photo) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.dataset.title = photo.title;
+            galleryItem.dataset.date = photo.date;
+            
+            galleryItem.innerHTML = `
+                <img src="${photo.src}" alt="${photo.title}">
+                <div class="gallery-overlay">
+                    <h3>${photo.title}</h3>
+                    <p>${photo.date}</p>
+                </div>
+            `;
+            
+            galleryGrid.appendChild(galleryItem);
+        });
+       }
+     });
+ 
+    // ========================================
+    // 3. GALLERY MODAL (Photography Lightbox)
     // Fullscreen image viewer with prev/next navigation
     // ======================================== 
     const galleryItems = document.querySelectorAll('.gallery-item');
@@ -184,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // ========================================
-    // 3. URL HASH HANDLER
+    // 4. URL HASH HANDLER
     // Auto-apply filter based on URL hash on page load
     // Example: our-work.html#3d -> activates 3D filter
     // ======================================== 
@@ -202,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     handleInitialHash();
     
     // ========================================
-    // 4. BACK BUTTON HANDLER
+    // 5. BACK BUTTON HANDLER
     // Handle phone/browser back button for modal
     // ======================================== 
     window.addEventListener('popstate', (e) => {
