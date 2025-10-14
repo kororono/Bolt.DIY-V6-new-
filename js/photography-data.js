@@ -23,7 +23,7 @@ const photographyGallery = [
     { src: 'assets/photography/gallery/parroty_1.webp', title: 'Music Shoot', date: 'February 2024' },
 
     // === PERSONAL SHOOT - JANUARY 2024 ===
-    { src: 'assets/photography/gallery/wohoro_01.webp', title: 'Personal Shoot', date: 'January 2024' }
+    { src: 'assets/photography/gallery/wohoro_01.webp', title: 'Personal Shoot', date: 'January 2024' },
 
         // === BABY SHOWER - APRIL 2024 ===
     { src: 'assets/photography/gallery/shower_.webp', title: 'Baby Shower', date: 'April 2024' },
