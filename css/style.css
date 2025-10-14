@@ -1118,7 +1118,7 @@ footer {
    📱 RESPONSIVE & MOBILE NAVIGATION
    =============================== */
 
-@media (max-width: 1024px) {
+@media (max-width: 480px) {
     h1 {
         font-size: 2.5rem;
     }
