@@ -30,7 +30,7 @@ const featuredProjects = [
     {
         id: 'nova',
         title: 'NOVA',
-        image: 'assets/images/projects/image 3-thumb.jpeg',
+        image: 'assets/projects/nfw/image 4-thumb.jpeg',
         link: 'projects/nova.html'
     },
     {
@@ -42,7 +42,7 @@ const featuredProjects = [
     {
         id: 'placeholder',
         title: 'Coming Soon',
-        image: 'assets/projects/placeholder.webp', // Add a "coming soon" placeholder image
+        image: 'assets/projects/nfw/image 3-thumb.jpeg', // Add a "coming soon" placeholder image
         link: '#' // No link for placeholder
     }
 ];
