@@ -7,6 +7,17 @@
     <meta name="description" content="Photography">
     <link rel="stylesheet" href="../css/style.css">
     <style>
+        /* Parallax Background Layer */
+        .project-header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            will-change: transform;
+        }
+
         /* Masonry Grid Layout for Gallery */
         .project-gallery-section {
             padding: 60px 20px;
@@ -220,10 +231,11 @@
     </div>
 </nav>
     
-    <header class="project-header parallax" style="background-image: url('../assets/projects/nfw/nfw-thumb.webp'); 
+    <header class="project-header parallax">
+    <div class="project-header-bg" style="background-image: url('../assets/projects/nfw/nfw-thumb.webp'); 
 	    background-position: center center; 
 	    background-size: cover; 
-	    background-repeat: no-repeat;">
+	    background-repeat: no-repeat;"></div>
     <div class="project-hero-overlay dark-gradient-overlay"></div>
     <div class="project-info">
         <h1>Nairobi Fashion Week</h1>
@@ -332,12 +344,13 @@
     <script>
         // ==========================================
         // IMPROVED PARALLAX EFFECT
-        // Smooth, reliable parallax without bugs
+        // Smooth, reliable parallax for background only
         // ==========================================
         (function() {
             const header = document.querySelector('.project-header');
+            const headerBg = document.querySelector('.project-header-bg');
             
-            if (!header) return;
+            if (!header || !headerBg) return;
             
             function applyParallax() {
                 // Get header position relative to viewport
@@ -349,13 +362,13 @@
                     // Calculate scroll progress (0 = at top, 1 = header scrolled past viewport)
                     const scrollProgress = Math.max(0, -headerRect.top / headerHeight);
                     
-                    // Apply transform with 30% parallax effect
+                    // Apply transform with 30% parallax effect to background only
                     const translateY = scrollProgress * headerHeight * 0.3;
-                    header.style.transform = `translateY(${translateY}px)`;
+                    headerBg.style.transform = `translateY(${translateY}px)`;
                 } else {
                     // Header completely scrolled past - lock position
                     const maxTranslate = headerHeight * 0.3;
-                    header.style.transform = `translateY(${maxTranslate}px)`;
+                    headerBg.style.transform = `translateY(${maxTranslate}px)`;
                 }
             }
             
