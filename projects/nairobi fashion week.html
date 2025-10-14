@@ -331,6 +331,52 @@
     <script src="../js/photography-data.js"></script>
     <script>
         // ==========================================
+        // IMPROVED PARALLAX EFFECT
+        // Smooth, reliable parallax without bugs
+        // ==========================================
+        (function() {
+            const header = document.querySelector('.project-header');
+            
+            if (!header) return;
+            
+            function applyParallax() {
+                // Get header position relative to viewport
+                const headerRect = header.getBoundingClientRect();
+                const headerHeight = header.offsetHeight;
+                
+                // Only apply parallax when header is visible or partially visible
+                if (headerRect.bottom > 0) {
+                    // Calculate scroll progress (0 = at top, 1 = header scrolled past viewport)
+                    const scrollProgress = Math.max(0, -headerRect.top / headerHeight);
+                    
+                    // Apply transform with 30% parallax effect
+                    const translateY = scrollProgress * headerHeight * 0.3;
+                    header.style.transform = `translateY(${translateY}px)`;
+                } else {
+                    // Header completely scrolled past - lock position
+                    const maxTranslate = headerHeight * 0.3;
+                    header.style.transform = `translateY(${maxTranslate}px)`;
+                }
+            }
+            
+            // Apply on scroll with requestAnimationFrame for smoothness
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        applyParallax();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Apply on load
+            applyParallax();
+        })();
+    </script>
+    <script>
+        // ==========================================
         // NFW PROJECT GALLERY
         // Filter NFW images and create modal gallery
         // Based on our-work.js modal structure
