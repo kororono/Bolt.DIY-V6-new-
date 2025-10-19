@@ -28,10 +28,10 @@ const featuredProjects = [
         link: 'projects/kfc.html'
     },
     {
-        id: 'nova',
-        title: 'NOVA',
-        image: 'assets/projects/nfw/image 4-thumb.jpeg',
-        link: 'projects/nova.html'
+        id: 'raila-tribute',
+        title: 'Raila Tribute',
+        image: 'assets/projects/raila/raila-thumb.jpg',
+        link: 'projects/raila-tribute.html'
     },
     {
         id: 'reload',
