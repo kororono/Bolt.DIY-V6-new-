@@ -1,26 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-t">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KFC — Nairoreel Productions</title>
     <meta name="description" content="3D Animation Project">
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        /* Parallax Background Layer */
-        .project-header-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            will-change: transform;
-        }
-    </style>
-</head>
+    </head>
 <body>
-    <!-- Page Overlay for darkening effect -->
     <div class="page-overlay"></div>
     <nav class="main-nav">
     <div class="nav-container">
@@ -44,7 +31,7 @@
     </div>
 </nav>
     
-    <header class="project-header parallax">
+    <header class="project-header parallax"> 
     <div class="project-header-bg" style="background-image: url('/assets/projects/kfc/kfc-hero/kfc-hero.webp'); 
 	    background-position: top center; 
 	    background-size: cover; 
@@ -76,21 +63,14 @@
             </div>
         </section>
 
-        <!-- Video Section -->
         <section>
             <div class="gallery-item full-width">
                 <div class="video-container">
-                    <iframe src="https://player.vimeo.com/video/1084663415?h=72cb62166f&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                            frameborder="0" 
-                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
-                            title="KFC Drive-Thru">
-                    </iframe>
+                    <wistia-player media-id="r61mjj8wit" aspect="1.7777777777777777"></wistia-player>
                 </div>
             </div>
         </section>
 
-        <!-- About the Project Section -->
         <section class="project-description">
             <div class="container">
                 <h2>About the Project</h2>
@@ -98,7 +78,6 @@
             </div>
         </section>
         
-        <!-- Explore More Link -->
         <section class="next-project">
             <div class="container">
                 <a href="../our-work.html#3d" class="next-project-link">
@@ -146,54 +125,11 @@
     </footer>
 
     <script src="../js/main.js"></script>
-    <script src="https://player.vimeo.com/api/player.js"></script>
-    <script>
-        // ==========================================
-        // IMPROVED PARALLAX EFFECT
-        // Smooth, reliable parallax for background only
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const header = document.querySelector('.project-header');
-            const headerBg = document.querySelector('.project-header-bg');
-            
-            if (!header || !headerBg) return;
-            
-            function applyParallax() {
-                // Get header position relative to viewport
-                const headerRect = header.getBoundingClientRect();
-                const headerHeight = header.offsetHeight;
-                
-                // Only apply parallax when header is visible or partially visible
-                if (headerRect.bottom > 0) {
-                    // Calculate scroll progress (0 = at top, 1 = header scrolled past viewport)
-                    const scrollProgress = Math.max(0, -headerRect.top / headerHeight);
-                    
-                    // Apply transform with 30% parallax effect to background only
-                    const translateY = scrollProgress * headerHeight * 0.3;
-                    headerBg.style.transform = `translateY(${translateY}px)`;
-                } else {
-                    // Header completely scrolled past - lock position
-                    const maxTranslate = headerHeight * 0.3;
-                    headerBg.style.transform = `translateY(${maxTranslate}px)`;
-                }
-            }
-            
-            // Apply on scroll with requestAnimationFrame for smoothness
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        applyParallax();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-            
-            // Apply on load
-            applyParallax();
-        });
-    </script>
+    
+    <script src="../js/projects.js"></script>
+
+    <script src="https://fast.wistia.com/player.js" async></script>
+    <script src="https://fast.wistia.com/embed/r61mjj8wit.js" async type="module"></script>
 
 </body>
 </html>

@@ -3,28 +3,33 @@
 /* Project header */
 .project-header {
     position: relative;
-    height: 48vh; /* Reduced by 40% from 80vh */
-    min-height: 360px; /* Reduced by 40% from 600px */
+    height: 80vh; /* Set desired hero height */
+    min-height: 500px; 
+    display: flex;
+    align-items: flex-end; /* Aligns project-info to the bottom */
     overflow: hidden;
 }
 
-.project-hero-img {
+/* This handles the background image */
+.project-header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-}
-
-.project-hero-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    z-index: -2;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    will-change: transform; /* <-- THIS IS THE RESTORED LINE FOR PARALLAX */
 }
 
 .project-info {
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
+    position: relative; 
     color: #ffffff;
-    z-index: 10;
+    z-index: 2; 
+    padding: 3rem; 
+    width: 100%;   
 }
 
 .project-info h1 {
@@ -47,24 +52,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
-}
-/* Parallax effect */
-.project-header.parallax {
-    position: relative;
-    height: 80vh; /* Same height as in the Pulse page */
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: flex-end; /* Align content to bottom like in Pulse */
-    overflow: hidden;
-}
-
-.project-header.parallax .project-info {
-    position: relative;
-    z-index: 2;
-    padding: 3rem;
-    width: 100%;
 }
 
 /* Project details */
@@ -89,37 +76,16 @@
     font-size: 1.2rem;
     line-height: 1.6;
     max-width: 800px;
+    margin-top: 3rem; /* Added space after video */
 }
 
 .project-description p {
     margin-bottom: 1.5rem;
 }
 
-/* Gallery */
-.project-gallery {
-    margin: 5rem 0;
-}
-
+/* Gallery / Video */
 .gallery-item {
     margin-bottom: 2rem;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.caption {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    opacity: 0.7;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
 }
 
 .full-width {
@@ -145,66 +111,19 @@
     height: 100%;
 }
 
-/* Quote section */
-.project-quote {
-    padding: 5rem 0;
-    background: rgba(255,255,255,0.03);
-}
-
-blockquote {
-    font-size: 2rem;
-    line-height: 1.4;
-    font-weight: 300;
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-    font-style: italic;
-}
-
-cite {
-    display: block;
-    text-align: center;
-    margin-top: 2rem;
-    font-style: normal;
-    opacity: 0.7;
-}
-
-/* Results section */
-.project-results {
-    padding: 5rem 0;
-}
-
-.project-results h2 {
-    margin-bottom: 3rem;
-    text-align: center;
-    font-size: 2rem;
-}
-
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 3rem;
-    text-align: center;
-}
-
-.result-item h3 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #fff;
+/* NEW: Rule for Wistia player */
+.video-container wistia-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /* Next project section */
 .next-project {
     padding: 5rem 0;
     text-align: center;
-}
-
-.next-project h2 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.7;
-    margin-bottom: 1rem;
 }
 
 .next-project-link {
@@ -237,14 +156,6 @@ cite {
     .project-tagline {
         font-size: 1.2rem;
     }
-    
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    blockquote {
-        font-size: 1.5rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -255,10 +166,6 @@ cite {
     .project-header {
         height: 60vh;
         min-height: 400px;
-    }
-    
-    .result-item h3 {
-        font-size: 2.5rem;
     }
     
     .next-project-link {
