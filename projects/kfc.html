@@ -33,7 +33,7 @@
 </nav>
     
     <header class="project-header parallax">
-    <div class="project-header-bg" style="background-image: url('/assets/projects/kfc/kfc-hero/KFC-hero.webp'); 
+    <div class="project-header-bg" style="background-image: url('/assets/projects/kfc/kfc-hero/KFC-hero.svg'); 
 	    background-position: top center; 
 	    background-size: cover; 
 	    background-repeat: no-repeat;"></div>
@@ -126,55 +126,9 @@
     </footer>
 
     <script src="../js/main.js"></script>
+    <script src="../js/projects.js"></script>
     <script src="https://fast.wistia.com/player.js" async></script>
     <script src="https://fast.wistia.com/embed/r61mjj8wit.js" async type="module"></script>
-    <script>
-        // ==========================================
-        // IMPROVED PARALLAX EFFECT
-        // Smooth, reliable parallax for background only
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const header = document.querySelector('.project-header');
-            const headerBg = document.querySelector('.project-header-bg');
-            
-            if (!header || !headerBg) return;
-            
-            function applyParallax() {
-                // Get header position relative to viewport
-                const headerRect = header.getBoundingClientRect();
-                const headerHeight = header.offsetHeight;
-                
-                // Only apply parallax when header is visible or partially visible
-                if (headerRect.bottom > 0) {
-                    // Calculate scroll progress (0 = at top, 1 = header scrolled past viewport)
-                    const scrollProgress = Math.max(0, -headerRect.top / headerHeight);
-                    
-                    // Apply transform with 30% parallax effect to background only
-                    const translateY = scrollProgress * headerHeight * 0.3;
-                    headerBg.style.transform = `translateY(${translateY}px)`;
-                } else {
-                    // Header completely scrolled past - lock position
-                    const maxTranslate = headerHeight * 0.3;
-                    headerBg.style.transform = `translateY(${maxTranslate}px)`;
-                }
-            }
-            
-            // Apply on scroll with requestAnimationFrame for smoothness
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        applyParallax();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-            
-            // Apply on load
-            applyParallax();
-        });
-    </script>
 
 </body>
 </html>
