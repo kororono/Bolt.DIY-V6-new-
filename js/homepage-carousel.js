@@ -30,7 +30,7 @@ const featuredProjects = [
     {
         id: 'raila-tribute',
         title: 'Raila Tribute',
-        image: 'assets/projects/raila/raila-thumb.jpg',
+        image: 'assets/projects/raila/raila-thumb.webp',
         link: 'projects/raila-tribute.html'
     },
     {
