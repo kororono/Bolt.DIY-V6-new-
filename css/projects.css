@@ -59,9 +59,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
 }
 
 .detail-column h3 {
@@ -76,11 +76,11 @@
     font-size: 1.2rem;
     line-height: 1.6;
     max-width: 800px;
-    margin-top: 3rem; /* Added space after video */
+    margin-top: .5rem; /* Added space after video */
 }
 
 .project-description p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Gallery / Video */
@@ -98,7 +98,7 @@
 /* Video container for embedded videos */
 .video-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 25.25%; /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
 }
@@ -121,8 +121,8 @@
 .next-project-link {
     display: inline-flex;
     align-items: center;
-    font-size: 3rem;
-    color: #fff;
+    font-size: 1.2rem;
+    color:#EA1821;
     text-decoration: none;
     transition: opacity 0.3s ease;
 }
