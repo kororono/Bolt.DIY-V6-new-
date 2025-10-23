@@ -7,6 +7,8 @@ const photographyGallery = [
     // === NAIROBI FASHION WEEK - MARCH 2024 ===
     { src: 'assets/photography/gallery/fashion.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
     { src: 'assets/photography/gallery/fashion_1.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
+    { src: 'assets/photography/gallery/fashion_2.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
+    { src: 'assets/photography/gallery/fashion_3.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
     { src: 'assets/photography/gallery/fashion_4.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
     { src: 'assets/photography/gallery/fashion_5.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
     { src: 'assets/photography/gallery/fashion_6.webp', title: 'Nairobi Fashion Week', date: 'March 2024' },
